@@ -1,4 +1,4 @@
-# <Název projektu>
+# Webový Mariáš
 
-<Popis projektu>
+Multiplayerový Mariáš pro vaše karbanění
 

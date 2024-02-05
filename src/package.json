@@ -1,7 +1,17 @@
 {
+  "name": "webovy-marias",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "author": "Kačer Kettner Kotek",
+  "license": "MIT",
   "dependencies": {
-    "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.2",
+    "simple-json-db": "^2.0.0"
   }
 }
