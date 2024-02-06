@@ -1,6 +1,8 @@
 # Použitá díla třetích stran
 
-- **<autor>**; *<název>*; <zdroj>
-- **<autor>**; *<název>*; <zdroj>
-- **<autor>**; *<název>*; <zdroj>
+- **Autor díla**; *Název díla*; https://odkaz.na/konkretni/stranku
+- **Autor díla**; *Název díla*; https://odkaz.na/konkretni/stranku
+- **Autor díla**; *Název díla*; https://odkaz.na/konkretni/stranku
+- ...
 
+*Všechna ostatní zde neuvedená díla jsou vlastní tvorbou.*
