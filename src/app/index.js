@@ -4,6 +4,7 @@ const ws = require('express-ws')(express());
 
 const app = ws.app;
 
+app.set('view engine', 'ejs');
 app.set('views', './app/views');
 
 app.use(session({
