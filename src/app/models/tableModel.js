@@ -60,3 +60,21 @@ exports.addCards = (gameID) => {
 
     db.set(gameID, game);
 }
+
+exports.mixCards = (gameID) => {
+    let game = db.get(gameID);
+    let oldOrder = game.cardPack;
+    let newOrder = [];
+
+    for(let i = 0; i < 32; i++){
+        let randomIndex = Math.floor(Math.random() * oldOrder.length);
+        newOrder[i] = oldOrder[randomIndex];
+        let firstPart = oldOrder.slice(0, randomIndex + 1);
+        firstPart.pop();
+        let secondPart = oldOrder.slice(randomIndex + 1);
+        oldOrder = firstPart.concat(secondPart);
+    }
+
+    game.cardPack = newOrder;
+    db.set(gameID, game);
+}
