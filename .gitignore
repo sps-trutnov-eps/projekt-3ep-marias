@@ -89,3 +89,4 @@ typings/
 
 package-lock.json
 /src/data/*
+/src/**/.DS_Stores
