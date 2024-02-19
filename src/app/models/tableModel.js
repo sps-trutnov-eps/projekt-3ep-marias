@@ -25,18 +25,12 @@ exports.addTable = () => {
         'name': 'testovaciStul',
         'password': '',
         'cardPack': [],
-        'player1': 'Josef',
-        'player2': 'Jiří',
-        'player3': 'Jaroslav',
-        'player1Pack': [],
-        'player1Collected': [],
-        'player1Mariages': [],
-        'player2Pack': [],
-        'player2Collected': [],
-        'player2Mariages':[],
-        'player3Pack': [],
-        'player3Collected': [],
-        'player3Mariages': [],
+        'players': ['Josef', 'Jiří', 'Jaroslav'],
+        'forhont': 0,
+        'turn': 0,
+        'playersPacks': [[], [], []],
+        'playersCollected': [[], [], []],
+        'playersMariages': [[], [], []],
         'talon': [],
         'table': []
     })
@@ -76,5 +70,30 @@ exports.mixCards = (gameID) => {
     }
 
     game.cardPack = newOrder;
+    db.set(gameID, game);
+}
+
+exports.dealCardsVoleny = (gameID) => {
+    let game = db.get(gameID);
+
+    for(let i = 0; i < 7; i++){
+        game.playersPacks[game.forhont % 3].push(game.cardPack.shift());
+    }
+    for(let i = 0; i < 5; i++){
+        game.playersPacks[(game.forhont + 1) % 3].push(game.cardPack.shift());
+    }
+    for(let i = 0; i < 5; i++){
+        game.playersPacks[(game.forhont + 2) % 3].push(game.cardPack.shift());
+    }
+    for(let i = 0; i < 5; i++){
+        game.playersPacks[game.forhont % 3].push(game.cardPack.shift());
+    }
+    for(let i = 0; i < 5; i++){
+        game.playersPacks[(game.forhont + 1) % 3].push(game.cardPack.shift());
+    }
+    for(let i = 0; i < 5; i++){
+        game.playersPacks[(game.forhont + 2) % 3].push(game.cardPack.shift());
+    }
+
     db.set(gameID, game);
 }
