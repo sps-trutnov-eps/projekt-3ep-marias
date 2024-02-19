@@ -5,6 +5,7 @@ router.use('/account', require('./accountRouter'));
 router.use('/game', require('./gameRouter'));
 
 router.use('/index', require('../controllers/lobbyController').index);
+router.use('/account', require('../controllers/accountController').index);
 router.use('/', require('../controllers/lobbyController').index);
 
 router.get('*', (req, res) => {

@@ -1,0 +1,2 @@
+Do této složky patří tři podsložky css, scripts, images.
+Aplikace serveru bere všechny statické věcí odsud.
