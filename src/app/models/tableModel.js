@@ -97,3 +97,41 @@ exports.dealCardsVoleny = (gameID) => {
 
     db.set(gameID, game);
 }
+
+exports.recollectCards = (gameID) => {
+    let game = db.get(gameID);
+
+    for(let i = 0; i < game.playersPacks.length; i++){
+        for(let j = 0; j < game.playersPacks[i]; i++){
+            game.cardPack.push(game.playersPacks[i].shift());
+        }
+    }
+
+    for(let i = 0; i < game.playersCollected.length; i++){
+        for(let j = 0; j < game.playersCollected[i]; i++){
+            game.cardPack.push(game.playersCollected[i].shift());
+        }
+    }
+
+    for(let i = 1; i < game.playersMariages; i++){
+        game.playersMariages[i] = [];
+    }
+
+    if(game.talon.length != 0){
+        for(let i = 0; i < game.talon.length; i++){
+            game.cardPack.push(game.talon.shift());
+        }
+    }
+
+    if(game.table.length != 0){
+        for(let i = 0; i < game.table.length; i++){
+            game.cardPack.push(game.table.shift());
+        }
+    }
+
+    db.set(gameID, game);
+}
+
+exports.getGame = (gameID) => {
+    return db.get(gameID);
+}
