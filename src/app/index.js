@@ -8,6 +8,7 @@ app.set('view engine', 'ejs');
 app.set('views', './app/views');
 
 app.use(express.static('./www'));
+app.use(express.static('./node_modules/bootstrap/dist'));
 
 app.use(session({
     secret: require('../conf').secret,
