@@ -5,6 +5,7 @@ const router = express.Router();
 const lobbyController = require('../controllers/lobbyController');
 
 // Odkazy na controller
+router.get('/index', lobbyController.index);
 router.get('/addTable', lobbyController.addTable);
 
 module.exports = router;
