@@ -98,33 +98,63 @@ exports.dealCardsVoleny = (gameID) => {
     db.set(gameID, game);
 }
 
+exports.sortCardsByColour = (gameID, username) => {
+    let game = db.get(gameID);
+    let indexOfPlayer = game.players.findIndex(username);
+    let cerveny = [];
+    let kule = [];
+    let zeleny = [];
+    let zaludy = [];
+
+    while(game.playersPacks[indexOfPlayer].length > 0) {
+        switch (game.playersPacks[indexOfPlayer][0]) {
+            case "č":
+                cerveny.push(game.playersPacks[0].shift());
+                break;
+            case "k":
+                kule.push(game.playersPacks[0].shift());
+                break;
+            case "z":
+                zeleny.push(game.playersPacks[0].shift());
+                break;
+            case "ž":
+                zaludy.push(game.playersPacks[0].shift());
+                break;
+        }
+    }
+
+    game.playersPacks[indexOfPlayer].concat(cerveny, kule, zeleny, zaludy);
+
+    db.set(gameID, game);
+}
+
 exports.recollectCards = (gameID) => {
     let game = db.get(gameID);
 
     for(let i = 0; i < game.playersPacks.length; i++){
-        for(let j = 0; j < game.playersPacks[i]; i++){
+        while(0 < game.playersPacks[i].length){
             game.cardPack.push(game.playersPacks[i].shift());
         }
     }
 
     for(let i = 0; i < game.playersCollected.length; i++){
-        for(let j = 0; j < game.playersCollected[i]; i++){
+        while(0 < game.playersCollected[i].length){
             game.cardPack.push(game.playersCollected[i].shift());
         }
     }
 
-    for(let i = 1; i < game.playersMariages; i++){
+    for(let i = 0; i < game.playersMariages; i++){
         game.playersMariages[i] = [];
     }
 
     if(game.talon.length != 0){
-        for(let i = 0; i < game.talon.length; i++){
+        while(0 < game.talon.length){
             game.cardPack.push(game.talon.shift());
         }
     }
 
     if(game.table.length != 0){
-        for(let i = 0; i < game.table.length; i++){
+        while(0 < game.table.length){
             game.cardPack.push(game.table.shift());
         }
     }
