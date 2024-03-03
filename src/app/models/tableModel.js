@@ -32,7 +32,9 @@ exports.addTable = () => {
         'playersCollected': [[], [], []],
         'playersMariages': [[], [], []],
         'talon': [],
-        'table': []
+        'table': [],
+        'playing': false,
+        'bet': 1
     })
 
     db.set('next_id', id + 1);
@@ -98,16 +100,16 @@ exports.dealCardsVoleny = (gameID) => {
     db.set(gameID, game);
 }
 
-exports.sortCardsByColour = (gameID, username) => {
+exports.sortCards = (gameID, username, byValue) => {
     let game = db.get(gameID);
-    let indexOfPlayer = game.players.findIndex(username);
+    let indexOfPlayer = game.players.findIndex(p => p == username);
     let cerveny = [];
     let kule = [];
     let zeleny = [];
     let zaludy = [];
 
     while(game.playersPacks[indexOfPlayer].length > 0) {
-        switch (game.playersPacks[indexOfPlayer][0]) {
+        switch (game.playersPacks[indexOfPlayer][0].colour) {
             case "č":
                 cerveny.push(game.playersPacks[0].shift());
                 break;
@@ -123,7 +125,30 @@ exports.sortCardsByColour = (gameID, username) => {
         }
     }
 
-    game.playersPacks[indexOfPlayer].concat(cerveny, kule, zeleny, zaludy);
+    if(byValue){
+        unsortCE = cerveny;
+        cerveny = [];
+        unsortKU = kule;
+        kule = [];
+        unsortZE = zeleny;
+        zeleny = [];
+        unsortZA = zaludy;
+        zaludy = [];
+        unsort = [unsortCE, unsortKU, unsortZE, unsortZA];
+        sort = [cerveny, kule, zeleny, zaludy];
+        
+        for(let a = 0; a < sort.length; a++){
+            for(let i = 0; i < values.length; i++){
+                for(let j = 0; j < unsort[a].length; j++){
+                    if(values[i] === unsort[a][j].value){
+                        sort[a].push(unsort[a][j]);
+                    }
+                }
+            }
+        }
+    }
+
+    game.playersPacks[indexOfPlayer] = [].concat(cerveny, kule, zeleny, zaludy);
 
     db.set(gameID, game);
 }
