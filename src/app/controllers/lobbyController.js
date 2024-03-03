@@ -9,3 +9,11 @@ exports.addTable = (req, res) => {
     tableModel.addCards(1);
     res.redirect('/lobby/index');
 }
+
+exports.lizany = (req, res) => {
+    res.render('lobby/lizany')
+}
+
+exports.voleny = (req, res) => {
+    res.render('lobby/voleny')
+}
