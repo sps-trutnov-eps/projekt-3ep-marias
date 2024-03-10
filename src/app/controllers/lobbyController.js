@@ -7,7 +7,7 @@ exports.index = (req, res) => {
 exports.addTable = (req, res) => {
     tableModel.addTable();
     tableModel.addCards(1);
-    res.redirect('/lobby/index');
+    res.redirect('/game/main');
 }
 
 exports.lizany = (req, res) => {
