@@ -4,6 +4,15 @@ exports.main = (req, res) => {
     res.render('game/main');
 }
 
+exports.connect = (client, req) => {
+    client.send(JSON.stringify("Jsi připojen"));
+}
+
+exports.test = (client, req) => {
+    console.log(req);
+    client.send(JSON.stringify("nazdar"));
+}
+
 exports.mixCards = (req, res) => {
     tableModel.mixCards(1);
     res.redirect('/game/main');
