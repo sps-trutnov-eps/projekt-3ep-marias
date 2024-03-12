@@ -1,8 +1,17 @@
 import os
+first_file_path = None
+vykricnik = True
+jmeno = 'Zaludy'
 
-for x in range(9):
+for x in range(8):
     try:
-        os.rename('Z_'+str(x)+'_Bohemian.png', 'Zaludy_'+str(x)+'.png')
+        os.rename('./Change/'+str(x)+'.jpg', './Renamed/'+jmeno+'_'+str(x+1)+'.jpg')
     except FileNotFoundError:
-        print(f"file does not exist.")
-
+        for root, dirs, files in os.walk("./Change/"):
+            if len(files) > 0:
+                first_file_path = os.path.join(root, files[x])
+                break
+        if vykricnik != False:
+            os.rename(first_file_path,os.path.join(root,str(x)+'!.jpg')) 
+        else:
+            os.rename(first_file_path,os.path.join(root,str(x)+'.jpg'))
