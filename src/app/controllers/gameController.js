@@ -5,12 +5,12 @@ exports.main = (req, res) => {
 }
 
 exports.connect = (client, req) => {
-    client.send(JSON.stringify("Jsi připojen"));
+    client.send("Jsi připojen");
 }
 
-exports.test = (client, req) => {
-    console.log(req);
-    client.send(JSON.stringify("nazdar"));
+exports.test = (client, event) => {
+    console.log(event);
+    client.send("nazdar");
 }
 
 exports.mixCards = (req, res) => {

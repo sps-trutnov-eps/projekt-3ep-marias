@@ -12,8 +12,8 @@ router.get('/main', gameController.main);
 router.ws('/test', (ws, req) => {
     gameController.connect(ws, req);
 
-    ws.onmessage((event) => {
-        gameController.test(ws, req);
+    ws.on("message", (event) => {
+        gameController.test(ws, event);
     });
 });
 
