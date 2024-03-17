@@ -2,7 +2,7 @@
 let socket;
 
 function connect() {
-    let ws = new WebSocket('ws://localhost:8000/game/test');
+    let ws = new WebSocket("ws://" + location.host + "/game/test");
     ws.onmessage = (event) => {
         accept(JSON.parse(event.JSON));
     };
