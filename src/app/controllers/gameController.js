@@ -11,7 +11,9 @@ exports.connect = (client, req) => {
 exports.resolve = (client, event) => {
     client.send("nazdar");
     if (event.split(";")[0] == "play"){
+        // tableModel.checkMarias
         tableModel.playCard(1, "Josef", event.split(";")[1]);
+        // tableMode.checkStych
     }
 }
 

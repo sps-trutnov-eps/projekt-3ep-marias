@@ -32,9 +32,10 @@ exports.addTable = () => {
         'playersPacks': [[], [], []],
         'playersCollected': [[], [], []],
         'playersMariages': [[], [], []],
+        'playersPoints': [0, 0, 0],
         'talon': [],
         'table': [],
-        'playing': false,
+        'playing': true,
         'bet': 1
     })
     this.addCards(id);
@@ -194,7 +195,7 @@ exports.playCard = (gameID, player, cardIndex) => {
     let game = db.get(gameID);
     let playerIndex = game.players.findIndex(p => p == player);
 
-    if (playerIndex == game.turn) {
+    if (playerIndex == game.turn && player.playing) {
         let playedCard = game.playersPacks[playerIndex][cardIndex];
         game.playersPacks[playerIndex].splice(cardIndex, 1);
         game.table.push(playedCard);
