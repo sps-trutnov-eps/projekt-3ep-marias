@@ -7,3 +7,9 @@ exports.index = (req, res) => {
 exports.prihlasit = (req, res) => {
     res.render('account/prihlasit');
 }
+
+exports.createUser = (req,res) => {
+    console.log("DĚLÁM UŽIVATELE");
+    
+    // res.redirect('/account/prihlasit');
+}

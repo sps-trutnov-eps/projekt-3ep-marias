@@ -1,3 +1,19 @@
 <%- include('../layout/hlavicka') %>
-<h1>Přihlášení</h1>
+<div class="row">
+    <form class="col-7" action="createUser" method="post">
+        <h2 class="px-5 py-3 text-decoration-underline">Sign Up</h2>
+        <input class="py-1 my-1" type="text" name="userName" placeholder="Display name..." autofocus autocomplete="off"><br>
+        <input class="py-1 my-1" type="text" name="userHandle" placeholder="Account name..." autofocus autocomplete="off"><br>
+        <input class="py-1 my-1" type="password" name="userPassword" placeholder="Password..." autofocus><br>
+        <input class="py-1 my-1" type="password" name="userPasswordConfirm" placeholder="Confirm Password..." autofocus><br>
+        <input type="submit" value="Submit" class="btn btn-success">
+    </form>
+    
+    <form class="col-3" action="" method="post">
+        <h2 class="px-5 py-3 text-decoration-underline">Log In</h2>
+        <input class="py-1 my-1" type="text" name="userHandle" placeholder="Account name..." autofocus autocomplete="off"><br>
+        <input class="py-1 my-1" type="password" name="userPassword" placeholder="Password..." autofocus><br>
+        <input type="submit" value="Submit" class="btn btn-success">
+    </form>
+</div>
 <%- include('../layout/paticka') %>
