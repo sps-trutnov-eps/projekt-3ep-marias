@@ -22,6 +22,7 @@ exports.addTable = () => {
     let id = db.get('next_id');
 
     db.set(id, {
+        'type': 'voleny',
         'name': 'testovaciStul',
         'password': '',
         'cardPack': [],
@@ -184,6 +185,21 @@ exports.recollectCards = (gameID) => {
         while(0 < game.table.length){
             game.cardPack.push(game.table.shift());
         }
+    }
+
+    db.set(gameID, game);
+}
+
+exports.playCard = (gameID, player, cardIndex) => {
+    let game = db.get(gameID);
+    let playerIndex = game.players.findIndex(p => p == player);
+
+    if (playerIndex == game.turn) {
+        let playedCard = game.playersPacks[playerIndex][cardIndex];
+        game.playersPacks[playerIndex].splice(cardIndex, 1);
+        game.table.push(playedCard);
+
+        game.turn = (game.turn + 1) % game.players.length;
     }
 
     db.set(gameID, game);

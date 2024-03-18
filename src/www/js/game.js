@@ -14,6 +14,6 @@ function accept(data) {
 }
 
 function sendTest() {
-    console.log("Odesílám data: Ahoj");
-    socket.send("Ahoj");
+    console.log("Odesílám data: play;0");
+    socket.send("play;0");
 }

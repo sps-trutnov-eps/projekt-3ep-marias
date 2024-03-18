@@ -13,7 +13,7 @@ router.ws('/test', (ws, req) => {
     gameController.connect(ws, req);
 
     ws.on("message", (event) => {
-        gameController.test(ws, event);
+        gameController.resolve(ws, event);
     });
 });
 
