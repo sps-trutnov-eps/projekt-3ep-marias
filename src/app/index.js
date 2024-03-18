@@ -7,6 +7,10 @@ const app = ws.app;
 app.set('view engine', 'ejs');
 app.set('views', './app/views');
 
+app.use(express.urlencoded({
+    extended: false
+}));
+
 app.use(express.static('./www'));
 app.use(express.static('./node_modules/bootstrap/dist'));
 
