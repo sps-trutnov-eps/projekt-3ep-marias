@@ -16,14 +16,16 @@ exports.createUser = (req,res) => {
     const hesloZnovu = req.body.userPasswordConfirm.trim();
 
     if(jmeno == '' || heslo == '') {
-        return res.redirect('/account/prihlasit');
-    } else if(heslo != hesloZnovu) {
 
-        return res.redirect('/account/prihlasit');
+        return res.redirect('prihlasit');
+
+    } else if(heslo != hesloZnovu) {
+        
+        return res.redirect('prihlasit');
 
     } else if(userModel.userInDatabase(jmeno)) {
 
-        return res.redirect('/account/prihlasit');
+        return res.redirect('prihlasit');
     }
 
     userModel.pridatUzivatele(jmeno, prezdivka, heslo);
