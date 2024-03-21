@@ -9,6 +9,14 @@ webSockets(express());
 
 // Odkazy na controller
 router.get('/main', gameController.main);
+router.ws('/test', (ws, req) => {
+    gameController.connect(ws, req);
+
+    ws.on("message", (event) => {
+        gameController.test(ws, event);
+    });
+});
+
 router.get('/mixCards', gameController.mixCards);
 router.get('/dealCardsVoleny', gameController.dealCardsVoleny);
 router.get('/sortCards', gameController.sortCards);

@@ -1,14 +1,19 @@
 // Klientský kód
-socket = connect();
+let socket;
 
 function connect() {
-    let ws = new WebSocket('ws://localhost:8000/game/main');
+    let ws = new WebSocket("ws://" + location.host + "/game/test");
     ws.onmessage = (event) => {
-        accept(JSON.parse(event.JSON));
+        accept(event.data);
     };
-    return ws;
+    socket = ws;
 }
 
-function accept() {
-    // Tady bude prijmani dat
+function accept(data) {
+    console.log("Přijatá data: " + data);
+}
+
+function sendTest() {
+    console.log("Odesílám data: Ahoj");
+    socket.send("Ahoj");
 }

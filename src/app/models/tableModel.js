@@ -36,6 +36,8 @@ exports.addTable = () => {
         'playing': false,
         'bet': 1
     })
+    this.addCards(id);
+    this.mixCards(id);
 
     db.set('next_id', id + 1);
 }
