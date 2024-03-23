@@ -11,9 +11,10 @@ exports.addTable = (req, res) => {
 }
 
 exports.lizany = (req, res) => {
-    res.render('lobby/lizany')
+    res.render('lobby/lizany');
 }
 
 exports.voleny = (req, res) => {
-    res.render('lobby/voleny')
+    console.log("Momentální uživatel: " + req.session.currentUser);
+    res.render('lobby/voleny');
 }
