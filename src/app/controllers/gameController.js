@@ -5,7 +5,10 @@ exports.main = (req, res) => {
 }
 
 exports.connect = (client, req) => {
-    client.send("Jsi připojen");
+    if (req.session.currentUser) {
+        tableModel.addPlayer(1, req.session.currentUser);
+        client.send("Jsi připojen");
+    }
 }
 
 exports.resolve = (client, event) => {
@@ -35,8 +38,4 @@ exports.sortCards = (req, res) => {
 exports.recollectCards = (req, res) => {
     tableModel.recollectCards(1);
     res.redirect('/game/main');
-}
-
-playCard = () => {
-
 }

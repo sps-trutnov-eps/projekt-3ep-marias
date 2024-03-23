@@ -26,7 +26,7 @@ exports.addTable = () => {
         'name': 'testovaciStul',
         'password': '',
         'cardPack': [],
-        'players': ['Josef', 'Jiří', 'Jaroslav'],
+        'players': [],
         'forhont': 0,
         'turn': 0,
         'playersPacks': [[], [], []],
@@ -42,6 +42,14 @@ exports.addTable = () => {
     this.mixCards(id);
 
     db.set('next_id', id + 1);
+}
+
+exports.addPlayer = (gameID, username) => {
+    let game = db.get(gameID);
+
+    game.players.push(username);
+
+    db.set(gameID, game);
 }
 
 exports.addCards = (gameID) => {
