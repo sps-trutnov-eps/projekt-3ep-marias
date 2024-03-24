@@ -10,14 +10,20 @@ exports.prihlasit = (req, res) => {
 }
 
 exports.Login = (req,res) => {
-    const jmeno =  req.body.userHandle.trim();
-    const heslo = req.body.userPassword.trim();
-
-    if(userModel.userInDatabase(jmeno) && userModel.userHasSamePasswd(jmeno, heslo))
+    if(!req.session.currentUser)
     {
-        req.session.currentUser = userModel.UserIdGet(jmeno);
-        console.log("Přihlášen: " + req.session.currentUser);
-        return res.redirect('index');
+        const jmeno =  req.body.userHandle.trim();
+        const heslo = req.body.userPassword.trim();
+        if(userModel.userInDatabase(jmeno) && userModel.userHasSamePasswd(jmeno, heslo))
+        {
+            req.session.currentUser = userModel.UserIdGet(jmeno);
+            console.log("Přihlášen: " + req.session.currentUser);
+            return res.redirect('index');
+        }
+    }
+    else{
+        console.log('Přihlášen uživatel s id:' + req.session.currentUser);
+        return res.redirect('prihlasit');
     }
 }
 
