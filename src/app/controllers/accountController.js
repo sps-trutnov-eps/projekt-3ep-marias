@@ -16,7 +16,7 @@ exports.Login = (req,res) => {
     if(userModel.userInDatabase(jmeno) && userModel.userHasSamePasswd(jmeno, heslo))
     {
         req.session.currentUser = userModel.UserIdGet(jmeno);
-        //console.log(req.session.currentUser);
+        console.log("Přihlášen: " + req.session.currentUser);
         return res.redirect('index');
     }
 }
