@@ -18,7 +18,7 @@ exports.Login = (req,res) => {
         {
             req.session.currentUser = userModel.UserIdGet(jmeno);
             console.log("Přihlášen: " + req.session.currentUser);
-            return res.redirect('index');
+            return res.redirect('/lobby/index');
         } 
         else {
             return res.redirect('prihlasit');
