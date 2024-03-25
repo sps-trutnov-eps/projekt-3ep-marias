@@ -22,24 +22,34 @@ exports.addTable = () => {
     let id = db.get('next_id');
 
     db.set(id, {
+        'type': 'voleny',
         'name': 'testovaciStul',
         'password': '',
         'cardPack': [],
-        'players': ['Josef', 'Jiří', 'Jaroslav'],
+        'players': [],
         'forhont': 0,
         'turn': 0,
         'playersPacks': [[], [], []],
         'playersCollected': [[], [], []],
         'playersMariages': [[], [], []],
+        'playersPoints': [0, 0, 0],
         'talon': [],
         'table': [],
-        'playing': false,
+        'playing': true,
         'bet': 1
     })
     this.addCards(id);
     this.mixCards(id);
 
     db.set('next_id', id + 1);
+}
+
+exports.addPlayer = (gameID, username) => {
+    let game = db.get(gameID);
+
+    game.players.push(username);
+
+    db.set(gameID, game);
 }
 
 exports.addCards = (gameID) => {
@@ -184,6 +194,21 @@ exports.recollectCards = (gameID) => {
         while(0 < game.table.length){
             game.cardPack.push(game.table.shift());
         }
+    }
+
+    db.set(gameID, game);
+}
+
+exports.playCard = (gameID, player, cardIndex) => {
+    let game = db.get(gameID);
+    let playerIndex = game.players.findIndex(p => p == player);
+
+    if (playerIndex == game.turn && player.playing) {
+        let playedCard = game.playersPacks[playerIndex][cardIndex];
+        game.playersPacks[playerIndex].splice(cardIndex, 1);
+        game.table.push(playedCard);
+
+        game.turn = (game.turn + 1) % game.players.length;
     }
 
     db.set(gameID, game);

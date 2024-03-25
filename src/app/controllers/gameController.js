@@ -1,16 +1,29 @@
 const tableModel = require('../models/tableModel');
+const userModel = require('../models/userModel');
 
 exports.main = (req, res) => {
-    res.render('game/main');
+    console.log(req.session.currentUser);
+    if (req.session.currentUser) {
+        res.render('game/main');
+    } else {
+        res.redirect('/lobby/');
+    }
 }
 
 exports.connect = (client, req) => {
-    client.send("Jsi připojen");
+    if (req.session.currentUser) {
+        tableModel.addPlayer(1, req.session.currentUser);
+        client.send("Jsi připojen");
+    }
 }
 
-exports.test = (client, event) => {
-    console.log(event);
+exports.resolve = (client, event) => {
     client.send("nazdar");
+    if (event.split(";")[0] == "play"){
+        // tableModel.checkMarias
+        tableModel.playCard(1, "Josef", event.split(";")[1]);
+        // tableMode.checkStych
+    }
 }
 
 exports.mixCards = (req, res) => {
