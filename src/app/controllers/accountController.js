@@ -18,16 +18,14 @@ exports.Login = (req,res) => {
         {
             req.session.currentUser = userModel.UserIdGet(jmeno);
             console.log("Přihlášen: " + req.session.currentUser);
-            return res.redirect('/lobby/index');
-        } 
-        else {
-            return res.redirect('prihlasit');
+            return res.redirect('index');
         }
     }
     else{
         console.log('Přihlášen uživatel s id:' + req.session.currentUser);
         return res.redirect('prihlasit');
     }
+    return res.redirect('prihlasit');
 }
 
 exports.createUser = (req,res) => {
