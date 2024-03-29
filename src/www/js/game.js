@@ -11,6 +11,8 @@ function connect() {
 
 function accept(data) {
     console.log("Přijatá data: " + data);
+    let dif = document.getElementById("info");
+    dif.innerHTML = data;
 }
 
 function sendTest() {

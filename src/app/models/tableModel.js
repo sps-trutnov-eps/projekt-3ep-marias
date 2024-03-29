@@ -27,6 +27,7 @@ exports.addTable = () => {
         'password': '',
         'cardPack': [],
         'players': [],
+        'clients': [],
         'forhont': 0,
         'turn': 0,
         'playersPacks': [[], [], []],
@@ -44,12 +45,30 @@ exports.addTable = () => {
     db.set('next_id', id + 1);
 }
 
-exports.addPlayer = (gameID, username) => {
+exports.addPlayer = (gameID, id, client) => {
     let game = db.get(gameID);
 
-    game.players.push(username);
+    game.players.push(id);
+    game.clients.push(client);
 
     db.set(gameID, game);
+}
+
+exports.removePlayer = (gameID, id, client) => {
+    let game = db.get(gameID);
+    let gameCopy = game;
+    game.players = [];
+    game.clients = [];
+    
+    for (let id in gameCopy.players) {
+        if (gameCopy.players[id] != id) {
+            game.players.push(gameCopy.players[i]);
+            game.clients.push(gameCopy.clients[i]);
+        }
+    }
+
+    db.set(gameID, game);
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 }
 
 exports.addCards = (gameID) => {
