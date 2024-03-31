@@ -2,7 +2,6 @@ const tableModel = require('../models/tableModel');
 const userModel = require('../models/userModel');
 
 exports.main = (req, res) => {
-    console.log(req.session.currentUser);
     if (req.session.currentUser) {
         res.render('game/main');
     } else {
@@ -12,18 +11,22 @@ exports.main = (req, res) => {
 
 exports.connect = (client, req) => {
     if (req.session.currentUser) {
-        tableModel.addPlayer(1, req.session.currentUser);
-        client.send("Jsi připojen");
+        tableModel.addPlayer(1, req.session.currentUser, client);
+        update();
     }
 }
 
+exports.disconnect = (client, req) => {
+    tableModel.removePlayer(1, req.session.currentUser, client);
+}
+
 exports.resolve = (client, event) => {
-    client.send("nazdar");
     if (event.split(";")[0] == "play"){
         // tableModel.checkMarias
-        tableModel.playCard(1, "Josef", event.split(";")[1]);
+        // tableModel.playCard(1, "Josef", event.split(";")[1]);
         // tableMode.checkStych
     }
+    update(1);
 }
 
 exports.mixCards = (req, res) => {
@@ -37,11 +40,22 @@ exports.dealCardsVoleny = (req, res) => {
 }
 
 exports.sortCards = (req, res) => {
-    tableModel.sortCards(1, "Josef", true);
+    tableModel.sortCards(1, req.session.currentUser, true);
     res.redirect('/game/main');
 }
 
 exports.recollectCards = (req, res) => {
     tableModel.recollectCards(1);
     res.redirect('/game/main');
+}
+
+update = (gameID) => {
+    let game = tableModel.getGame(1);
+    
+    for (let i = 0 ; i < game.clients.length; i++){
+        let gameCopy = JSON.parse(JSON.stringify(game));
+        gameCopy.playersPacks = game.playersPacks[i];
+        gameCopy.clients = [];
+        game.clients[i].send(JSON.stringify(gameCopy));
+    }
 }

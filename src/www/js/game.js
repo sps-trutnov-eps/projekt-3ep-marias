@@ -1,6 +1,8 @@
 // Klientský kód
 let socket;
 
+connect();
+
 function connect() {
     let ws = new WebSocket("ws://" + location.host + "/game/test");
     ws.onmessage = (event) => {
@@ -11,9 +13,10 @@ function connect() {
 
 function accept(data) {
     console.log("Přijatá data: " + data);
+    let dif = document.getElementById("info");
+    dif.innerHTML = data;
 }
 
 function sendTest() {
-    console.log("Odesílám data: play;0");
-    socket.send("play;0");
+    socket.send("Brikule");
 }

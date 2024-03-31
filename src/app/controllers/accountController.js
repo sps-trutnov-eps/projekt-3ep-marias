@@ -2,11 +2,21 @@ const session = require("express-session");
 const userModel = require("../models/userModel");
 
 exports.index = (req, res) => {
-    res.render('account/index');
+    let _prihlaseny = false;    
+    if(req.session.currentUser) _prihlaseny = true;
+
+    res.render('account/index', {
+        prihlaseny: _prihlaseny
+    });
 }
 
 exports.prihlasit = (req, res) => {
     res.render('account/prihlasit');
+}
+
+exports.odhlasit = (req, res) => {
+    req.session.currentUser = null;
+    res.redirect('index');
 }
 
 exports.Login = (req,res) => {
@@ -18,16 +28,14 @@ exports.Login = (req,res) => {
         {
             req.session.currentUser = userModel.UserIdGet(jmeno);
             console.log("Přihlášen: " + req.session.currentUser);
-            return res.redirect('/lobby/index');
-        } 
-        else {
-            return res.redirect('prihlasit');
+            return res.redirect('index');
         }
     }
     else{
         console.log('Přihlášen uživatel s id:' + req.session.currentUser);
         return res.redirect('prihlasit');
     }
+    return res.redirect('prihlasit');
 }
 
 exports.createUser = (req,res) => {
