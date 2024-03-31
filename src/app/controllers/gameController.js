@@ -12,7 +12,7 @@ exports.main = (req, res) => {
 exports.connect = (client, req) => {
     if (req.session.currentUser) {
         tableModel.addPlayer(1, req.session.currentUser, client);
-        client.send("Jsi připojen");
+        update();
     }
 }
 
@@ -40,7 +40,7 @@ exports.dealCardsVoleny = (req, res) => {
 }
 
 exports.sortCards = (req, res) => {
-    tableModel.sortCards(1, "Josef", true);
+    tableModel.sortCards(1, req.session.currentUser, true);
     res.redirect('/game/main');
 }
 
@@ -53,8 +53,9 @@ update = (gameID) => {
     let game = tableModel.getGame(1);
     
     for (let i = 0 ; i < game.clients.length; i++){
-        let gameCopy = tableModel.getGame(1);
+        let gameCopy = JSON.parse(JSON.stringify(game));
         gameCopy.playersPacks = game.playersPacks[i];
+        gameCopy.clients = [];
         game.clients[i].send(JSON.stringify(gameCopy));
     }
 }

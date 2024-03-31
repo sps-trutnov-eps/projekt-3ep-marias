@@ -37,7 +37,8 @@ exports.addTable = () => {
         'talon': [],
         'table': [],
         'playing': true,
-        'bet': 1
+        'bet': 1,
+        'challange':''
     })
     this.addCards(id);
     this.mixCards(id);
@@ -68,7 +69,6 @@ exports.removePlayer = (gameID, id, client) => {
     }
 
     db.set(gameID, game);
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 }
 
 exports.addCards = (gameID) => {
