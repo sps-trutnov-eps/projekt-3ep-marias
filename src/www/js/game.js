@@ -24,7 +24,7 @@ function accept(data) {
     let workdata = JSON.parse(data);
     console.log("Přijatá data: " + workdata);
     let dif = document.getElementById("info");
-    dif.innerHTML = workdata.players;
+    dif.innerHTML = data;
     //changeButtonStates(workdata);
 }
 

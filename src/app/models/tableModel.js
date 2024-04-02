@@ -1,4 +1,5 @@
 const jsondb = require('simple-json-db');
+const copyObj = require('lodash/cloneDeep');
 const db = new jsondb('./data/tables.json');
 const colours = ["č", "z", "k", "ž"] // červený, zelený, kule, žaludy
 const values = [7, 8, 9, 10, 11, 12, 13, 14, 15]
@@ -57,12 +58,12 @@ exports.addPlayer = (gameID, id, client) => {
 
 exports.removePlayer = (gameID, id, client) => {
     let game = db.get(gameID);
-    let gameCopy = game;
+    let gameCopy = copyObj(game);
     game.players = [];
     game.clients = [];
     
-    for (let id in gameCopy.players) {
-        if (gameCopy.players[id] != id) {
+    for (let i in gameCopy.players) {
+        if (gameCopy.players[i] != id) {
             game.players.push(gameCopy.players[i]);
             game.clients.push(gameCopy.clients[i]);
         }
@@ -127,6 +128,8 @@ exports.dealCardsVoleny = (gameID) => {
     for(let i = 0; i < 5; i++){
         game.playersPacks[(game.forhont + 2) % 3].push(game.cardPack.shift());
     }
+
+    game.cardPack= [];
 
     db.set(gameID, game);
 }

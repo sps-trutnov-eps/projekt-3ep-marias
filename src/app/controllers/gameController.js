@@ -1,5 +1,6 @@
 const tableModel = require('../models/tableModel');
 const userModel = require('../models/userModel');
+const copyObj = require('lodash/cloneDeep');
 
 exports.main = (req, res) => {
     if (req.session.currentUser) {
@@ -18,6 +19,7 @@ exports.connect = (client, req) => {
 
 exports.disconnect = (client, req) => {
     tableModel.removePlayer(1, req.session.currentUser, client);
+    update(1);
 }
 
 exports.resolve = (client, event) => {
@@ -51,11 +53,19 @@ exports.recollectCards = (req, res) => {
 
 update = (gameID) => {
     let game = tableModel.getGame(1);
-    
+    console.log(game);
+
     for (let i = 0 ; i < game.clients.length; i++){
-        let gameCopy = JSON.parse(JSON.stringify(game));
+        let gameCopy = copyObj(game);
         gameCopy.playersPacks = game.playersPacks[i];
         gameCopy.clients = [];
-        game.clients[i].send(JSON.stringify(gameCopy));
+        //console.log(game);
+
+        if (game.clients[i].readyState == 1) {
+            console.log("Jsem odeslal data - zkontrolujte si SPAMovou složku");
+            game.clients[i].send(JSON.stringify(gameCopy));
+        } else {
+            console.log(`WebSocket is not open. ReadyState: ${game.clients[i].readyState}`);
+        }
     }
 }
