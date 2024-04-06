@@ -25,23 +25,6 @@ function accept(data) {
     console.log("Přijatá data: " + workdata);
     let dif = document.getElementById("info");
     dif.innerHTML = data;
+    
     //changeButtonStates(workdata);
-}
-
-function sendTest() {
-    socket.send("Brikule");
-}
-
-function changeButtonStates(data) {
-    if (data.type == "voleny") {
-        if (data.players.length < 3){
-            for (let i = 0; i < buttons.length; i++){
-                buttons[i].style.visibility = "hidden";
-            }
-        } else if (data.playing) {
-            for (let i = 0; i < buttons.length; i++){
-                buttons[i].style.visibility = "visible";
-            }
-        }
-    }
 }
