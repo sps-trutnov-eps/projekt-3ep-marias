@@ -58,15 +58,14 @@ exports.addPlayer = (gameID, id, client) => {
 
 exports.removePlayer = (gameID, id, client) => {
     let game = db.get(gameID);
-    let gameCopy = copyObj(game);
-    game.players = [];
-    game.clients = [];
-    
-    for (let i in gameCopy.players) {
-        if (gameCopy.players[i] != id) {
-            game.players.push(gameCopy.players[i]);
-            game.clients.push(gameCopy.clients[i]);
-        }
+    let index = game.clients.indexOf(client);
+    if (index !== -1) {
+        game.clients.splice(index, 1);
+    }
+
+    let playerIndex = game.players.indexOf(id);
+    if (playerIndex !== -1) {
+        game.players.splice(playerIndex, 1);
     }
 
     db.set(gameID, game);

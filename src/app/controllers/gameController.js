@@ -53,16 +53,13 @@ exports.recollectCards = (req, res) => {
 
 update = (gameID) => {
     let game = tableModel.getGame(1);
-    console.log(game);
 
     for (let i = 0 ; i < game.clients.length; i++){
         let gameCopy = copyObj(game);
         gameCopy.playersPacks = game.playersPacks[i];
         gameCopy.clients = [];
-        //console.log(game);
 
         if (game.clients[i].readyState == 1) {
-            console.log("Jsem odeslal data - zkontrolujte si SPAMovou složku");
             game.clients[i].send(JSON.stringify(gameCopy));
         } else {
             console.log(`WebSocket is not open. ReadyState: ${game.clients[i].readyState}`);
