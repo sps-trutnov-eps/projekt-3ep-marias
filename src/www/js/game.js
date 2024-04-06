@@ -20,6 +20,14 @@ function connect() {
     socket = ws;
 }
 
+function accept(data) {
+    let workdata = JSON.parse(data);
+    console.log("Přijatá data: " + workdata);
+    let dif = document.getElementById("info");
+    dif.innerHTML = data;
+    //changeButtonStates(workdata);
+}
+
 function sendTest() {
     socket.send("Brikule");
 }
