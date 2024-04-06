@@ -16,12 +16,82 @@
 <button onclick="sendTest()">Test</button>
 <button id="talon">Talon</button>
 <button id="barva">Barva</button>
-<button id="dobra">Dobrá</button>
-<button id="spatna">Špatná</button>
-<button id="flek">Flek</button>
-<button id="koncim">Končím</button><br>
-<div id="karty">
 
+<div id="game-progress">
+  <div id="first-choose" class="step">
+    <div class="forhont-info">
+      Kliknutím, vyberete trumfa
+    </div>
+    <div class="defense-info">
+      Čeká se na forhonta až vybere trumf
+    </div>
+  </div>
+
+  <div id="second-choose" class="step">
+    <div class="forhont-info">
+      Kliknutím, odhoďte talon
+    </div>
+    <div class="defense-info">
+      Čeká se až forhont odhodí talon
+    </div>
+  </div>
+
+  <div id="third-choose" class="step">
+    <div class="forhont-info">
+      Vyberte co se bude hrát:
+      <ul>
+        <li><button id="hra">Hra</button></li>
+        <li><button id="battle">Battle</button></li>
+        <li><button id="durch">Durch</button><br></li>
+      </ul>
+    </div>
+    <div class="defense-info">
+      Čeká se na typ hry
+    </div>
+  </div>
+
+  <div id="fourth-choose" class="step">
+    <div class="forhont-info">
+      Čeká se na odsouhlasení barvy
+    </div>
+    <div class="first-defense-info">
+      Barva?
+      <button id="dobra">Dobrá</button>
+      <button id="spatna">Špatná</button>
+    </div>
+    <div class="second-defense-info">
+      Čeká se na potvrzení barvy prvního obránce
+    </div>
+  </div>
+ 
+  <!-- --------PRVNÍ MOŽNOST, KDYŽ JE BARVA DOBRÁ-------- -->
+
+  <div id="fifth-choose" class="step">
+    <div class="forhont-info">
+      <button id="stovka">Stovka</button>
+      <button id="Sedma">Sedma</button>
+      <button id="nic">Nic</button>
+    </div>
+    <div class="defense-info">
+      Čeká se na variaci <!--  Tady si nejsem jist jak to pojmenovat  -->
+    </div>
+  </div>
+
+  <div id="last-choose" class="step">
+    <div class="forhont-info">
+      Stav flekování
+      <button id="flek-forhont">Flek</button>
+      <button id="koncim-forhont">Končím</button>
+    </div>
+    <div class="defense-info">
+      Stav flekování
+      <button id="flek-defense">Flek</button>
+      <button id="koncim-defense">Končím</button>
+    </div>
+  </div>
 </div>
+
+
+<div id="karty"></div>
 <div id="info"></div>
 <%- include('../layout/paticka') %>
