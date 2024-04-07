@@ -30,6 +30,8 @@ exports.addTable = () => {
         'players': [],
         'clients': [],
         'forhont': 0,
+        'altForhont': undefined,
+        'agreed': 0,
         'turn': 0,
         'playersPacks': [[], [], []],
         'playersCollected': [[], [], []],
@@ -37,8 +39,9 @@ exports.addTable = () => {
         'playersPoints': [0, 0, 0],
         'talon': [],
         'table': [],
-        'playing': true,
+        'phase': 'waiting',
         'bet': 1,
+        'trumf': '',
         'challange':''
     })
     this.addCards(id);
