@@ -28,10 +28,13 @@ function accept(data) {
     console.log("Přijatá data: " + workdata);
     if(user == workdata.players[workdata.forhont]) {
         let dif = document.getElementById("info");
-        dif.innerHTML = "Jsi forhont";
+        for (let el of document.querySelectorAll('.forhont-info')) el.style.visibility = 'visible';
+        for (let el of document.querySelectorAll('.defense-info')) el.style.visibility = 'hidden';
     } else {
         let dif = document.getElementById("info");
         dif.innerHTML = "Nejsi forhont";
+        for (let el of document.querySelectorAll('.defense-info')) el.style.visibility = 'visible';
+        for (let el of document.querySelectorAll('.forhont-info')) el.style.visibility = 'hidden';
     }
     //changeButtonStates(workdata);
 }
