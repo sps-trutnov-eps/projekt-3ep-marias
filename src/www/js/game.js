@@ -26,7 +26,12 @@ function connect() {
 function accept(data) {
     let workdata = JSON.parse(data);
     console.log("Přijatá data: " + workdata);
-    socket.send("currentUser");
-    otherData = true;
+    if(user == workdata.players[workdata.forhont]) {
+        let dif = document.getElementById("info");
+        dif.innerHTML = "Jsi forhont";
+    } else {
+        let dif = document.getElementById("info");
+        dif.innerHTML = "Nejsi forhont";
+    }
     //changeButtonStates(workdata);
 }
