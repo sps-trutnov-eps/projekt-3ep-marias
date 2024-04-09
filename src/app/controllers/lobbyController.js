@@ -1,8 +1,7 @@
 const tableModel = require('../models/tableModel');
 
 exports.index = (req, res) => {
-    req.session.currentUser = 1;
-    res.render('game/main');
+    res.render('lobby/index');
 }
 
 exports.addTable = (req, res) => {
