@@ -223,6 +223,23 @@ exports.recollectCards = (gameID) => {
     db.set(gameID, game);
 }
 
+exports.talon = (gameID, t1, t2) => {
+    let game = db.get(gameID);
+
+    game.talon.push(game.playersPacks[game.forhont][t1]);
+    game.talon.push(game.playersPacks[game.forhont][t2]);
+
+    let newPack = [];
+    for (let i = 0; i < game.playersPacks[game.forhont].length; i++){
+        let includes = false;
+        for (let j = 0; j < game.talon.length; j++){
+            if (JSON.stringify(game.playersPacks[game.forhont][i]) == JSON.stringify(game.talon[j]))
+                includes = true;
+        }
+        if(!includes) newPack.push(game.playersPacks[game.forhont][i]);
+    }
+}
+
 exports.playCard = (gameID, player, cardIndex) => {
     let game = db.get(gameID);
     let playerIndex = game.players.findIndex(p => p == player);
