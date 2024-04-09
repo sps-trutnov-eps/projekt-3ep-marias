@@ -223,6 +223,15 @@ exports.recollectCards = (gameID) => {
     db.set(gameID, game);
 }
 
+exports.trumf = (gameID, indx) => {
+    let game = db.get(gameID);
+
+    game.trumf = game.playersPacks[game.forhont][indx].colour;
+    game.phase = "choosing-talon";
+
+    db.set(gameID, game);
+}
+
 exports.talon = (gameID, t1, t2) => {
     let game = db.get(gameID);
 
@@ -238,6 +247,11 @@ exports.talon = (gameID, t1, t2) => {
         }
         if(!includes) newPack.push(game.playersPacks[game.forhont][i]);
     }
+
+    game.playersPacks[game.forhont] = newPack;
+    game.phase = "choosing-game";
+
+    db.set(gameID, game);
 }
 
 exports.playCard = (gameID, player, cardIndex) => {

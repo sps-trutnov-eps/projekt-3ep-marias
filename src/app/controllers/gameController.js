@@ -30,7 +30,9 @@ exports.resolve = (client, event) => {
         // tableMode.checkStych
     }
 
-    if (event.split(";")[0] == "talon"){
+    if (event.split(";")[0] == "trumf"){
+        tableModel.trumf(1, event.split(";")[1]);
+    } else if (event.split(";")[0] == "talon"){
         tableModel.talon(1, event.split(";")[1], event.split(";")[2]);
     }
     this.sortCards(1, true);
