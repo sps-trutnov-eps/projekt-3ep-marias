@@ -36,5 +36,70 @@ function accept(data) {
         for (let el of document.querySelectorAll('.defense-info')) el.style.visibility = 'visible';
         for (let el of document.querySelectorAll('.forhont-info')) el.style.visibility = 'hidden';
     }
-    //changeButtonStates(workdata);
+    zobrazeniKaret(data);
+}
+
+function zobrazeniKaret(data) {
+    let workdata = JSON.parse(data);
+    let kartyDiv = document.getElementById("karty");
+    let karty = "";
+    for (i in workdata.playersPacks)
+    {
+        karty = workdata.playersPacks[i];
+        console.log(karty);
+
+        if (workdata.playersPacks[i].colour == "č"){
+            let img = document.createElement('img');
+            img.src = '/karty/Bohemian/Cerv_';
+            if (workdata.playersPacks[i].value == 14){
+                img.src += "4.jpg";
+            } else if (workdata.playersPacks[i].value == 15){
+                img.src += "8.jpg";
+            } else {
+                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
+            }
+            kartyDiv.appendChild(img);
+        }
+
+        if (workdata.playersPacks[i].colour == "z"){
+            let img = document.createElement('img');
+            img.src = '/karty/Bohemian/Listy_';
+            if (workdata.playersPacks[i].value == 14){
+                img.src += "4.jpg";
+            } else if (workdata.playersPacks[i].value == 15){
+                img.src += "8.jpg";
+            } else {
+                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
+            }
+            kartyDiv.appendChild(img);
+            
+        }
+
+        if (workdata.playersPacks[i].colour == "k"){
+            let img = document.createElement('img');
+            img.src = '/karty/Bohemian/Kule_';
+            if (workdata.playersPacks[i].value == 14){
+                img.src += "4.jpg";
+            } else if (workdata.playersPacks[i].value == 15){
+                img.src += "8.jpg";
+            } else {
+                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
+            }
+            kartyDiv.appendChild(img);
+            
+        }
+
+        if (workdata.playersPacks[i].colour == "ž"){
+            let img = document.createElement('img');
+            img.src = '/karty/Bohemian/Zaludy_';
+            if (workdata.playersPacks[i].value == 14){
+                img.src += "4.jpg";
+            } else if (workdata.playersPacks[i].value == 15){
+                img.src += "8.jpg";
+            } else {
+                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
+            }
+            kartyDiv.appendChild(img);
+        }
+    }
 }
