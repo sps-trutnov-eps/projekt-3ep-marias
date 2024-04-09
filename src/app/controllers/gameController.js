@@ -29,6 +29,7 @@ exports.resolve = (client, event) => {
         // tableModel.playCard(1, "Josef", event.split(";")[1]);
         // tableMode.checkStych
     }
+    this.sortCards(1, true);
     update(1);
 }
 
