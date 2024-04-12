@@ -15,7 +15,7 @@
 <p>Tady bude hra a budou se testovat věci, ale dneska už nehodlám přemýšlet, tak jen abych měl commit \m/</p>
 <button onclick="sendTest()">Test</button>
 
-<div id="game-progress">
+<div id="game-progress" style="visibility: hidden;">
   <div id="first-choose" class="step">
     <div class="forhont-info">
       Kliknutím, vyberete trumfa
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <div id="second-choose" class="step">
+  <div id="second-choose" style="visibility: hidden;" class="step">
     <div class="forhont-info">
       Kliknutím, odhoďte talon
     </div>
@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <div id="third-choose" class="step">
+  <div id="third-choose" style="visibility: hidden;" class="step">
     <div class="forhont-info">
       Vyberte co se bude hrát: <br>
       <button id="hra">Hra</button>
@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <div id="fourth-choose" class="step">
+  <div id="fourth-choose" style="visibility: hidden;" class="step">
     <div class="forhont-info">
       Čeká se na odsouhlasení barvy
     </div>
@@ -55,14 +55,14 @@
       <button id="dobra">Dobrá</button>
       <button id="spatna">Špatná</button>
     </div>
-    <div class="second-defense-info">
+    <div class="second-defense-info" style="visibility: hidden;">
       Čeká se na potvrzení barvy prvního obránce
     </div>
   </div>
  
   <!-- --------PRVNÍ MOŽNOST, KDYŽ JE BARVA DOBRÁ-------- -->
 
-  <div id="fifth-choose" class="step">
+  <div id="fifth-choose" style="visibility: hidden;" class="step">
     <div class="forhont-info">
       <button id="stovka">Stovka</button>
       <button id="Sedma">Sedma</button>
@@ -73,7 +73,7 @@
     </div>
   </div>
 
-  <div id="last-choose" class="step">
+  <div id="last-choose" style="visibility: hidden;" class="step">
     <div class="forhont-info">
       Stav flekování
       <button id="flek-forhont">Flek</button>

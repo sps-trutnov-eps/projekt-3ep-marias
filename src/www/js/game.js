@@ -1,6 +1,7 @@
 // Klientský kód
 let socket;
 let user = "";
+let vyberPrvniho = false;
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -27,14 +28,19 @@ function accept(data) {
     let workdata = JSON.parse(data);
     console.log("Přijatá data: " + workdata);
     if(user == workdata.players[workdata.forhont]) {
-        let dif = document.getElementById("info");
-        for (let el of document.querySelectorAll('.forhont-info')) el.style.visibility = 'visible';
-        for (let el of document.querySelectorAll('.defense-info')) el.style.visibility = 'hidden';
+        if(workdata.type == "voleny")
+        {
+            fazeHry(".forhont-info", data);
+        } else {
+            
+        }
     } else {
-        let dif = document.getElementById("info");
-        dif.innerHTML = "Nejsi forhont";
-        for (let el of document.querySelectorAll('.defense-info')) el.style.visibility = 'visible';
-        for (let el of document.querySelectorAll('.forhont-info')) el.style.visibility = 'hidden';
+        if(workdata.type == "voleny")
+        {
+            fazeHry(".defense-info", data);
+        } else {
+
+        }
     }
     zobrazeniKaret(data);
 }
@@ -101,5 +107,29 @@ function zobrazeniKaret(data) {
             }
             kartyDiv.appendChild(img);
         }
+    }
+}
+
+function fazeHry(classRoleHrace, data) {
+    // načtení dat
+    let workdata = JSON.parse(data);
+    let dif = document.getElementById("info");
+    // schování divu pro obránce, nebo forhonta
+    if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.visibility = 'hidden';}
+    else {for (let el of document.querySelectorAll(".defense-info")) el.style.visibility = 'hidden';}
+
+    //fáze hry
+    if (workdata.phase == "waiting"){
+        dif.innerHTML = "Čekáme na hráče";
+    } else if (workdata.phase == "choosing-trumf"){
+
+    } else if (workdata.phase == "choosing-talon"){
+
+    } else if (workdata.phase == "choosing-game"){
+
+    } else if (workdata.phase == "betting"){
+
+    } else if (workdata.phase == "playing"){
+
     }
 }
