@@ -30,14 +30,14 @@ function accept(data) {
     if(user == workdata.players[workdata.forhont]) {
         if(workdata.type == "voleny")
         {
-            fazeHry(".forhont-info", data);
+            fazeHry(data, ".forhont-info");
         } else {
             
         }
     } else {
         if(workdata.type == "voleny")
         {
-            fazeHry(".defense-info", data);
+            fazeHry(data, ".defense-info");
         } else {
 
         }
@@ -110,26 +110,35 @@ function zobrazeniKaret(data) {
     }
 }
 
-function fazeHry(classRoleHrace, data) {
+function fazeHry(data, classRoleHrace) {
     // načtení dat
     let workdata = JSON.parse(data);
     let dif = document.getElementById("info");
     // schování divu pro obránce, nebo forhonta
-    if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.visibility = 'hidden';}
-    else {for (let el of document.querySelectorAll(".defense-info")) el.style.visibility = 'hidden';}
+    if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none";}
+    else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none";}
 
     //fáze hry
     if (workdata.phase == "waiting"){
         dif.innerHTML = "Čekáme na hráče";
     } else if (workdata.phase == "choosing-trumf"){
+        dif.innerHTML = "";
+        document.getElementById('first-choose').style.display = 'block';
 
     } else if (workdata.phase == "choosing-talon"){
-
+        document.getElementById('first-choose').style.display = 'none';
+        document.getElementById('second-choose').style.display = 'block';
     } else if (workdata.phase == "choosing-game"){
-
+        document.getElementById('second-choose').style.display = 'none';
+        document.getElementById('third-choose').style.display = 'block';
     } else if (workdata.phase == "betting"){
-
+        document.getElementById('first-choose').style.display = 'none';
+        document.getElementById('second-choose').style.display = 'block';
     } else if (workdata.phase == "playing"){
 
     }
+}
+
+function sendData(data){
+    socket.send(data);
 }
