@@ -40,6 +40,10 @@ exports.resolve = (client, event) => {
         tableModel.talon(1, event.split(";")[1], event.split(";")[2]);
     } else if (event.split(";")[0] == "game"){
         tableModel.challange(1, event.split(";")[1]);
+    } else if (event.split(";")[0] == "dobra"){
+        tableModel.dobra(1);
+    } else if (event.split(";")[0] == "spatna"){
+        tableModel.spatna(1);
     }
     this.sortCards(1, true);
     update(1);
