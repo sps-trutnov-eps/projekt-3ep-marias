@@ -34,6 +34,8 @@ exports.resolve = (client, event) => {
         tableModel.trumf(1, event.split(";")[1]);
     } else if (event.split(";")[0] == "talon"){
         tableModel.talon(1, event.split(";")[1], event.split(";")[2]);
+    } else if (event.split(";")[0] == "game"){
+        tableModel.challange(1, event.split(";")[1]);
     }
     this.sortCards(1, true);
     update(1);

@@ -254,6 +254,29 @@ exports.talon = (gameID, t1, t2) => {
     db.set(gameID, game);
 }
 
+exports.challange = (gameID, challange) => {
+    let game = db.getGame(gameID);
+
+    if(game.type == "voleny"){
+        if(challange == "h"){
+            game.challange = challange;
+            game.turn = (game.turn + 1) % 3;
+            game.phase = "ack-game";
+        } else if (challange == "b"){
+            game.challange = challange;
+            game.altForhont = game.turn;
+            game.turn = (game.turn + 1) % 3;
+            game.phase = "ack-betl";
+        } else if (challange == "d"){
+            game.challange = challange;
+            game.altForhont = game.turn;
+            game.phase = "betting";
+        }
+    }
+
+    db.set(gameID, game);
+}
+
 exports.playCard = (gameID, player, cardIndex) => {
     let game = db.get(gameID);
     let playerIndex = game.players.findIndex(p => p == player);
