@@ -325,6 +325,14 @@ exports.playCard = (gameID, player, cardIndex) => {
     db.set(gameID, game);
 }
 
+exports.skip = (gameID, gamePhase) => {
+    let game = db.getGame(gameID);
+
+    game.phase = gamePhase;
+
+    db.set(gameID, game);
+}
+
 exports.getGame = (gameID) => {
     return db.get(gameID);
 }

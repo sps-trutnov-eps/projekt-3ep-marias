@@ -30,6 +30,10 @@ exports.resolve = (client, event) => {
         // tableMode.checkStych
     }
 
+    if (event.split(";")[0] == "skipTo"){
+        tableModel.skip(1, event.split(";")[1]);
+    }
+
     if (event.split(";")[0] == "trumf"){
         tableModel.trumf(1, event.split(";")[1]);
     } else if (event.split(";")[0] == "talon"){
