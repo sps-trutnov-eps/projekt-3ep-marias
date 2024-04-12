@@ -235,20 +235,24 @@ exports.trumf = (gameID, indx) => {
 exports.talon = (gameID, t1, t2) => {
     let game = db.get(gameID);
 
-    game.talon.push(game.playersPacks[game.forhont][t1]);
-    game.talon.push(game.playersPacks[game.forhont][t2]);
+    let f;
+    if(game.altForhont === undefined) f = game.forhont;
+    else f = game.altForhont;
+
+    game.talon.push(game.playersPacks[f][t1]);
+    game.talon.push(game.playersPacks[f][t2]);
 
     let newPack = [];
-    for (let i = 0; i < game.playersPacks[game.forhont].length; i++){
+    for (let i = 0; i < game.playersPacks[f].length; i++){
         let includes = false;
         for (let j = 0; j < game.talon.length; j++){
-            if (JSON.stringify(game.playersPacks[game.forhont][i]) == JSON.stringify(game.talon[j]))
+            if (JSON.stringify(game.playersPacks[f][i]) == JSON.stringify(game.talon[j]))
                 includes = true;
         }
-        if(!includes) newPack.push(game.playersPacks[game.forhont][i]);
+        if(!includes) newPack.push(game.playersPacks[f][i]);
     }
 
-    game.playersPacks[game.forhont] = newPack;
+    game.playersPacks[f] = newPack;
     game.phase = "choosing-game";
 
     db.set(gameID, game);
@@ -261,18 +265,47 @@ exports.challange = (gameID, challange) => {
         if(challange == "h"){
             game.challange = challange;
             game.turn = (game.turn + 1) % 3;
-            game.phase = "ack-game";
+            game.phase = "ack";
         } else if (challange == "b"){
             game.challange = challange;
-            game.altForhont = game.turn;
+            game.trumf = "";
             game.turn = (game.turn + 1) % 3;
-            game.phase = "ack-betl";
+            game.phase = "ack";
         } else if (challange == "d"){
             game.challange = challange;
-            game.altForhont = game.turn;
+            game.trumf = "";
             game.phase = "betting";
         }
     }
+
+    db.set(gameID, game);
+}
+
+exports.good = (gameID) => {
+    let game = db.getGame(gameID);
+
+    game.turn = (game.turn + 1) % 3;
+    if (game.altForhont === undefined) {
+        if (game.forhont == game.turn) {
+            game.turn = (game.turn + 1) % 3;
+            game.phase = "betting";
+        }
+    } else if (game.altForhont == game.turn) {
+        game.turn = (game.turn + 1) % 3;
+        game.phase = "betting";
+    }
+
+    db.set(gameID, game);
+}
+
+exports.bad = (gameID) => {
+    let game = db.getGame(gameID);
+
+    game.altForhont = game.turn;
+    for(let i = 0; i < game.talon.length; i++){
+        game.playersPacks[game.turn].push(game.talon.shift());
+    }
+    game.phase = "choosing-talon";
 
     db.set(gameID, game);
 }
@@ -288,6 +321,14 @@ exports.playCard = (gameID, player, cardIndex) => {
 
         game.turn = (game.turn + 1) % game.players.length;
     }
+
+    db.set(gameID, game);
+}
+
+exports.skip = (gameID, gamePhase) => {
+    let game = db.getGame(gameID);
+
+    game.phase = gamePhase;
 
     db.set(gameID, game);
 }
