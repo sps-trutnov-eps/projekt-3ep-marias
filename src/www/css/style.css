@@ -8,3 +8,7 @@ a {
     font-weight: 600;
     color: black;
 }
+
+#karty img {
+    width: 150px;
+}
