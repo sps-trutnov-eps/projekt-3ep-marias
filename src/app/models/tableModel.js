@@ -274,6 +274,7 @@ exports.challange = (gameID, challange) => {
         } else if (challange == "d"){
             game.challange = challange;
             game.trumf = "";
+            game.turn = (game.turn + 1) % 3;
             game.phase = "betting";
         }
     }
@@ -306,6 +307,49 @@ exports.bad = (gameID) => {
         game.playersPacks[game.turn].push(game.talon.shift());
     }
     game.phase = "choosing-talon";
+
+    db.set(gameID, game);
+}
+
+exports.bet = (gameID) => {
+    let game = db.getGame(gameID);
+
+    let f;
+    if(game.altForhont === undefined) f = game.forhont;
+    else f = game.altForhont;
+
+    if (game.turn == f){
+        game.bet *= 2;
+        if (game.bet == 64){
+            game.phase = "playing";
+        } else game.turn = (game.turn + 1) % 3;
+    } else {
+        game.bet *= 2;
+        game.turn = (game.turn + 1) % 3;
+        if (game.turn != f){
+            game.turn = f;
+        }
+    }
+
+    db.set(gameID, game);
+}
+
+exports.noBet = (gameID) => {
+    let game = db.getGame(gameID);
+
+    let f;
+    if(game.altForhont === undefined) f = game.forhont;
+    else f = game.altForhont;
+
+    if (game.turn == f){
+        game.phase = "playing";
+    } else {
+        game.turn = (game.turn + 1) % 3;
+        if (game.turn == f){
+            if (game.bet == 1) game.phase = "paying";
+            else if (Math.log2(game.bet) % 2 == 0) game.phase = "playing";
+        }
+    }
 
     db.set(gameID, game);
 }
