@@ -49,7 +49,11 @@ function accept(data) {
         }
     }
     else{
-
+        if(user == workdata.players[workdata.altForhont]) {
+            fazeVoleneHryaltForhonta(data, ".forhont-info");
+        } else {
+            fazeVoleneHryaltForhonta(data, ".defense-info");
+        }
     }
     zobrazeniKaret(data);
 }
@@ -125,6 +129,7 @@ function fazeVoleneHry(data, classRoleHrace) {
     let dif = document.getElementById("info");
     
     // schování divu pro obránce, nebo forhonta
+    for (let el of document.querySelectorAll(".step")) el.style.display = "none";
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none";}
     else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none";}
 
@@ -136,14 +141,12 @@ function fazeVoleneHry(data, classRoleHrace) {
         document.getElementById('first-choose').style.display = 'block';
 
     } else if (workdata.phase == "choosing-talon") {
-        document.getElementById('first-choose').style.display = 'none';
         document.getElementById('second-choose').style.display = 'block';
     } else if (workdata.phase == "choosing-game") {
-        document.getElementById('second-choose').style.display = 'none';
         document.getElementById('third-choose').style.display = 'block';
     } else if (workdata.phase == "ack") {
-        document.getElementById('third-choose').style.display = 'none';
         document.getElementById('barva').style.display = 'none';
+        document.getElementById('barva-info').style.display = 'block';
         document.getElementById('fourth-choose').style.display = 'block';
         if(user == workdata.players[workdata.turn])
         {
@@ -151,10 +154,8 @@ function fazeVoleneHry(data, classRoleHrace) {
             document.getElementById('barva').style.display = 'block';
         }
     } else if (workdata.phase == "choosing-challange") {
-        document.getElementById('fourth-choose').style.display = 'none';
         document.getElementById('fifth-choose').style.display = 'block';
     } else if (workdata.phase == "betting") {
-        document.getElementById('fifth-choose').style.display = 'none';
         if(user == workdata.players[workdata.turn])
         {
             document.getElementById('last-choose').style.display = 'block';
@@ -163,18 +164,17 @@ function fazeVoleneHry(data, classRoleHrace) {
         }
     } else if (workdata.phase == "playing") {
         counter = 0;
-        document.getElementById('last-choose').style.display = 'none';
     }
     dif.innerHTML = workdata.phase;
 }
 
-function fazeVoleneHryProaltforhonta(data, classRoleHrace) {
+function fazeVoleneHryaltForhonta(data, classRoleHrace) {
     // načtení dat
     let workdata = JSON.parse(data);
     let dif = document.getElementById("info");
     
     // schování divu pro obránce, nebo forhonta
-    document.getElementById('fourth-choose').style.display = 'none';
+    for (let el of document.querySelectorAll(".step")) el.style.display = "none";
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none";}
     else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none";}
 
@@ -183,11 +183,10 @@ function fazeVoleneHryProaltforhonta(data, classRoleHrace) {
         document.getElementById('second-choose').style.display = 'block';
     } else if (workdata.phase == "choosing-game"){
         document.getElementById('hra').style.display = 'none';
-        document.getElementById('second-choose').style.display = 'none';
         document.getElementById('third-choose').style.display = 'block';
     } else if (workdata.phase == "ack") {
-        document.getElementById('third-choose').style.display = 'none';
         document.getElementById('barva').style.display = 'none';
+        document.getElementById('barva-info').style.display = 'block';
         document.getElementById('fourth-choose').style.display = 'block';
         if(user == workdata.players[workdata.turn])
         {
@@ -195,7 +194,6 @@ function fazeVoleneHryProaltforhonta(data, classRoleHrace) {
             document.getElementById('barva').style.display = 'block';
         }
     } else if (workdata.phase == "betting") {
-        document.getElementById('fifth-choose').style.display = 'none';
         if(user == workdata.players[workdata.turn])
         {
             document.getElementById('last-choose').style.display = 'block';
@@ -204,7 +202,6 @@ function fazeVoleneHryProaltforhonta(data, classRoleHrace) {
         }
     } else if (workdata.phase == "playing") {
         counter = 0;
-        document.getElementById('last-choose').style.display = 'none';
     }
     dif.innerHTML = workdata.phase;
 }
