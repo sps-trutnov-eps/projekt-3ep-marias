@@ -1,6 +1,7 @@
 const tableModel = require('../models/tableModel');
 const userModel = require('../models/userModel');
 const copyObj = require('lodash/cloneDeep');
+const session = require("express-session");
 
 exports.main = (req, res) => {
     if (req.session.currentUser) {
@@ -45,7 +46,7 @@ exports.resolve = (client, event) => {
     } else if (event.split(";")[0] == "spatna"){
         tableModel.spatna(1);
     }
-    this.sortCards(1, true);
+    //this.sortCards(1, true);
     update(1);
 }
 
@@ -60,7 +61,7 @@ exports.dealCardsVoleny = (req, res) => {
 }
 
 exports.sortCards = (req, res) => {
-    tableModel.sortCards(1, req.session.currentUser, true);
+    tableModel.sortCards(1, session.currentUser, true);
     res.redirect('/game/main');
 }
 
