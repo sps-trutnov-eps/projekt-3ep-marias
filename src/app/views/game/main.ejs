@@ -12,14 +12,13 @@
   <body>
 <main>
 
-<p>Tady bude hra a budou se testovat věci, ale dneska už nehodlám přemýšlet, tak jen abych měl commit \m/</p>
-<button onclick="sendData('trumf;1')">Test</button>
+<button onclick="sendData()">Změna fáze</button>
 
 <div id="game-progress">
   <div id="first-choose" style="display: none;" class="step">
     <div class="forhont-info">
       Kliknutím, vyberete trumfa
-      <button onclick="sendData('trumf;1')"></button>
+      <button onclick="sendData()"></button>
     </div>
     <div class="defense-info">
       Čeká se na forhonta až vybere trumf
@@ -48,16 +47,13 @@
   </div>
 
   <div id="fourth-choose" style="display: none;" class="step">
-    <div class="forhont-info">
+    <div id="barva-info">
       Čeká se na odsouhlasení barvy
     </div>
-    <div class="first-defense-info">
+    <div id="barva">
       Barva?
       <button id="dobra">Dobrá</button>
       <button id="spatna">Špatná</button>
-    </div>
-    <div class="second-defense-info">
-      Čeká se na potvrzení barvy prvního obránce
     </div>
   </div>
  
@@ -77,17 +73,19 @@
   <div id="last-choose" style="display: none;" class="step">
     <div class="forhont-info">
       Stav flekování
-      <button id="flek-forhont">Flek</button>
+      <button class="flek">Flek</button>
       <button id="koncim-forhont">Končím</button>
     </div>
     <div class="defense-info">
       Stav flekování
-      <button id="flek-defense">Flek</button>
+      <button class="flek"></button>
       <button id="koncim-defense">Končím</button>
     </div>
   </div>
 </div>
 
-<div id="karty"></div>
 <div id="info"></div>
+<div class="fixed-bottom py-5" id="karty">
+  
+</div>
 <%- include('../layout/paticka') %>

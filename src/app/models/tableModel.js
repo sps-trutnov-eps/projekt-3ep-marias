@@ -259,7 +259,7 @@ exports.talon = (gameID, t1, t2) => {
 }
 
 exports.challange = (gameID, challange) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     if(game.type == "voleny"){
         if(challange == "h"){
@@ -283,7 +283,7 @@ exports.challange = (gameID, challange) => {
 }
 
 exports.good = (gameID) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     game.turn = (game.turn + 1) % 3;
     if (game.altForhont === undefined) {
@@ -300,7 +300,7 @@ exports.good = (gameID) => {
 }
 
 exports.bad = (gameID) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     game.altForhont = game.turn;
     for(let i = 0; i < game.talon.length; i++){
@@ -312,7 +312,7 @@ exports.bad = (gameID) => {
 }
 
 exports.bet = (gameID) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     let f;
     if(game.altForhont === undefined) f = game.forhont;
@@ -335,7 +335,7 @@ exports.bet = (gameID) => {
 }
 
 exports.noBet = (gameID) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     let f;
     if(game.altForhont === undefined) f = game.forhont;
@@ -370,7 +370,7 @@ exports.playCard = (gameID, player, cardIndex) => {
 }
 
 exports.skip = (gameID, gamePhase) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     game.phase = gamePhase;
 
