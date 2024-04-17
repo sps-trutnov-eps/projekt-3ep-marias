@@ -373,11 +373,27 @@ exports.noBet = (gameID) => {
     db.set(gameID, game);
 }
 
+exports.checkMarias = (gameID, player, cardIndex) => {
+    let game = db.get(gameID);
+    let playerIndex = game.players.findIndex(p => p == player);
+    let checkedCard = game.playersPacks[playerIndex][cardIndex];
+
+    if (checkedCard.value == 12){
+        for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
+            if (game.playersPacks[playerIndex][i].colour == checkedCard.colour){
+                if (game.playersPacks[playerIndex][i].value == 13){
+                    game.playersMariages[playerIndex].push(checkedCard.colour);
+                }
+            }
+        }
+    }
+}
+
 exports.playCard = (gameID, player, cardIndex) => {
     let game = db.get(gameID);
     let playerIndex = game.players.findIndex(p => p == player);
 
-    if (playerIndex == game.turn && player.playing) {
+    if (playerIndex == game.turn) {
         let playedCard = game.playersPacks[playerIndex][cardIndex];
         game.playersPacks[playerIndex].splice(cardIndex, 1);
         game.table.push(playedCard);

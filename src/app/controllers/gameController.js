@@ -50,8 +50,14 @@ exports.resolve = (client, event) => {
         tableModel.spatna(game);
     } else if (command == "bet"){
         tableModel.bet(game, event.split(";")[2], event.split(";")[3]);
-    } else if (coomand == "noBet"){
+    } else if (command == "noBet"){
         tableModel.noBet();
+    } else if (command == "play"){
+        /*
+        tableModel.checkMarias(game, event.split(";")[2], event.split(";")[3]);
+        tableModel.playCard(game, event.split(";")[2], event.split(";")[3]);
+        !tableModel.checkStych(game);! - nehotovo
+        */
     }
     //this.sortCards(1, true);
     update(game);
