@@ -41,6 +41,7 @@ exports.addTable = () => {
         'table': [],
         'phase': 'waiting',
         'bet': 1,
+        'bet7': 1,
         'trumf': '',
         'challange':''
     })
@@ -48,6 +49,8 @@ exports.addTable = () => {
     this.mixCards(id);
 
     db.set('next_id', id + 1);
+
+    return id;
 }
 
 exports.addPlayer = (gameID, id, client) => {
@@ -311,23 +314,39 @@ exports.bad = (gameID) => {
     db.set(gameID, game);
 }
 
-exports.bet = (gameID) => {
+exports.bet = (gameID, gameBet, sevenBet) => {
     let game = db.get(gameID);
 
     let f;
     if(game.altForhont === undefined) f = game.forhont;
     else f = game.altForhont;
 
-    if (game.turn == f){
-        game.bet *= 2;
-        if (game.bet == 64){
-            game.phase = "playing";
-        } else game.turn = (game.turn + 1) % 3;
-    } else {
-        game.bet *= 2;
-        game.turn = (game.turn + 1) % 3;
-        if (game.turn != f){
-            game.turn = f;
+    if (gameBet){
+        if (game.turn == f){
+            game.bet *= 2;
+            if (game.bet == 64){
+                game.phase = "playing";
+            } else game.turn = (game.turn + 1) % 3;
+        } else {
+            game.bet *= 2;
+            game.turn = (game.turn + 1) % 3;
+            if (game.turn != f){
+                game.turn = f;
+            }
+        }
+    }
+    if (sevenBet){
+        if (game.turn == f){
+            game.bet7 *= 2;
+            if (game.bet7 == 64){
+                game.phase = "playing";
+            } else game.turn = (game.turn + 1) % 3;
+        } else {
+            game.bet7 *= 2;
+            game.turn = (game.turn + 1) % 3;
+            if (game.turn != f){
+                game.turn = f;
+            }
         }
     }
 

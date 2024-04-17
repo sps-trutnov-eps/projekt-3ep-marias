@@ -1,6 +1,7 @@
 // Klientský kód
 let socket;
 let user = "";
+let game = 0;
 let vyberPrvniho = false;
 
 let talonB = document.getElementById("talon");
@@ -22,7 +23,8 @@ function connect() {
         ws.onmessage = (event) => {
             console.log("Event: " + event.data);
             if (user === ""){
-                user = JSON.parse(event.data);
+                user = JSON.parse(event.data).split(";")[0];
+                game = JSON.parse(event.data).split(";")[1];
             } else accept(event.data);
         socket = ws;
     }
@@ -209,5 +211,5 @@ function fazeVoleneHryaltForhonta(data, classRoleHrace) {
 function sendData(akce, data){
     if(phaseI < 13) {phaseI += 1;}
     else {phaseI = 0;}
-    socket.send("skipTo;" + gamePhase[phaseI]);
+    socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
 }

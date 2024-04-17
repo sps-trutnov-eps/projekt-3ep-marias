@@ -14,7 +14,7 @@ exports.main = (req, res) => {
 exports.connect = (client, req) => {
     if (req.session.currentUser) {
         tableModel.addPlayer(1, req.session.currentUser, client);
-        client.send(req.session.currentUser);
+        client.send(req.session.currentUser + ";" + 1);
         update();
     }
 }
@@ -25,29 +25,36 @@ exports.disconnect = (client, req) => {
 }
 
 exports.resolve = (client, event) => {
-    if (event.split(";")[0] == "play"){
+    game = event.split(";")[0];
+    command = event.split(";")[1]
+
+    if (command == "play"){
         // tableModel.checkMarias
         // tableModel.playCard(1, "Josef", event.split(";")[1]);
         // tableMode.checkStych
     }
 
-    if (event.split(";")[0] == "skipTo"){
-        tableModel.skip(1, event.split(";")[1]);
+    if (command == "skipTo"){
+        tableModel.skip(game, event.split(";")[2]);
     }
 
-    if (event.split(";")[0] == "trumf"){
-        tableModel.trumf(1, event.split(";")[1]);
-    } else if (event.split(";")[0] == "talon"){
-        tableModel.talon(1, event.split(";")[1], event.split(";")[2]);
-    } else if (event.split(";")[0] == "game"){
-        tableModel.challange(1, event.split(";")[1]);
-    } else if (event.split(";")[0] == "dobra"){
-        tableModel.dobra(1);
-    } else if (event.split(";")[0] == "spatna"){
-        tableModel.spatna(1);
+    if (command == "trumf"){
+        tableModel.trumf(game, event.split(";")[2]);
+    } else if (command == "talon"){
+        tableModel.talon(game, event.split(";")[2], event.split(";")[3]);
+    } else if (command == "game"){
+        tableModel.challange(game, event.split(";")[2]);
+    } else if (command == "dobra"){
+        tableModel.dobra(game);
+    } else if (command == "spatna"){
+        tableModel.spatna(game);
+    } else if (command == "bet"){
+        tableModel.bet(game, event.split(";")[2], event.split(";")[3]);
+    } else if (coomand == "noBet"){
+        tableModel.noBet();
     }
     //this.sortCards(1, true);
-    update(1);
+    update(game);
 }
 
 exports.mixCards = (req, res) => {
