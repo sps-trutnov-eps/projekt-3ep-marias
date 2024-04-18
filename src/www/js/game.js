@@ -1,7 +1,7 @@
 // Klientský kód
 let socket;
 let user = "";
-let vyberPrvniho = false;
+let workdata;
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -29,20 +29,20 @@ function connect() {
 }
 
 function accept(data) {
-    let workdata = JSON.parse(data);
+    workdata = JSON.parse(data);
     console.log("Přijatá data: " + workdata);
     if(!workdata.altForhont) {
         if(user == workdata.players[workdata.forhont]) {
             if(workdata.type == "voleny")
             {
-                fazeVoleneHry(data, ".forhont-info");
+                fazeVoleneHry(".forhont-info");
             } else {
                 
             }
         } else {
             if(workdata.type == "voleny")
             {
-                fazeVoleneHry(data, ".defense-info");
+                fazeVoleneHry(".defense-info");
             } else {
 
             }
@@ -50,16 +50,15 @@ function accept(data) {
     }
     else{
         if(user == workdata.players[workdata.altForhont]) {
-            fazeVoleneHryaltForhonta(data, ".forhont-info");
+            fazeVoleneHryaltForhonta(".forhont-info");
         } else {
-            fazeVoleneHryaltForhonta(data, ".defense-info");
+            fazeVoleneHryaltForhonta(".defense-info");
         }
     }
-    zobrazeniKaret(data);
+    zobrazeniKaret();
 }
 
-function zobrazeniKaret(data) {
-    let workdata = JSON.parse(data);
+function zobrazeniKaret() {
     let kartyDiv = document.getElementById("karty");
     let karty = "";
     for (i in workdata.playersPacks)
@@ -123,9 +122,8 @@ function zobrazeniKaret(data) {
     }
 }
 
-function fazeVoleneHry(data, classRoleHrace) {
+function fazeVoleneHry(classRoleHrace) {
     // načtení dat
-    let workdata = JSON.parse(data);
     let dif = document.getElementById("info");
     
     // schování divu pro obránce, nebo forhonta
@@ -168,9 +166,8 @@ function fazeVoleneHry(data, classRoleHrace) {
     dif.innerHTML = workdata.phase;
 }
 
-function fazeVoleneHryaltForhonta(data, classRoleHrace) {
+function fazeVoleneHryaltForhonta(classRoleHrace) {
     // načtení dat
-    let workdata = JSON.parse(data);
     let dif = document.getElementById("info");
     
     // schování divu pro obránce, nebo forhonta
