@@ -10,5 +10,9 @@ a {
 }
 
 #karty img {
-    width: 150px;
+    width: 125px;
+}
+
+#karty img:hover {
+    transform: translateY(-40px);
 }
