@@ -49,10 +49,12 @@ function zobrazeniKaret(data) {
     let workdata = JSON.parse(data);
     let kartyDiv = document.getElementById("karty");
     let karty = "";
+    let index = 0;
     for (i in workdata.playersPacks)
     {
         karty = workdata.playersPacks[i];
-        console.log(karty);
+        index++;
+        console.log(karty + index);
 
         if (workdata.playersPacks[i].colour == "č"){
             let img = document.createElement('img');
