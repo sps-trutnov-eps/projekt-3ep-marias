@@ -64,10 +64,12 @@ function accept(data) {
 function zobrazeniKaret() {
     let kartyDiv = document.getElementById("karty");
     let karty = "";
+    let index = 0;
     for (i in workdata.playersPacks)
     {
         karty = workdata.playersPacks[i];
-        console.log(karty);
+        index++;
+        console.log(karty + index);
 
         if (workdata.playersPacks[i].colour == "č"){
             let img = document.createElement('img');
