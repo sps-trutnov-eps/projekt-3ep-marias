@@ -10,9 +10,14 @@
     <title>Online Mariáš</title>
   </head>
   <body>
-<main>
-
+<main >
 <button onclick="sendData('trumf;1')">Test</button>
+
+<div class="position-relative">
+  <div class="position-absolute top-0 start-0 rounded storage-place1"></div>
+  <div class="position-absolute top-0 end-0 rounded storage-place2"></div>
+</div>
+<div class="position-absolute top-50 start-50 translate-middle rounded storage-place3"></div>
 
 <div id="game-progress">
   <div id="first-choose" style="display: none;" class="step">
@@ -59,7 +64,7 @@
       Čeká se na potvrzení barvy prvního obránce
     </div>
   </div>
- 
+
   <!-- --------PRVNÍ MOŽNOST, KDYŽ JE BARVA DOBRÁ-------- -->
 
   <div id="fifth-choose" style="display: none;" class="step">
@@ -88,6 +93,4 @@
 </div>
 
 <div id="info"></div>
-<div class="fixed-bottom pb-2" id="karty">
-  
-</div>
+<div class="fixed-bottom pb-2" id="karty"></div>
