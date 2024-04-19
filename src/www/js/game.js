@@ -23,8 +23,9 @@ function connect() {
         ws.onmessage = (event) => {
             console.log("Event: " + event.data);
             if (user === ""){
-                user = JSON.parse(event.data).split(";")[0];
-                game = JSON.parse(event.data).split(";")[1];
+                console.log("Parse: " + JSON.parse(event.data));
+                user = (JSON.parse(event.data)).split(";")[0];
+                game = (JSON.parse(event.data)).split(";")[1];
             } else accept(event.data);
         socket = ws;
     }

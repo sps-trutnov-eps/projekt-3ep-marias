@@ -14,7 +14,7 @@ exports.main = (req, res) => {
 exports.connect = (client, req) => {
     if (req.session.currentUser) {
         tableModel.addPlayer(1, req.session.currentUser, client);
-        client.send(req.session.currentUser + ";" + 1);
+        client.send(JSON.stringify(req.session.currentUser + ";" + "1"));
         update();
     }
 }
