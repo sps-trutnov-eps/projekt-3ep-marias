@@ -41,6 +41,7 @@ exports.addTable = () => {
         'table': [],
         'phase': 'waiting',
         'bet': 1,
+        'bet7': 1,
         'trumf': '',
         'challange':''
     })
@@ -48,6 +49,8 @@ exports.addTable = () => {
     this.mixCards(id);
 
     db.set('next_id', id + 1);
+
+    return id;
 }
 
 exports.addPlayer = (gameID, id, client) => {
@@ -259,7 +262,7 @@ exports.talon = (gameID, t1, t2) => {
 }
 
 exports.challange = (gameID, challange) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     if(game.type == "voleny"){
         if(challange == "h"){
@@ -283,7 +286,7 @@ exports.challange = (gameID, challange) => {
 }
 
 exports.good = (gameID) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     game.turn = (game.turn + 1) % 3;
     if (game.altForhont === undefined) {
@@ -300,7 +303,7 @@ exports.good = (gameID) => {
 }
 
 exports.bad = (gameID) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     game.altForhont = game.turn;
     for(let i = 0; i < game.talon.length; i++){
@@ -311,23 +314,39 @@ exports.bad = (gameID) => {
     db.set(gameID, game);
 }
 
-exports.bet = (gameID) => {
-    let game = db.getGame(gameID);
+exports.bet = (gameID, gameBet, sevenBet) => {
+    let game = db.get(gameID);
 
     let f;
     if(game.altForhont === undefined) f = game.forhont;
     else f = game.altForhont;
 
-    if (game.turn == f){
-        game.bet *= 2;
-        if (game.bet == 64){
-            game.phase = "playing";
-        } else game.turn = (game.turn + 1) % 3;
-    } else {
-        game.bet *= 2;
-        game.turn = (game.turn + 1) % 3;
-        if (game.turn != f){
-            game.turn = f;
+    if (gameBet){
+        if (game.turn == f){
+            game.bet *= 2;
+            if (game.bet == 64){
+                game.phase = "playing";
+            } else game.turn = (game.turn + 1) % 3;
+        } else {
+            game.bet *= 2;
+            game.turn = (game.turn + 1) % 3;
+            if (game.turn != f){
+                game.turn = f;
+            }
+        }
+    }
+    if (sevenBet){
+        if (game.turn == f){
+            game.bet7 *= 2;
+            if (game.bet7 == 64){
+                game.phase = "playing";
+            } else game.turn = (game.turn + 1) % 3;
+        } else {
+            game.bet7 *= 2;
+            game.turn = (game.turn + 1) % 3;
+            if (game.turn != f){
+                game.turn = f;
+            }
         }
     }
 
@@ -335,7 +354,7 @@ exports.bet = (gameID) => {
 }
 
 exports.noBet = (gameID) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     let f;
     if(game.altForhont === undefined) f = game.forhont;
@@ -354,11 +373,27 @@ exports.noBet = (gameID) => {
     db.set(gameID, game);
 }
 
+exports.checkMarias = (gameID, player, cardIndex) => {
+    let game = db.get(gameID);
+    let playerIndex = game.players.findIndex(p => p == player);
+    let checkedCard = game.playersPacks[playerIndex][cardIndex];
+
+    if (checkedCard.value == 12){
+        for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
+            if (game.playersPacks[playerIndex][i].colour == checkedCard.colour){
+                if (game.playersPacks[playerIndex][i].value == 13){
+                    game.playersMariages[playerIndex].push(checkedCard.colour);
+                }
+            }
+        }
+    }
+}
+
 exports.playCard = (gameID, player, cardIndex) => {
     let game = db.get(gameID);
     let playerIndex = game.players.findIndex(p => p == player);
 
-    if (playerIndex == game.turn && player.playing) {
+    if (playerIndex == game.turn) {
         let playedCard = game.playersPacks[playerIndex][cardIndex];
         game.playersPacks[playerIndex].splice(cardIndex, 1);
         game.table.push(playedCard);
@@ -370,7 +405,7 @@ exports.playCard = (gameID, player, cardIndex) => {
 }
 
 exports.skip = (gameID, gamePhase) => {
-    let game = db.getGame(gameID);
+    let game = db.get(gameID);
 
     game.phase = gamePhase;
 
