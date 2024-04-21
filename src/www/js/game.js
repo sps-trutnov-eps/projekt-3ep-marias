@@ -3,6 +3,7 @@ let socket;
 let user = "";
 let workdata;
 let game = 0;
+let talon = "";
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -86,7 +87,6 @@ function zobrazeniKaret() {
                 break;
         }
         
-        // Adjust the source path based on the card's value
         if (karta.value == 14) {
             src += "4.jpg";
         } else if (karta.value == 15) {
@@ -97,7 +97,7 @@ function zobrazeniKaret() {
         img.src = src;
         
         img.onclick = function() {
-            sendData("karty",i);
+            sendData("karty", i);
         };
         
         kartyDiv.appendChild(img);
@@ -146,7 +146,7 @@ function fazeVoleneHry(classRoleHrace) {
     } else if (workdata.phase == "playing") {
         counter = 0;
     }
-    dif.innerHTML = workdata.phase;
+    dif.innerHTML = workdata.phase + workdata.turn;
 }
 
 function fazeVoleneHryaltForhonta(classRoleHrace) {
@@ -190,10 +190,48 @@ function sendData(akce, data){
     // if(phaseI < 13) {phaseI += 1;}
     // else {phaseI = 0;}    
     // socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
-    if(akce == "karty")
+    if (user == workdata.players[workdata.turn])
     {
-        if(phaseI < 13) {phaseI += 1;}
-        else {phaseI = 0;} 
-        socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+        if (akce == "karty"){
+            if (workdata.phase == "choosing-trumf"){
+                socket.send(game + ";" + "trumf;" + data);
+            } else if (workdata.phase == "choosing-talon"){
+                if (!workdata.altForhont) {
+                    if(talon != "" && talon != data && workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14){
+                        socket.send(game + ";" + "talon;" + talon + ";" + data);
+                        talon = "";
+                    } else if (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14) {
+                        talon = data;
+                    }
+                } else {
+                    if(talon != "" && talon != data){
+                        socket.send(game + ";" + "talon;" + talon + ";" + data);
+                        talon = "";
+                    } else {
+                        talon = data;
+                    }
+                }
+            } else if (workdata.phase == "playing"){
+                socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+            } 
+        }
+        else if (akce == "tlacitko"){
+            if (workdata.phase == "choosing-game"){
+                socket.send(game + ";" + "game;" + data);
+            } else if (workdata.phase == "ack"){
+                socket.send(game + ";" + "dobra");
+            } else if (workdata.phase == "choosing-challange"){
+                socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+            } else if (workdata.phase == "betting"){
+                socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+            }
+        }
+        else if (akce == "posun"){
+            if (phaseI < 12+data) {phaseI += data;}
+            else {phaseI = 0;} 
+            socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+        }
+        
     }
-}
+ 
+} 
