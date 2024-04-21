@@ -50,7 +50,8 @@ exports.resolve = (client, event) => {
         /*
         tableModel.checkMarias(game, event.split(";")[2], event.split(";")[3]);
         tableModel.playCard(game, event.split(";")[2], event.split(";")[3]);
-        !tableModel.checkStych(game);! - nehotovo
+        tableModel.checkStych(game);
+        !tableModel.checkEnd(game);! - nehotovo
         */
     }
     //this.sortCards(1, true);
