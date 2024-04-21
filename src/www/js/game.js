@@ -63,69 +63,47 @@ function accept(data) {
 
 function zobrazeniKaret() {
     let kartyDiv = document.getElementById("karty");
-    let karty = "";
-    let index = 0;
-    for (i in workdata.playersPacks)
-    {
-        karty = workdata.playersPacks[i];
-        index++;
-        console.log(karty + index);
-
-        if (workdata.playersPacks[i].colour == "č"){
-            let img = document.createElement('img');
-            img.src = '/karty/Bohemian/Cerv_';
-            if (workdata.playersPacks[i].value == 14){
-                img.src += "4.jpg";
-            } else if (workdata.playersPacks[i].value == 15){
-                img.src += "8.jpg";
-            } else {
-                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
-            }
-            kartyDiv.appendChild(img);
+    kartyDiv.innerHTML = "";
+    for (let i in workdata.playersPacks) {
+        let karta = workdata.playersPacks[i];
+        let img = document.createElement('img');
+        let src = "";
+        
+        switch (karta.colour) {
+            case "č":
+                src = '/karty/Bohemian/Cerv_';
+                break;
+            case "z":
+                src = '/karty/Bohemian/Listy_';
+                break;
+            case "k":
+                src = '/karty/Bohemian/Kule_';
+                break;
+            case "ž":
+                src = '/karty/Bohemian/Zaludy_';
+                break;
+            default:
+                break;
         }
-
-        if (workdata.playersPacks[i].colour == "z"){
-            let img = document.createElement('img');
-            img.src = '/karty/Bohemian/Listy_';
-            if (workdata.playersPacks[i].value == 14){
-                img.src += "4.jpg";
-            } else if (workdata.playersPacks[i].value == 15){
-                img.src += "8.jpg";
-            } else {
-                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
-            }
-            kartyDiv.appendChild(img);
-            
+        
+        // Adjust the source path based on the card's value
+        if (karta.value == 14) {
+            src += "4.jpg";
+        } else if (karta.value == 15) {
+            src += "8.jpg";
+        } else {
+            src += String(karta.value - 6) + ".jpg";
         }
-
-        if (workdata.playersPacks[i].colour == "k"){
-            let img = document.createElement('img');
-            img.src = '/karty/Bohemian/Kule_';
-            if (workdata.playersPacks[i].value == 14){
-                img.src += "4.jpg";
-            } else if (workdata.playersPacks[i].value == 15){
-                img.src += "8.jpg";
-            } else {
-                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
-            }
-            kartyDiv.appendChild(img);
-            
-        }
-
-        if (workdata.playersPacks[i].colour == "ž"){
-            let img = document.createElement('img');
-            img.src = '/karty/Bohemian/Zaludy_';
-            if (workdata.playersPacks[i].value == 14){
-                img.src += "4.jpg";
-            } else if (workdata.playersPacks[i].value == 15){
-                img.src += "8.jpg";
-            } else {
-                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
-            }
-            kartyDiv.appendChild(img);
-        }
+        img.src = src;
+        
+        img.onclick = function() {
+            sendData("karty",i);
+        };
+        
+        kartyDiv.appendChild(img);
     }
 }
+
 
 function fazeVoleneHry(classRoleHrace) {
     // načtení dat
@@ -209,7 +187,13 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
 }
 
 function sendData(akce, data){
-    if(phaseI < 13) {phaseI += 1;}
-    else {phaseI = 0;}
-    socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+    // if(phaseI < 13) {phaseI += 1;}
+    // else {phaseI = 0;}    
+    // socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+    if(akce == "karty")
+    {
+        if(phaseI < 13) {phaseI += 1;}
+        else {phaseI = 0;} 
+        socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+    }
 }
