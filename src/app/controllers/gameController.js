@@ -28,12 +28,6 @@ exports.resolve = (client, event) => {
     game = event.split(";")[0];
     command = event.split(";")[1]
 
-    if (command == "play"){
-        // tableModel.checkMarias
-        // tableModel.playCard(1, "Josef", event.split(";")[1]);
-        // tableMode.checkStych
-    }
-
     if (command == "skipTo"){
         tableModel.skip(game, event.split(";")[2]);
     }

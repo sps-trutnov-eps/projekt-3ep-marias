@@ -282,11 +282,13 @@ exports.challange = (gameID, challange) => {
             game.turn = (game.turn + 1) % 3;
             game.phase = "ack";
         } else if (challange == "b"){
+            game = turnX(game);
             game.challange = challange;
             game.trumf = "";
             game.turn = (game.turn + 1) % 3;
             game.phase = "ack";
         } else if (challange == "d"){
+            game = turnX(game);
             game.challange = challange;
             game.trumf = "";
             game.turn = (game.turn + 1) % 3;
@@ -296,6 +298,15 @@ exports.challange = (gameID, challange) => {
     game.result = "Hráč " + game.players[game.turn] + " zvolil typ hry: " + challange;
 
     db.set(gameID, game);
+}
+
+turnX = (game) => {
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < game.playersPacks[i].length; j++){
+            if(game.playersPacks[i][j].value == 14) game.playersPacks[i][j].value = 10;
+        }
+    }
+    return game;
 }
 
 exports.good = (gameID) => {
@@ -425,7 +436,31 @@ exports.playCard = (gameID, player, cardIndex) => {
         game.playersPacks[playerIndex].splice(cardIndex, 1);
         game.table.push(playedCard);
 
+        if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
         game.turn = (game.turn + 1) % game.players.length;
+    }
+
+    db.set(gameID, game);
+}
+
+exports.checkStych = (gameID) => {
+    let game = db.get(gameID);
+
+    if (game.table.length == 3){
+        let strongestCards = game.table[0];
+        for (let i = 1; i < 3; i++){
+            if (game.table[i].colour == strongestCards.colour)
+                if (game.table[i].value > strongestCards.value) strongestCards = game.table[i];
+            else if (game.table[i].colour == game.trumf)
+                strongestCards = game.table[i];
+        }
+    
+        let indexOfCards = game.table.indexOf(strongestCards);
+        for (let i = 1; i < 3; i++){
+            game.playersPacks[(game.turn + indexOfCards) % 3].push(game.table.shift());
+        }
+        game.turn = (game.turn + indexOfCards) % 3;
+        game.result += " a hráč " + game.players[game.turn] + " získal karty pro sebe";
     }
 
     db.set(gameID, game);
