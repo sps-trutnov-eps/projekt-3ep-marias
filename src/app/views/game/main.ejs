@@ -42,9 +42,9 @@
   <div id="third-choose" style="display: none;" class="step">
     <div class="forhont-info">
       Vyberte co se bude hrát: <br>
-      <button id="hra" onclick="sendData('tlacitko','hra')">Hra</button>
-      <button id="battle" onclick="sendData('tlacitko','battle')">Battle</button>
-      <button id="durch" onclick="sendData('tlacitko','durch')">Durch</button><br>
+      <button id="hra" onclick="sendData('tlacitko','h')">Hra</button>
+      <button id="battle" onclick="sendData('tlacitko','b')">Battle</button>
+      <button id="durch" onclick="sendData('tlacitko','d')">Durch</button><br>
     </div>
     <div class="defense-info">
       Čeká se na typ hry
@@ -76,16 +76,10 @@
   </div>
 
   <div id="last-choose" style="display: none;" class="step">
-    <div class="forhont-info">
-      Stav flekování
-      <button class="flek">Flek</button>
-      <button id="koncim-forhont">Končím</button>
-    </div>
-    <div class="defense-info">
-      Stav flekování
-      <button class="flek"></button>
-      <button id="koncim-defense">Končím</button>
-    </div>
+    Stav flekování
+    <button id="flekHry" onclick="sendData('tlacitko','flekHry')">Flek</button>
+    <button id="flekChallange" onclick="sendData('tlacitko','flekChallange')">Flek</button>
+    <button id="koncim-defense" onclick="sendData('tlacitko','konec')">Končím</button>
   </div>
 </div>
 
