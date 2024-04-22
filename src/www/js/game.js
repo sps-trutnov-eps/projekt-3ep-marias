@@ -238,32 +238,38 @@ function sendData(akce, data){
             } else if (workdata.phase == "choosing-challange"){
                 socket.send(game + ";" + "challange;" + data);
             } else if (workdata.phase == "betting"){
-                if (data == "flekHry" && flekHra != "flek") {
-                    document.getElementById('flekHry').style.background = 'green';
-                    flekHra = "flek";
-                }
-
-                if (data == "flekChallange" && flekChallange != "flek") {
-                    document.getElementById('flekChallange').style.background = 'green';
-                    flekChallange = "flek";
-                }
-
-                if (data == "konec"){
-                    socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange);
-                    if (flekHra == "flek") {
-                        counterGame += 1;
+                if (workdata.game == "h" && workdata.challange == "nic")
+                {
+                    if (data == "flekHry"){
+                        socket.send(game + ";" + "bet;" + "flek" + ";" + "konec");
+                    } else if (data == "konec") {
+                        socket.send(game + ";" + "bet;" + "konec" + ";" + "konec");
                     }
-                    if (flekChallange == "flek") {
-                        counterChallange += 1;
-                    }
-                    flekHra = "konec";
-                    document.getElementById('flekHry').style.background = 'none';
-                    flekChallange = "konec";
-                    document.getElementById('flekChallange').style.background = 'none';
-                }
-                    
-
-                
+                } else {
+                    if (data == "flekHry" && flekHra != "flek") { 
+                        document.getElementById('flekHry').style.background = 'green'; 
+                        flekHra = "flek"; 
+                    } 
+     
+                    if (data == "flekChallange" && flekChallange != "flek") { 
+                        document.getElementById('flekChallange').style.background = 'green'; 
+                        flekChallange = "flek"; 
+                    } 
+     
+                    if (data == "konec"){ 
+                        socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange); 
+                        if (flekHra == "flek") { 
+                            counterGame += 1; 
+                        } 
+                        if (flekChallange == "flek") { 
+                            counterChallange += 1; 
+                        } 
+                        flekHra = "konec"; 
+                        document.getElementById('flekHry').style.background = 'none'; 
+                        flekChallange = "konec"; 
+                        document.getElementById('flekChallange').style.background = 'none'; 
+                    } 
+                }                
             }
         }
         else if (akce == "posun"){
