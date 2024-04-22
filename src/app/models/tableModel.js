@@ -44,6 +44,7 @@ exports.addTable = () => {
         'bet': 1,
         'bet7': 1,
         'trumf': '',
+        'mode': '',
         'challange':'',
         'result':''
     })
@@ -273,29 +274,29 @@ exports.talon = (gameID, t1, t2) => {
     db.set(gameID, game);
 }
 
-exports.challange = (gameID, challange) => {
+exports.mode = (gameID, mode) => {
     let game = db.get(gameID);
 
     if(game.type == "voleny"){
-        if(challange == "h"){
-            game.challange = challange;
+        if(mode == "h"){
+            game.mode = mode;
             game.turn = (game.turn + 1) % 3;
             game.phase = "ack";
-        } else if (challange == "b"){
+        } else if (mode == "b"){
             game = turnX(game);
-            game.challange = challange;
+            game.mode = mode;
             game.trumf = "";
             game.turn = (game.turn + 1) % 3;
             game.phase = "ack";
-        } else if (challange == "d"){
+        } else if (mode == "d"){
             game = turnX(game);
-            game.challange = challange;
+            game.mode = mode;
             game.trumf = "";
             game.turn = (game.turn + 1) % 3;
             game.phase = "betting";
         }
     }
-    game.result = "Hráč " + game.players[game.turn] + " zvolil typ hry: " + challange;
+    game.result = "Hráč " + game.players[game.turn] + " zvolil typ hry: " + mode;
 
     db.set(gameID, game);
 }
@@ -316,7 +317,7 @@ exports.good = (gameID) => {
     if (game.altForhont === undefined) {
         if (game.forhont == game.turn) {
             game.turn = (game.turn + 1) % 3;
-            game.phase = "betting";
+            game.phase = "choosing-challange";
             game.result = "Hra byla odsouhlasena";
         }
     } else if (game.altForhont == game.turn) {
@@ -341,45 +342,57 @@ exports.bad = (gameID) => {
     db.set(gameID, game);
 }
 
-exports.bet = (gameID, gameBet, sevenBet) => {
+exports.challange = (gameID, challange) => {
     let game = db.get(gameID);
 
-    let f;
-    if(game.altForhont === undefined) f = game.forhont;
-    else f = game.altForhont;
-
-    if (gameBet){
-        if (game.turn == f){
-            game.bet *= 2;
-            if (game.bet == 64){
-                game.phase = "playing";
-                game.result = "Nelze flekovat výše, jde se hrát";
-            } else game.turn = (game.turn + 1) % 3;
-        } else {
-            game.bet *= 2;
-            game.turn = (game.turn + 1) % 3;
-            if (game.turn != f){
-                game.turn = f;
-            }
-        }
-    }
-    if (sevenBet){
-        if (game.turn == f){
-            game.bet7 *= 2;
-            if (game.bet7 == 64){
-                game.phase = "playing";
-                game.result = "Nelze flekovat výše, jde se hrát";
-            } else game.turn = (game.turn + 1) % 3;
-        } else {
-            game.bet7 *= 2;
-            game.turn = (game.turn + 1) % 3;
-            if (game.turn != f){
-                game.turn = f;
-            }
-        }
-    }
+    game.challange = challange;
+    game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát " + challange;
 
     db.set(gameID, game);
+}
+
+exports.bet = (gameID, gameBet, sevenBet) => {
+    if (gameBet == "konec" && sevenBet == "konec") this.noBet(gameID);
+    else {
+        let game = db.get(gameID);
+
+        let f;
+        if(game.altForhont === undefined) f = game.forhont;
+        else f = game.altForhont;
+
+        if (gameBet){
+            if (game.turn == f){
+                game.bet *= 2;
+                if (game.bet == 64){
+                    game.phase = "playing";
+                    game.result = "Nelze flekovat výše, jde se hrát";
+                } else game.turn = (game.turn + 1) % 3;
+            } else {
+                game.bet *= 2;
+                game.turn = (game.turn + 1) % 3;
+                if (game.turn != f){
+                    game.turn = f;
+                }
+            }
+        }
+        if (sevenBet){
+            if (game.turn == f){
+                game.bet7 *= 2;
+                if (game.bet7 == 64){
+                    game.phase = "playing";
+                    game.result = "Nelze flekovat výše, jde se hrát";
+                } else game.turn = (game.turn + 1) % 3;
+            } else {
+                game.bet7 *= 2;
+                game.turn = (game.turn + 1) % 3;
+                if (game.turn != f){
+                    game.turn = f;
+                }
+            }
+        }
+
+        db.set(gameID, game);
+    }
 }
 
 exports.noBet = (gameID) => {
@@ -413,7 +426,7 @@ exports.checkMarias = (gameID, player, cardIndex) => {
     let playerIndex = game.players.findIndex(p => p == player);
     let checkedCard = game.playersPacks[playerIndex][cardIndex];
 
-    if (game.challange != "b" || game.challange != "d"){
+    if (game.mode != "b" || game.mode != "d"){
         if (checkedCard.value == 12){
             for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
                 if (game.playersPacks[playerIndex][i].colour == checkedCard.colour){
