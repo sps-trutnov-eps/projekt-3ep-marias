@@ -28,12 +28,6 @@ exports.resolve = (client, event) => {
     game = event.split(";")[0];
     command = event.split(";")[1]
 
-    if (command == "play"){
-        // tableModel.checkMarias
-        // tableModel.playCard(1, "Josef", event.split(";")[1]);
-        // tableMode.checkStych
-    }
-
     if (command == "skipTo"){
         tableModel.skip(game, event.split(";")[2]);
     }
@@ -45,9 +39,9 @@ exports.resolve = (client, event) => {
     } else if (command == "game"){
         tableModel.challange(game, event.split(";")[2]);
     } else if (command == "dobra"){
-        tableModel.dobra(game);
+        tableModel.good(game);
     } else if (command == "spatna"){
-        tableModel.spatna(game);
+        tableModel.bad(game);
     } else if (command == "bet"){
         tableModel.bet(game, event.split(";")[2], event.split(";")[3]);
     } else if (command == "noBet"){
@@ -56,7 +50,8 @@ exports.resolve = (client, event) => {
         /*
         tableModel.checkMarias(game, event.split(";")[2], event.split(";")[3]);
         tableModel.playCard(game, event.split(";")[2], event.split(";")[3]);
-        !tableModel.checkStych(game);! - nehotovo
+        tableModel.checkStych(game);
+        !tableModel.checkEnd(game);! - nehotovo
         */
     }
     //this.sortCards(1, true);
