@@ -241,7 +241,7 @@ function sendData(akce, data){
             } else if (workdata.phase == "choosing-challange"){
                 socket.send(game + ";" + "challange;" + data);
             } else if (workdata.phase == "betting"){
-                if (document.getElementById('koncim').innerHTML == 'Končím')
+                if (workdata.game != "h" && workdata.challange != "nic")
                 {
                     if (data == "flekHry"){
                         socket.send(game = ";" + "bet;" + "flek" + ";" + "konec");
@@ -249,30 +249,28 @@ function sendData(akce, data){
                         socket.send(game = ";" + "bet;" + "konec" + ";" + "konec");
                     }
                 } else {
-                    if (data == "flekHry" && document.getElementById('flekHry').style.color != "green") {
-                        document.getElementById('flekHry').style.color = 'green';
+                    if (data == "flekHry" && flekHra != "flek") {
+                        document.getElementById('flekHry').style.background = 'green';
                         flekHra = "flek";
-                    } else if (data == "flekHry" && document.getElementById('flekHry').style.color == "green") {
-                        document.getElementById('flekHry').style.color = 'none';
-                        flekHra = "konec";
                     }
 
-                    if (data == "flekChallange" && document.getElementById('flekChallange').style.color != "green") {
-                        document.getElementById('flekChallange').style.color = 'green';
+                    if (data == "flekChallange" && flekChallange != "flek") {
+                        document.getElementById('flekChallange').style.background = 'green';
                         flekChallange = "flek";
-                    } else if (data == "flekChallange" && document.getElementById('flekChallange').style.color == "green") {
-                        document.getElementById('flekChallange').style.color = 'none';
-                        flekChallange = "konec";
                     }
 
                     if (data == "konec"){
-                        socket.send(game = ";" + "bet;" + flekHra + ";" + flekChallange);
-                        if (flekHra = "flek") {
+                        socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange);
+                        if (flekHra == "flek") {
                             counterGame += 1;
                         }
-                        if (flekChallange = "flek") {
+                        if (flekChallange == "flek") {
                             counterChallange += 1;
                         }
+                        flekHra = "konec";
+                        document.getElementById('flekHry').style.background = 'none';
+                        flekChallange = "konec";
+                        document.getElementById('flekChallange').style.background = 'none';
                     }
                 }
                     
