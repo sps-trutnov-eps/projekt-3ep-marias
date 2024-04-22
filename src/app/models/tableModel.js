@@ -45,7 +45,7 @@ exports.addTable = () => {
         'bet7': 1,
         'trumf': '',
         'mode': '',
-        'challange':'nic',
+        'challange':'',
         'result':''
     })
     this.addCards(id);
