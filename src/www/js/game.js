@@ -3,6 +3,11 @@ let socket;
 let user = "";
 let workdata;
 let game = 0;
+let talon = "";
+let counterGame = 0;
+let counterChallange = 0;
+let flekHra = "konec";
+let flekChallange = "konec";
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -11,9 +16,8 @@ let spatnaB = document.getElementById("spatna");
 let flekB = document.getElementById("flek");
 let koncimB = document.getElementById("koncim");
 let buttons = [talonB, barvaB, dobraB, spatnaB, flekB, koncimB];
-let gamePhase = ["waiting", "choosing-trumf", "choosing-talon", "choosing-game", "ack", "ack", "choosing-challange", "betting", "betting", "betting", "betting", "betting", "betting", "playing"];
+let gamePhase = ["waiting", "picking-trumf", "choosing-talon", "choosing-game", "ack", "ack", "choosing-challange", "betting", "betting", "betting", "betting", "betting", "betting", "playing"];
 let flekovani = ["Flek", "Reflek", "Tuty", "Boty", "Kalhoty", "Kaiser"];
-let counter = 0;
 let phaseI = 0;
 
 connect();
@@ -63,69 +67,46 @@ function accept(data) {
 
 function zobrazeniKaret() {
     let kartyDiv = document.getElementById("karty");
-    let karty = "";
-    let index = 0;
-    for (i in workdata.playersPacks)
-    {
-        karty = workdata.playersPacks[i];
-        index++;
-        console.log(karty + index);
-
-        if (workdata.playersPacks[i].colour == "č"){
-            let img = document.createElement('img');
-            img.src = '/karty/Bohemian/Cerv_';
-            if (workdata.playersPacks[i].value == 14){
-                img.src += "4.jpg";
-            } else if (workdata.playersPacks[i].value == 15){
-                img.src += "8.jpg";
-            } else {
-                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
-            }
-            kartyDiv.appendChild(img);
+    kartyDiv.innerHTML = "";
+    for (let i in workdata.playersPacks) {
+        let karta = workdata.playersPacks[i];
+        let img = document.createElement('img');
+        let src = "";
+        
+        switch (karta.colour) {
+            case "č":
+                src = '/karty/Bohemian/Cerv_';
+                break;
+            case "z":
+                src = '/karty/Bohemian/Listy_';
+                break;
+            case "k":
+                src = '/karty/Bohemian/Kule_';
+                break;
+            case "ž":
+                src = '/karty/Bohemian/Zaludy_';
+                break;
+            default:
+                break;
         }
-
-        if (workdata.playersPacks[i].colour == "z"){
-            let img = document.createElement('img');
-            img.src = '/karty/Bohemian/Listy_';
-            if (workdata.playersPacks[i].value == 14){
-                img.src += "4.jpg";
-            } else if (workdata.playersPacks[i].value == 15){
-                img.src += "8.jpg";
-            } else {
-                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
-            }
-            kartyDiv.appendChild(img);
-            
+        
+        if (karta.value == 14) {
+            src += "4.jpg";
+        } else if (karta.value == 15) {
+            src += "8.jpg";
+        } else {
+            src += String(karta.value - 6) + ".jpg";
         }
-
-        if (workdata.playersPacks[i].colour == "k"){
-            let img = document.createElement('img');
-            img.src = '/karty/Bohemian/Kule_';
-            if (workdata.playersPacks[i].value == 14){
-                img.src += "4.jpg";
-            } else if (workdata.playersPacks[i].value == 15){
-                img.src += "8.jpg";
-            } else {
-                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
-            }
-            kartyDiv.appendChild(img);
-            
-        }
-
-        if (workdata.playersPacks[i].colour == "ž"){
-            let img = document.createElement('img');
-            img.src = '/karty/Bohemian/Zaludy_';
-            if (workdata.playersPacks[i].value == 14){
-                img.src += "4.jpg";
-            } else if (workdata.playersPacks[i].value == 15){
-                img.src += "8.jpg";
-            } else {
-                img.src += String(workdata.playersPacks[i].value - 6) + ".jpg";
-            }
-            kartyDiv.appendChild(img);
-        }
+        img.src = src;
+        
+        img.onclick = function() {
+            sendData("karty", i);
+        };
+        
+        kartyDiv.appendChild(img);
     }
 }
+
 
 function fazeVoleneHry(classRoleHrace) {
     // načtení dat
@@ -133,13 +114,13 @@ function fazeVoleneHry(classRoleHrace) {
     
     // schování divu pro obránce, nebo forhonta
     for (let el of document.querySelectorAll(".step")) el.style.display = "none";
-    if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none";}
-    else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none";}
+    if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";}
+    else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "block";}
 
     //fáze hry
     if (workdata.phase == "waiting") {
         dif.innerHTML = "Čekáme na hráče";
-    } else if (workdata.phase == "choosing-trumf") {
+    } else if (workdata.phase == "picking-trumf") {
         dif.innerHTML = "";
         document.getElementById('first-choose').style.display = 'block';
 
@@ -162,13 +143,23 @@ function fazeVoleneHry(classRoleHrace) {
         if(user == workdata.players[workdata.turn])
         {
             document.getElementById('last-choose').style.display = 'block';
-            for (let el of document.querySelectorAll(".flek")) el.innerHTML = flekovani[counter];
-            counter += 1;
+            document.getElementById('flekHry').innerHTML = flekovani[counterGame] + "hry";
+            if (workdata.challange == "sedma") {
+                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + "sedmy";
+                document.getElementById('koncim').innerHTML = 'Další';
+            } else if (workdata.challange == "stovka") {
+                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + "stovky";
+                document.getElementById('koncim').innerHTML = 'Další';
+            } else {
+                document.getElementById('flekChallange').style.display = 'none';
+                document.getElementById('koncim').innerHTML = 'Končím';
+            }
+            
         }
     } else if (workdata.phase == "playing") {
-        counter = 0;
+        counterGame = 0;
+        counterChallange = 0;
     }
-    dif.innerHTML = workdata.phase;
 }
 
 function fazeVoleneHryaltForhonta(classRoleHrace) {
@@ -177,15 +168,19 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     
     // schování divu pro obránce, nebo forhonta
     for (let el of document.querySelectorAll(".step")) el.style.display = "none";
-    if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none";}
-    else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none";}
+    if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";}
+    else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "block";}
 
     //fáze hry
     if (workdata.phase == "choosing-talon") {
         document.getElementById('second-choose').style.display = 'block';
     } else if (workdata.phase == "choosing-game"){
         document.getElementById('hra').style.display = 'none';
-        document.getElementById('third-choose').style.display = 'block';
+        if(workdata.game == "b"){
+            socket.send(game + ";" + "game;" + "d");
+        } else {
+            document.getElementById('third-choose').style.display = 'block';
+        }
     } else if (workdata.phase == "ack") {
         document.getElementById('barva').style.display = 'none';
         document.getElementById('barva-info').style.display = 'block';
@@ -198,18 +193,97 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     } else if (workdata.phase == "betting") {
         if(user == workdata.players[workdata.turn])
         {
+            document.getElementById('koncim').innerHTML = 'Končím';
             document.getElementById('last-choose').style.display = 'block';
-            for (let el of document.querySelectorAll(".flek")) el.innerHTML = flekovani[counter];
-            counter += 1;
+            document.getElementById('flekHry').innerHTML = flekovani[counterGame] + "hry";
+            document.getElementById('flekChallange').style.display = 'none';
         }
     } else if (workdata.phase == "playing") {
-        counter = 0;
+        counterGame = 0;
+        counterChallange = 0;
     }
-    dif.innerHTML = workdata.phase;
 }
 
 function sendData(akce, data){
-    if(phaseI < 13) {phaseI += 1;}
-    else {phaseI = 0;}
-    socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
-}
+    // if(phaseI < 13) {phaseI += 1;}
+    // else {phaseI = 0;}    
+    // socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+    if (user == workdata.players[workdata.turn])
+    {
+        if (akce == "karty"){
+            if (workdata.phase == "picking-trumf"){
+                socket.send(game + ";" + "trumf;" + data);
+            } else if (workdata.phase == "choosing-talon"){
+                if (!workdata.altForhont) {
+                    if(talon != "" && talon != data && workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14){
+                        socket.send(game + ";" + "talon;" + talon + ";" + data);
+                        talon = "";
+                    } else if (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14) {
+                        talon = data;
+                    }
+                } else {
+                    if(talon != "" && talon != data){
+                        socket.send(game + ";" + "talon;" + talon + ";" + data);
+                        talon = "";
+                    } else {
+                        talon = data;
+                    }
+                }
+            } else if (workdata.phase == "playing"){
+                socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+            } 
+        }
+        else if (akce == "tlacitko"){
+            if (workdata.phase == "choosing-game"){
+                socket.send(game + ";" + "game;" + data);
+            } else if (workdata.phase == "ack"){
+                socket.send(game + ";" + data);
+            } else if (workdata.phase == "choosing-challange"){
+                socket.send(game + ";" + "challange;" + data);
+            } else if (workdata.phase == "betting"){
+                if (workdata.game != "h" && workdata.challange != "nic")
+                {
+                    if (data == "flekHry"){
+                        socket.send(game = ";" + "bet;" + "flek" + ";" + "konec");
+                    } else if (data == "konec") {
+                        socket.send(game = ";" + "bet;" + "konec" + ";" + "konec");
+                    }
+                } else {
+                    if (data == "flekHry" && flekHra != "flek") {
+                        document.getElementById('flekHry').style.background = 'green';
+                        flekHra = "flek";
+                    }
+
+                    if (data == "flekChallange" && flekChallange != "flek") {
+                        document.getElementById('flekChallange').style.background = 'green';
+                        flekChallange = "flek";
+                    }
+
+                    if (data == "konec"){
+                        socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange);
+                        if (flekHra == "flek") {
+                            counterGame += 1;
+                        }
+                        if (flekChallange == "flek") {
+                            counterChallange += 1;
+                        }
+                        flekHra = "konec";
+                        document.getElementById('flekHry').style.background = 'none';
+                        flekChallange = "konec";
+                        document.getElementById('flekChallange').style.background = 'none';
+                    }
+                }
+                    
+
+                
+            }
+        }
+        else if (akce == "posun"){
+            if (phaseI < 12+data) {phaseI += data;}
+            else {phaseI = 0;} 
+            socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+        }
+        
+    }
+ 
+} 

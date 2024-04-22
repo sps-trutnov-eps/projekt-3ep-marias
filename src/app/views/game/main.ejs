@@ -12,7 +12,7 @@
   <body>
 <main>
 
-<button onclick="sendData()">Změna fáze</button>
+<button onclick="sendData('posun',1)">Změna fáze</button>
 
 <div class="position-relative">
   <div id="odkladaci-misto-hlaska1" class="position-absolute top-0 start-0 rounded storage-place1"></div>
@@ -24,7 +24,6 @@
   <div id="first-choose" style="display: none;" class="step">
     <div class="forhont-info">
       Kliknutím, vyberete trumfa
-      <button onclick="sendData()"></button>
     </div>
     <div class="defense-info">
       Čeká se na forhonta až vybere trumf
@@ -43,9 +42,9 @@
   <div id="third-choose" style="display: none;" class="step">
     <div class="forhont-info">
       Vyberte co se bude hrát: <br>
-      <button id="hra">Hra</button>
-      <button id="battle">Battle</button>
-      <button id="durch">Durch</button><br>
+      <button id="hra" onclick="sendData('tlacitko','h')">Hra</button>
+      <button id="battle" onclick="sendData('tlacitko','b')">Battle</button>
+      <button id="durch" onclick="sendData('tlacitko','d')">Durch</button><br>
     </div>
     <div class="defense-info">
       Čeká se na typ hry
@@ -58,8 +57,8 @@
     </div>
     <div id="barva">
       Barva?
-      <button id="dobra">Dobrá</button>
-      <button id="spatna">Špatná</button>
+      <button id="dobra" onclick="sendData('tlacitko','dobra')">Dobrá</button>
+      <button id="spatna" onclick="sendData('tlacitko','spatna')">Špatná</button>
     </div>
   </div>
 
@@ -67,9 +66,9 @@
 
   <div id="fifth-choose" style="display: none;" class="step">
     <div class="forhont-info">
-      <button id="stovka">Stovka</button>
-      <button id="Sedma">Sedma</button>
-      <button id="nic">Nic</button>
+      <button id="stovka" onclick="sendData('tlacitko','stovka')">Stovka</button>
+      <button id="Sedma" onclick="sendData('tlacitko','sedma')">Sedma</button>
+      <button id="nic" onclick="sendData('tlacitko','nic')">Nic</button>
     </div>
     <div class="defense-info">
       Čeká se na variaci <!--  Tady si nejsem jist jak to pojmenovat  -->
@@ -77,16 +76,10 @@
   </div>
 
   <div id="last-choose" style="display: none;" class="step">
-    <div class="forhont-info">
-      Stav flekování
-      <button class="flek">Flek</button>
-      <button id="koncim-forhont">Končím</button>
-    </div>
-    <div class="defense-info">
-      Stav flekování
-      <button class="flek"></button>
-      <button id="koncim-defense">Končím</button>
-    </div>
+    Stav flekování
+    <button id="flekHry" onclick="sendData('tlacitko','flekHry')">Flek</button>
+    <button id="flekChallange" onclick="sendData('tlacitko','flekChallange')">Flek</button>
+    <button id="koncim" onclick="sendData('tlacitko','konec')">Končím</button>
   </div>
 </div>
 
