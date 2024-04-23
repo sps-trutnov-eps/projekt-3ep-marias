@@ -315,7 +315,6 @@ exports.good = (gameID) => {
     game.turn = (game.turn + 1) % 3;
     if (game.altForhont === undefined) {
         if (game.forhont == game.turn) {
-            game.turn = (game.turn + 1) % 3;
             game.phase = "choosing-challange";
             game.result = "Hra byla odsouhlasena";
         }
@@ -346,14 +345,16 @@ exports.challange = (gameID, challange) => {
 
     if (challange == "h"){
         game.challange = challange;
-        game.phase = "playing";
+        game.phase = "betting";
+        game.turn = (game.turn + 1) % 3;
         game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát hru";
     } else if (challange == "7"){
         for (let i = 0; i < game.playersPacks[game.forhont].length; i++){
             if (game.playersPacks[game.forhont][i].colour == game.trumf){
                 if (game.playersPacks[game.forhont][i].value == 7){
                     game.challange = challange;
-                    game.phase = "playing";
+                    game.phase = "betting";
+                    game.turn = (game.turn + 1) % 3;
                     game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát " + challange;
                 }
             }
@@ -365,6 +366,8 @@ exports.challange = (gameID, challange) => {
                 for (let j = 0; j < game.playersPacks[game.forhont].length; j++){
                     if (game.playersPacks[game.forhont][i].colour == game.playersPacks[game.forhont][j].colour && game.playersPacks[game.forhont][j].value == 13){
                         game.challange = challange;
+                        game.phase = "betting";
+                        game.turn = (game.turn + 1) % 3;
                         game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát " + challange;
                     }
                 }
