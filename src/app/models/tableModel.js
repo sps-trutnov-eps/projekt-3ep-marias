@@ -342,7 +342,6 @@ exports.bad = (gameID) => {
 
 exports.challange = (gameID, challange) => {
     let game = db.get(gameID);
-
     if (challange == "h"){
         game.challange = challange;
         game.phase = "betting";
