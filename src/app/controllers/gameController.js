@@ -37,15 +37,15 @@ exports.resolve = (client, event) => {
     } else if (command == "talon"){
         tableModel.talon(game, event.split(";")[2], event.split(";")[3]);
     } else if (command == "game"){
-        tableModel.challange(game, event.split(";")[2]);
+        tableModel.mode(game, event.split(";")[2]);
     } else if (command == "dobra"){
         tableModel.good(game);
     } else if (command == "spatna"){
         tableModel.bad(game);
+    } else if (command == "challange"){
+        tableModel.challange(game, event.split(";")[2])
     } else if (command == "bet"){
         tableModel.bet(game, event.split(";")[2], event.split(";")[3]);
-    } else if (command == "noBet"){
-        tableModel.noBet();
     } else if (command == "play"){
         /*
         tableModel.checkMarias(game, event.split(";")[2], event.split(";")[3]);
