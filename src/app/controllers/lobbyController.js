@@ -6,7 +6,6 @@ exports.index = (req, res) => {
 
 exports.addTable = (req, res) => {
     req.session.currentGame = tableModel.addTable();
-    tableModel.addCards(1);
     res.redirect('/game/main');
 }
 

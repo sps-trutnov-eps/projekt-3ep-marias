@@ -32,7 +32,6 @@ exports.addTable = () => {
         'clients': [],
         'forhont': 0,
         'altForhont': undefined,
-        'agreed': 0,
         'turn': 0,
         'playersPacks': [[], [], []],
         'playersCollected': [[], [], []],
@@ -50,7 +49,7 @@ exports.addTable = () => {
     })
     this.addCards(id);
     this.mixCards(id);
-    if (type == "voleny"){
+    if (type === "voleny"){
         this.dealCardsVoleny(id);
     }
 
