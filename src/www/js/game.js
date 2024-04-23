@@ -143,16 +143,13 @@ function fazeVoleneHry(classRoleHrace) {
         if(user == workdata.players[workdata.turn])
         {
             document.getElementById('last-choose').style.display = 'block';
-            document.getElementById('flekHry').innerHTML = flekovani[counterGame] + "hry";
+            document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " hry";
             if (workdata.challange == "sedma") {
-                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + "sedmy";
-                document.getElementById('koncim').innerHTML = 'Další';
+                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + " sedmy";
             } else if (workdata.challange == "stovka") {
-                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + "stovky";
-                document.getElementById('koncim').innerHTML = 'Další';
+                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + " stovky";
             } else {
                 document.getElementById('flekChallange').style.display = 'none';
-                document.getElementById('koncim').innerHTML = 'Končím';
             }
             
         }
@@ -160,6 +157,7 @@ function fazeVoleneHry(classRoleHrace) {
         counterGame = 0;
         counterChallange = 0;
     }
+    dif.innerHTML = workdata.phase + " " + workdata.mode;
 }
 
 function fazeVoleneHryaltForhonta(classRoleHrace) {
@@ -176,7 +174,7 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
         document.getElementById('second-choose').style.display = 'block';
     } else if (workdata.phase == "choosing-game"){
         document.getElementById('hra').style.display = 'none';
-        if(workdata.game == "b"){
+        if(workdata.mode == "b"){
             socket.send(game + ";" + "game;" + "d");
         } else {
             document.getElementById('third-choose').style.display = 'block';
@@ -193,9 +191,8 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     } else if (workdata.phase == "betting") {
         if(user == workdata.players[workdata.turn])
         {
-            document.getElementById('koncim').innerHTML = 'Končím';
             document.getElementById('last-choose').style.display = 'block';
-            document.getElementById('flekHry').innerHTML = flekovani[counterGame] + "hry";
+            document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " hry";
             document.getElementById('flekChallange').style.display = 'none';
         }
     } else if (workdata.phase == "playing") {
@@ -241,41 +238,38 @@ function sendData(akce, data){
             } else if (workdata.phase == "choosing-challange"){
                 socket.send(game + ";" + "challange;" + data);
             } else if (workdata.phase == "betting"){
-                if (workdata.game != "h" && workdata.challange != "nic")
+                if (workdata.game == "h" && workdata.challange == "nic")
                 {
                     if (data == "flekHry"){
-                        socket.send(game = ";" + "bet;" + "flek" + ";" + "konec");
+                        socket.send(game + ";" + "bet;" + "flek" + ";" + "konec");
                     } else if (data == "konec") {
-                        socket.send(game = ";" + "bet;" + "konec" + ";" + "konec");
+                        socket.send(game + ";" + "bet;" + "konec" + ";" + "konec");
                     }
                 } else {
-                    if (data == "flekHry" && flekHra != "flek") {
-                        document.getElementById('flekHry').style.background = 'green';
-                        flekHra = "flek";
-                    }
-
-                    if (data == "flekChallange" && flekChallange != "flek") {
-                        document.getElementById('flekChallange').style.background = 'green';
-                        flekChallange = "flek";
-                    }
-
-                    if (data == "konec"){
-                        socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange);
-                        if (flekHra == "flek") {
-                            counterGame += 1;
-                        }
-                        if (flekChallange == "flek") {
-                            counterChallange += 1;
-                        }
-                        flekHra = "konec";
-                        document.getElementById('flekHry').style.background = 'none';
-                        flekChallange = "konec";
-                        document.getElementById('flekChallange').style.background = 'none';
-                    }
-                }
-                    
-
-                
+                    if (data == "flekHry" && flekHra != "flek") { 
+                        document.getElementById('flekHry').style.background = 'green'; 
+                        flekHra = "flek"; 
+                    } 
+     
+                    if (data == "flekChallange" && flekChallange != "flek") { 
+                        document.getElementById('flekChallange').style.background = 'green'; 
+                        flekChallange = "flek"; 
+                    } 
+     
+                    if (data == "konec"){ 
+                        socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange); 
+                        if (flekHra == "flek") { 
+                            counterGame += 1; 
+                        } 
+                        if (flekChallange == "flek") { 
+                            counterChallange += 1; 
+                        } 
+                        flekHra = "konec"; 
+                        document.getElementById('flekHry').style.background = 'none'; 
+                        flekChallange = "konec"; 
+                        document.getElementById('flekChallange').style.background = 'none'; 
+                    } 
+                }                
             }
         }
         else if (akce == "posun"){
