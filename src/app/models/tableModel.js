@@ -344,11 +344,16 @@ exports.bad = (gameID) => {
 exports.challange = (gameID, challange) => {
     let game = db.get(gameID);
 
-    if (challange == "7"){
+    if (challange == "h"){
+        game.challange = challange;
+        game.phase = "playing";
+        game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát hru";
+    } else if (challange == "7"){
         for (let i = 0; i < game.playersPacks[game.forhont].length; i++){
             if (game.playersPacks[game.forhont][i].colour == game.trumf){
                 if (game.playersPacks[game.forhont][i].value == 7){
                     game.challange = challange;
+                    game.phase = "playing";
                     game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát " + challange;
                 }
             }
@@ -365,8 +370,6 @@ exports.challange = (gameID, challange) => {
                 }
             }
         }
-    } else {
-        game.result = "Takovou hru si nemůžete dovolit!";
     }
 
     db.set(gameID, game);
