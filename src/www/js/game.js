@@ -242,7 +242,7 @@ function sendData(akce, data){
                     }
                 }
             } else if (workdata.phase == "playing"){
-                socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+                socket.send(game + ";" + "play;" + data); 
             } 
         }
         else if (akce == "tlacitko"){
