@@ -358,6 +358,7 @@ exports.challange = (gameID, challange) => {
                 }
             }
         }
+        if (game.phase != "betting") game.result = "Takovou hru si nemůžeš dovolit";
     } else if (challange == "100"){
         let hlaska = false;
         for (let i = 0; i < game.playersPacks[game.forhont].length; i++){
@@ -372,6 +373,31 @@ exports.challange = (gameID, challange) => {
                 }
             }
         }
+        if (game.phase != "betting") game.result = "Takovou hru si nemůžeš dovolit";
+    } else if (challange == "107"){
+        let sedma = false;
+        for (let i = 0; i < game.playersPacks[game.forhont].length; i++){
+            if (game.playersPacks[game.forhont][i].colour == game.trumf){
+                if (game.playersPacks[game.forhont][i].value == 7){
+                    sedma == true;
+                }
+            }
+        }
+        if (sedma){
+            for (let i = 0; i < game.playersPacks[game.forhont].length; i++){
+                if (game.playersPacks[game.forhont][i].value == 12){
+                    for (let j = 0; j < game.playersPacks[game.forhont].length; j++){
+                        if (game.playersPacks[game.forhont][i].colour == game.playersPacks[game.forhont][j].colour && game.playersPacks[game.forhont][j].value == 13){
+                            game.challange = challange;
+                            game.phase = "betting";
+                            game.turn = (game.turn + 1) % 3;
+                            game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát " + challange;
+                        }
+                    }
+                }
+            }
+        }
+        if (game.phase != "betting") game.result = "Takovou hru si nemůžeš dovolit";
     }
 
     db.set(gameID, game);
