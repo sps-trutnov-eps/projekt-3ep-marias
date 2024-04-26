@@ -43,7 +43,7 @@
     <div class="forhont-info">
       Vyberte co se bude hrát: <br>
       <button id="hra" onclick="sendData('tlacitko','h')">Hra</button>
-      <button id="battle" onclick="sendData('tlacitko','b')">Battle</button>
+      <button id="battle" onclick="sendData('tlacitko','b')">Betl</button>
       <button id="durch" onclick="sendData('tlacitko','d')">Durch</button><br>
     </div>
     <div class="defense-info">
@@ -55,8 +55,8 @@
     <div id="barva-info">
       Čeká se na odsouhlasení barvy
     </div>
+    <div id="coSeHraje"></div>
     <div id="barva">
-      Barva?
       <button id="dobra" onclick="sendData('tlacitko','dobra')">Dobrá</button>
       <button id="spatna" onclick="sendData('tlacitko','spatna')">Špatná</button>
     </div>
@@ -66,9 +66,10 @@
 
   <div id="fifth-choose" style="display: none;" class="step">
     <div class="forhont-info">
-      <button id="stovka" onclick="sendData('tlacitko','stovka')">Stovka</button>
-      <button id="Sedma" onclick="sendData('tlacitko','sedma')">Sedma</button>
-      <button id="nic" onclick="sendData('tlacitko','nic')">Nic</button>
+      <button id="stovka" onclick="sendData('tlacitko','100')">Stovka</button>
+      <button id="Sedma" onclick="sendData('tlacitko','7')">Sedma</button>
+      <button id="Sedma" onclick="sendData('tlacitko','107')">Stosedm</button>
+      <button id="nic" onclick="sendData('tlacitko','h')">Nic</button>
     </div>
     <div class="defense-info">
       Čeká se na variaci <!--  Tady si nejsem jist jak to pojmenovat  -->
