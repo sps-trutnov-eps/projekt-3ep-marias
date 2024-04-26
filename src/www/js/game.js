@@ -285,5 +285,8 @@ function sendData(akce, data){
         }
         
     }
- 
 } 
+
+function pristupHeslo() {
+    console.log("funguje");
+}
