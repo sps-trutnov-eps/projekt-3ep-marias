@@ -18,6 +18,10 @@ exports.voleny = (req, res) => {
     res.render('lobby/voleny');
 }
 
+exports.pravidlaVoleny = (req, res) => {
+    res.render('lobby/pravidlaVoleny');
+}
+
 exports.novyStulLizany = (req, res) => {
     res.render('lobby/novyStulLizany');
 }
