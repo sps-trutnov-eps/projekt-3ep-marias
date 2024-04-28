@@ -69,7 +69,7 @@ a {
 #karty {
     margin-right: 320px;
     text-align: right;
-    margin-bottom: 0px;
+    margin-bottom: 9px;
 }
 
 #log-messages {
@@ -83,7 +83,6 @@ a {
     #karty {
         margin-right: 10px;
         text-align: center;
-        margin-bottom: 10px;
     }
     #log-messages {
         right: 15px;
@@ -94,7 +93,14 @@ a {
         display: none;
     }
 }
-@media screen and (max-width: 965px){
+@media screen and (max-width: 950px){
+    #log-messages {
+        width: 240px;
+        right: 25px;
+        display: block;
+    }
+}
+@media screen and (max-width: 909px){
     #log-messages {
         display: none;
     }
