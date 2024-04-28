@@ -76,7 +76,52 @@
 
     <h2>Hra/Barva</h2>
 
-    
+    <p>
+        Když se zahlásí Barva a fleky jsou již určené, je čas začít hrát. V každém jenom zdvihu (zvaný štych) všichni hráči
+        postupně odhodí po jedné kartě. Začíná forhont a pak se jde po směru hodinových ručiček. Ten kdo odhodí nejsilnější
+        kartu si všechny 3 veme k sobě na hromádku lícem dolů. Další štych začíná hráč, který sebral karty, zbytek zase po
+        směru hodinových ručiček. Takto se odhazuje, dokud se nerozhodí všechny karty. Jak ale určit, která je nejsilnější?
+    </p>
 
+    <h3>Hodnoty karet</h3>
 
-    <%- include('../layout/paticka') %>
+    <p>
+        Hodnoty od nejnižší po nejvyšší jsou: 7, 8, 9, spodek, svršek, král, 10 a eso (nestandartní pozice desítky je 
+        pravděpodobně určena jejím bodováním, ale k tomu později). Tyto hodnoty platí vždycky v rámci jedné barvy. To znamená
+        že pokud zahraje první hráč např. zeleného krále, můžou ho přebít pouze zelená desítka anebo zelené eso. Vyjímku zde 
+        tvoří trumfy. Trumfová barva je jediná, která může přebíjet ostatní barvy. I nejslabší trumfová karta může přebít
+        eso jiné barvy. Pokud by tedy první hráč odhodil onoho zeleného krále a druhý hráč by ho přebil esem, poslední hráč 
+        ještě furt může přebýt eso trumfem. Pokud je ve štychu odhozeno více trumfů, vyhrává ten vyšší.
+    </p>
+
+    <h3>Pravidla odhazování karet</h3>
+
+    <p>
+        K tomu kdy se můžou odhodit jaké karty se v Mariáši bážou pevná pravidla. Díky nim je sice hráč omezen, ale může tak
+        lépe taktizovat. Za porušení pravidel se uvaluje peněžní trest, takzvaný "renonc". Pravidla jsou:
+        <ol>
+            <li>
+                Ctění barvy - musí se zahrát taková barva, jaká byla na stůl odhozena jako první
+            </li>
+            <li>
+                Pokud stejnou barvu mám, přebíjím vyšší kartou, pokud vyšší nemám, hraju jakoukoliv jinou ve stejné barvě
+            </li>
+            <li>
+                Pokud nemám stejnou barvu, hraju trumfa
+            </li>
+            <li>
+                Pokud už někdo zahrál trumf přede mnou, taky ho musím přebít, pokud můžu, nemohu-li, hraju jakýkoliv jiný trumf
+            </li>
+            <li>
+                Pokud nemám ani trumf, hraju cokoliv
+            </li>
+        </ol>
+    </p>
+
+    <h3>Bodování</h3>
+
+    <p>
+        Když už jsou všechny karty odhozeny je načase spočítat body, aby se vědělo, kdo bude platit komu.
+    </p>
+
+<%- include('../layout/paticka') %>
