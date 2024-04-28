@@ -65,3 +65,37 @@ a {
     margin-left: 20px;
     overflow-y: hidden;
 }
+
+#karty {
+    margin-right: 320px;
+    text-align: right;
+    margin-bottom: 0px;
+}
+
+#log-messages {
+    display: block;
+}
+
+@media screen and (max-width: 1590px){
+    #log-messages {
+        display: block;
+    }
+    #karty {
+        margin-right: 10px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    #log-messages {
+        right: 15px;
+    }
+} 
+@media screen and (min-width: 1260px) and (max-width: 1590px){ 
+    #log-messages {
+        display: none;
+    }
+}
+@media screen and (max-width: 965px){
+    #log-messages {
+        display: none;
+    }
+}

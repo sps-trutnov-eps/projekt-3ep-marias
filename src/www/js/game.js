@@ -100,7 +100,7 @@ function zobrazeniKaret(co, kam) {
             let karta = co[i];
             let img = document.createElement('img');
             let src = "";
-            if (i>6){
+            if (i > 6){
                 src = '/karty/backs/modre.jpg';
                 img.style.height = '195px';
                 img.style.margin = '2px';

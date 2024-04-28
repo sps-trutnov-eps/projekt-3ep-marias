@@ -242,7 +242,7 @@ exports.trumf = (gameID, indx) => {
 
     game.trumf = game.playersPacks[game.forhont][indx].colour;
     game.phase = "choosing-talon";
-    game.result = "Forhont vybral trumf";
+    game.result = "Forhont vybral trumf: " + game.trumf;
 
     db.set(gameID, game);
 }
