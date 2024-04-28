@@ -95,43 +95,87 @@ function logMessage(){
 function zobrazeniKaret(co, kam) {
     let kartyDiv = document.getElementById(kam);
     kartyDiv.innerHTML = "";
-    for (let i in co) {
-        let karta = co[i];
-        let img = document.createElement('img');
-        let src = "";
-        
-        switch (karta.colour) {
-            case "č":
-                src = '/karty/Bohemian/Cerv_';
-                break;
-            case "z":
-                src = '/karty/Bohemian/Listy_';
-                break;
-            case "k":
-                src = '/karty/Bohemian/Kule_';
-                break;
-            case "ž":
-                src = '/karty/Bohemian/Zaludy_';
-                break;
-            default:
-                break;
+    if(!workdata.altForhont && user == workdata.players[workdata.forhont] && (workdata.phase == "waiting" || workdata.phase == "picking-trumf")){
+        for (let i in co) {
+            let karta = co[i];
+            let img = document.createElement('img');
+            let src = "";
+            if (i>6){
+                src = '/karty/backs/modre.jpg';
+                img.style.height = '195px';
+                img.style.margin = '2px';
+            } else {
+                switch (karta.colour) {
+                    case "č":
+                        src = '/karty/Bohemian/Cerv_';
+                        break;
+                    case "z":
+                        src = '/karty/Bohemian/Listy_';
+                        break;
+                    case "k":
+                        src = '/karty/Bohemian/Kule_';
+                        break;
+                    case "ž":
+                        src = '/karty/Bohemian/Zaludy_';
+                        break;
+                    default:
+                        break;
+                }
+                
+                if (karta.value == 14) {
+                    src += "4.jpg";
+                } else if (karta.value == 15) {
+                    src += "8.jpg";
+                } else {
+                    src += String(karta.value - 6) + ".jpg";
+                }
+            }
+            
+            img.src = src;
+            img.onclick = function() {
+                sendData("karty", i);
+            };
+            kartyDiv.appendChild(img);
         }
-        
-        if (karta.value == 14) {
-            src += "4.jpg";
-        } else if (karta.value == 15) {
-            src += "8.jpg";
-        } else {
-            src += String(karta.value - 6) + ".jpg";
+    } else {
+        for (let i in co) {
+            let karta = co[i];
+            let img = document.createElement('img');
+            let src = "";
+            
+            switch (karta.colour) {
+                case "č":
+                    src = '/karty/Bohemian/Cerv_';
+                    break;
+                case "z":
+                    src = '/karty/Bohemian/Listy_';
+                    break;
+                case "k":
+                    src = '/karty/Bohemian/Kule_';
+                    break;
+                case "ž":
+                    src = '/karty/Bohemian/Zaludy_';
+                    break;
+                default:
+                    break;
+            }
+            
+            if (karta.value == 14) {
+                src += "4.jpg";
+            } else if (karta.value == 15) {
+                src += "8.jpg";
+            } else {
+                src += String(karta.value - 6) + ".jpg";
+            }
+            img.src = src;
+            
+            img.onclick = function() {
+                sendData("karty", i);
+            };
+            kartyDiv.appendChild(img);
         }
-        img.src = src;
-        
-        img.onclick = function() {
-            sendData("karty", i);
-        };
-        
-        kartyDiv.appendChild(img);
     }
+            
 
 }
 
