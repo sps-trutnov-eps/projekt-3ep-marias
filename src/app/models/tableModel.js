@@ -66,6 +66,7 @@ exports.addPlayer = (gameID, id, client) => {
         game.clients.push(client);
         if (game.players.length == 3){
             game.phase = "picking-trumf";
+            game.result = "hráči byli připojeni";
         }
     }
 
@@ -241,7 +242,7 @@ exports.trumf = (gameID, indx) => {
 
     game.trumf = game.playersPacks[game.forhont][indx].colour;
     game.phase = "choosing-talon";
-    game.result = "Hráč " + game.players[game.forhont] + " vybral trumf";
+    game.result = "Forhont vybral trumf";
 
     db.set(gameID, game);
 }
@@ -268,7 +269,7 @@ exports.talon = (gameID, t1, t2) => {
 
     game.playersPacks[f] = newPack;
     game.phase = "choosing-game";
-    game.result = "Hráč " + game.players[game.forhont] + " odhodil karty do talonu";
+    game.result = "Forhont odhodil karty do talonu";
 
     db.set(gameID, game);
 }
@@ -295,7 +296,22 @@ exports.mode = (gameID, mode) => {
             game.phase = "betting";
         }
     }
-    game.result = "Hráč " + game.players[game.turn] + " zvolil typ hry: " + mode;
+
+    switch (mode) {
+        case "b":
+            mode = "battle";
+            break;
+        case "h":
+            mode = "hra";
+            break;
+        case "d":
+            mode = "durch";
+            break;
+        default:
+            break;
+    }
+
+    game.result = "Forhont zvolil typ hry: " + mode;
 
     db.set(gameID, game);
 }
@@ -312,16 +328,31 @@ turnX = (game) => {
 exports.good = (gameID) => {
     let game = db.get(gameID);
 
+    let mode = game.mode;
+    switch (mode) {
+        case "b":
+            mode = "battle";
+            break;
+        case "h":
+            mode = "hra";
+            break;
+        case "d":
+            mode = "durch";
+            break;
+        default:
+            break;
+    }
+
     game.turn = (game.turn + 1) % 3;
     if (game.altForhont === undefined) {
         if (game.forhont == game.turn) {
             game.phase = "choosing-challange";
-            game.result = "Hra byla odsouhlasena";
+            game.result = mode + " byl/a odsouhlasen/a";
         }
     } else if (game.altForhont == game.turn) {
         game.turn = (game.turn + 1) % 3;
         game.phase = "betting";
-        game.result = "Betl byl odsouhlasen";
+        game.result = mode + " byl/a odsouhlasen/a";
     }
 
     db.set(gameID, game);
@@ -346,7 +377,7 @@ exports.challange = (gameID, challange) => {
         game.challange = challange;
         game.phase = "betting";
         game.turn = (game.turn + 1) % 3;
-        game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát hru";
+        game.result = "Forhont se zavázal k tomu zahrát hru";
     } else if (challange == "7"){
         for (let i = 0; i < game.playersPacks[game.forhont].length; i++){
             if (game.playersPacks[game.forhont][i].colour == game.trumf){
@@ -354,7 +385,7 @@ exports.challange = (gameID, challange) => {
                     game.challange = challange;
                     game.phase = "betting";
                     game.turn = (game.turn + 1) % 3;
-                    game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát " + challange;
+                    game.result = "Forhont se zavázal k tomu zahrát " + challange;
                 }
             }
         }
@@ -368,7 +399,7 @@ exports.challange = (gameID, challange) => {
                         game.challange = challange;
                         game.phase = "betting";
                         game.turn = (game.turn + 1) % 3;
-                        game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát " + challange;
+                        game.result = "Forhont se zavázal k tomu zahrát " + challange;
                     }
                 }
             }
@@ -391,7 +422,7 @@ exports.challange = (gameID, challange) => {
                             game.challange = challange;
                             game.phase = "betting";
                             game.turn = (game.turn + 1) % 3;
-                            game.result = "Hráč "  + game.players[game.turn] + "se zavázal k tomu zahrát " + challange;
+                            game.result = "Forhont se zavázal k tomu zahrát " + challange;
                         }
                     }
                 }
