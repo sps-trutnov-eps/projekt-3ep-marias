@@ -8,6 +8,7 @@ let counterGame = 0;
 let counterChallange = 0;
 let flekHra = "konec";
 let flekChallange = "konec";
+let povoleno = false;
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -183,7 +184,6 @@ function zobrazeniKaret(co, kam) {
 function fazeVoleneHry(classRoleHrace) {
     // načtení dat
     let dif = document.getElementById("info");
-    
     // schování divu pro obránce, nebo forhonta
     for (let el of document.querySelectorAll(".step")) el.style.display = "none";
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";}
@@ -198,7 +198,11 @@ function fazeVoleneHry(classRoleHrace) {
 
     } else if (workdata.phase == "choosing-talon") {
         document.getElementById('second-choose').style.display = 'block';
+        document.getElementById("hra").style.display = 'block';
     } else if (workdata.phase == "choosing-game") {
+        if(povoleno){
+            document.getElementById("hra").style.display = 'none';
+        }
         document.getElementById('third-choose').style.display = 'block';
     } else if (workdata.phase == "ack") {
         if (workdata.mode == "h") {
@@ -243,9 +247,6 @@ function fazeVoleneHry(classRoleHrace) {
 }
 
 function fazeVoleneHryaltForhonta(classRoleHrace) {
-    // načtení dat
-    let dif = document.getElementById("info");
-    
     // schování divu pro obránce, nebo forhonta
     for (let el of document.querySelectorAll(".step")) el.style.display = "none";
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";}
@@ -292,6 +293,7 @@ function sendData(akce, data){
     // if(phaseI < 13) {phaseI += 1;}
     // else {phaseI = 0;}    
     // socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+    let dif = document.getElementById("info");
     if (user == workdata.players[workdata.turn])
     {
         if (akce == "karty"){
@@ -299,11 +301,21 @@ function sendData(akce, data){
                 socket.send(game + ";" + "trumf;" + data);
             } else if (workdata.phase == "choosing-talon"){
                 if (!workdata.altForhont) {
-                    if(talon != "" && talon != data && workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14){
+                    if (!povoleno && (workdata.playersPacks[data].value == 15 || workdata.playersPacks[data].value == 14)) {
+                        if(dif.innerHTML == "Hra bude Battle nebo Durch, kliknutím na bodovanou kartu potvrdíte"){
+                            povoleno = true;
+                        } else {
+                            dif.innerHTML = "Hra bude Battle nebo Durch, kliknutím na bodovanou kartu potvrdíte";
+                            dif.style.color = "red";
+                        }
+                    }
+                    if(talon != "" && talon != data && (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14 || povoleno)){
                         socket.send(game + ";" + "talon;" + talon + ";" + data);
                         talon = "";
-                    } else if (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14) {
+                    } else if (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14 || povoleno) {
                         talon = data;
+                        dif.style.color = "none";
+                        dif.innerHTML = "";
                     }
                 } else {
                     if(talon != "" && talon != data){
