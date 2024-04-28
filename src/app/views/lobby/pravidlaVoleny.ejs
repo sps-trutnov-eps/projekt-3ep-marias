@@ -1,0 +1,82 @@
+<%- include('../layout/hlavicka') %>
+
+    <h1>Pravidla Voleného Mariáše</h1>
+
+    <p>
+        Volený Mariáš je hazardní zdvihová karetní hra pro 3 hráče. Hraje se s balíčkem 32 karet v barvách červené, kule, žaludy
+        a listy. Hraje se na dva týmy, které se po každé odehrané partičce mění. Cílem je pro svůj tým získat více bodů
+        než má druhá strana. Body se získávají sbíráním karet. Každý z hráčů v jednom
+        kole odhodí po jedné kartě a ten, který hodil kartu nejsilnější si bere všechny. S těmito kartami dál již nehraje.
+        Celkový postup ke hraní je ale o něco komplikovanější.
+        Pomyslně by se dal Mariáš rozdělit do tří částí:
+    <ul>
+        <li>Rozdávání</li>
+        <li>Dohadování</li>
+        <li>Sehrávka</li>
+    </ul>
+    </p>
+
+    <h2>Rozdávání</h2>
+
+    <p>
+        Tuto část řeší sice webový Mariáš za vás, ale je důležité ji znát, neboť se při ní určují role/týmy. Rozdávající
+        hráč a hráč, který od něj sedí napravo (zvaný "zadák") hrají spolu, jakožto obránci. Proti nim hraje sám takzvaný 
+        "forhont", "předák" nebo "aktér", který sedí nalevo od rozdávajícího. Obránci mají tu výhodu, že si můžou pomáhat, zatímco 
+        forhont má právo si určovat tempo a způsob hry. Karty se rozdají tak, že forhont dostane 7 karet, zadák 5, 
+        rozdávající 5 a pak všichni ještě jednou po 5ti kartách, aby se rozdal celý balíček. Obránci se smí podívat na celý svůj balík o
+        10ti kartách, forhont se zatím smí podívat jen do prvních 7 z 12 karet.
+    </p>
+
+    <h2>Dohadování</h2>
+    <h3>Volení trumfu</h3>
+    <p>
+        Hned po rozdání má forhont jako první úkol vybrat z prvních 7 karet trumf. Trumf je označení pro barvu, která 
+        bude ve hře mít schopnost, přebít jakoukoliv jinou kartu. Pokud tedy forhont vidí, že má například
+        mnoho žaludových karet, je vhodné zvolit jako trumf žaludy. Trumf se zvolí tak, že jedna karta s dannou barvou 
+        se odloží lícem dolů na stůl. Obráncům se odhalí až později. Pokud forhontovi karty nevyhovují, může takzvaně
+        "volit z lidu", kdy vybere trumf z 5 karet, které ještě leží na stole a nesmí je vidět. Barvu trumfů pak nezná nikdo.
+    </p>
+    <h3>Odhození talonu</h3>
+    <p>
+        Po zvolení trumfů si forhont dobere zbývající karty. Jelikož má teď o 2 karty více než obránci (kartu s trumfem si po
+        odhalení vezme zpátky do ruky), musí dvě karty odhodit a nebude se s nimi hrát. Těmto kartám se říká "talon".
+        Talon nesmí obránci vidět.
+    </p>
+    <h3>Výběr typu Mariáše</h3>
+    <p>
+        Po vybrání talonu přichází pro forhonta další úkol. Výběr typu hry.
+        Mariáš se totiž dělí na 3 typy: 
+        <ul>
+            <li>"Hra" nebo častěji "Barva" (Odvozeno od toho, že se hraje s trumfovou barvou)</li>
+            <li>"Betl" nebo jinak "Malý Mariáš"/"Malej"</li>
+            <li>"Durch" nebo jinak "Velký Mariáš"/"Velkej"</li>
+        </ul>
+        Tyto typy si vysvětlíme níže. Teď nás zajímá, jestli budou chtít obránci hrát to, co forhont zvolil.
+        Hry jsou totiž brány dle své "výše". Barva je nejnižší, Betl vyšší a Durch nejvyšší. Vybere-li forhont Barvu,
+        zeptá se Obránců "Barva?". Obránci po směru hodinových ručiček odpovídají "Dobrá" nebo "Špatná". Pokud oba odsouhlasí,
+        bude se pokračovat. Řekne-li někdo "Špatná", tak se stává aktérem on. Vezme si talon, poté odhodí dvě karty a musí zahlásit
+        nějakou vyšší hru, např. "Betl?" a noví obránci mu zase schvalují. Jediný Durch se neschvaluje, jedná se o nejvyšší hru a
+        nelze tedy jít dál. Mimochodem po odsouhlasení na otázku "Barva?" se ukazuje trumf. Jakmile zazní poslední "Dobrá", tak
+        forhont ukáže obráncům odloženou kartu, aby i oni věděli, která barva je trumfová.
+        Jakmile je odsouhlaseno a ukáže se trumf, začíná poslední část dohadování.
+    </p>
+    <h3>Flekování</h3>
+    <p>
+        Jelikož Mariáš je hazardní hra, musí se určit, kolik se bude za výhru/prohru platit. Základem dříve bývaly desetníky,
+        dnes je to většinou koruna, ale dle dohody se může určit jakákoliv cena. Tato základní cena se platí tomu týmu, 
+        který vyhrál. To znamená, že když forhont vyhraje, dostane peníze od obou obránců, při prohře musí oběma zaplatit.
+        Základní částka je většinou velmi malá, takže se dají tyto hodnoty zvýšit takzvaným "flekováním". Za pomoci určitých slov
+        mohou hráči dvojnásobit částku o kterou se hraje. Tyto slova jsou: Flek, Re (Reflek), Tutti, Boty, Kalhoty a Keiser.
+        Flekovat začíná strana obránců, opět po směru hodinových ručiček. Ti mohou říct buď "Flek" anebo "Končím". Pokud ani
+        jeden hráč nedá Flek, bere se to, jakože nechtějí hrát a oba tak zaplatí forhontovi základní částku. Jakmile ale
+        jeden z nich řekne Flek, zdvojnásobí se základní částka a je na řadě forhont. Ten může končit a začít tím hru, anebo
+        si zahrát o čtyřnásobek slovem "Re". Obránci pak mohou pokračovat osminásobkem v řadě "Tutti" anebo, když oba zahlásí 
+        konec, tak začne hra.
+    </p>
+
+    <h2>Hra/Barva</h2>
+
+    
+
+
+    <%- include('../layout/paticka') %>
