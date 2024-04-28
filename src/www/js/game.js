@@ -19,6 +19,7 @@ let logDiv = document.getElementById("log-messages");
 let buttons = [talonB, barvaB, dobraB, spatnaB, flekB, koncimB];
 let gamePhase = ["waiting", "picking-trumf", "choosing-talon", "choosing-game", "ack", "ack", "choosing-challange", "betting", "betting", "betting", "betting", "betting", "betting", "playing"];
 let flekovani = ["Flek", "Reflek", "Tuty", "Boty", "Kalhoty", "Kaiser"];
+let korekce = ["Takovou hru si nemůžeš dovolit", "Ještě máš barvu, nedělej, že nemáš", "Ještě máš trumfa, nedělej, že nemáš"];
 let phaseI = 0;
 
 connect();
@@ -75,7 +76,7 @@ function logMessage(){
     if (workdata.phase == "waiting"){
         logContent.innerHTML="<li>čeká se na hráče</li>";
     }
-    else if (workdata.phase != "ack" && (workdata.result == "Takovou hru si nemůžeš dovolit" || workdata.result == "Ještě máš barvu, nedělej, že nemáš" || workdata.result == "Ještě máš trumfa, nedělej, že nemáš"))
+    else if (korekce.includes(workdata.result))
     {
         if (user == workdata.players[workdata.turn] && workdata.result != "")
         {
