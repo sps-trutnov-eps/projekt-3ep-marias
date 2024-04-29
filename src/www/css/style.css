@@ -76,6 +76,21 @@ a {
     display: block;
 }
 
+div > .player-name {
+    margin-left: 95px;
+    transform: translateY(+42px);
+}
+
+div > .player-name1 {
+    margin-left: 20px;
+    transform: translateY(+42px);
+}
+
+div > .player-name2 {
+    margin-left: 180px;
+    transform: translateY(-250px);
+}
+
 @media screen and (max-width: 1590px){
     #log-messages {
         display: block;
