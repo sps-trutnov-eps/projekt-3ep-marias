@@ -15,9 +15,11 @@ let dobraB = document.getElementById("dobra");
 let spatnaB = document.getElementById("spatna");
 let flekB = document.getElementById("flek");
 let koncimB = document.getElementById("koncim");
+let logDiv = document.getElementById("log-messages");
 let buttons = [talonB, barvaB, dobraB, spatnaB, flekB, koncimB];
 let gamePhase = ["waiting", "picking-trumf", "choosing-talon", "choosing-game", "ack", "ack", "choosing-challange", "betting", "betting", "betting", "betting", "betting", "betting", "playing"];
 let flekovani = ["Flek", "Reflek", "Tuty", "Boty", "Kalhoty", "Kaiser"];
+let korekce = ["Takovou hru si nemůžeš dovolit", "Ještě máš barvu, nedělej, že nemáš", "Ještě máš trumfa, nedělej, že nemáš"];
 let phaseI = 0;
 
 connect();
@@ -62,14 +64,39 @@ function accept(data) {
             fazeVoleneHryaltForhonta(".defense-info");
         }
     }
-    zobrazeniKaret();
+    zobrazeniKaret(workdata.playersPacks, "karty");
+    zobrazeniKaret(workdata.table, "odkladaci-misto-karty");
+    logMessage();
+    
 }
 
-function zobrazeniKaret() {
-    let kartyDiv = document.getElementById("karty");
+function logMessage(){
+    let logContent = document.querySelector('#log-messages .log-content');
+    let newListItem = document.createElement('li');
+    if (workdata.phase == "waiting"){
+        logContent.innerHTML="<li>čeká se na hráče</li>";
+    }
+    else if (korekce.includes(workdata.result))
+    {
+        if (user == workdata.players[workdata.turn] && workdata.result != "")
+        {
+            newListItem.textContent = workdata.result;
+            logContent.appendChild(newListItem);
+        }
+    } else if (workdata.result != "" && workdata.phase != "ack") {
+        newListItem.textContent = workdata.result;
+        logContent.appendChild(newListItem);
+    }
+
+    // Scroll to the bottom of the log content
+    logContent.scrollTop = logContent.scrollHeight;
+}
+
+function zobrazeniKaret(co, kam) {
+    let kartyDiv = document.getElementById(kam);
     kartyDiv.innerHTML = "";
-    for (let i in workdata.playersPacks) {
-        let karta = workdata.playersPacks[i];
+    for (let i in co) {
+        let karta = co[i];
         let img = document.createElement('img');
         let src = "";
         
@@ -105,6 +132,7 @@ function zobrazeniKaret() {
         
         kartyDiv.appendChild(img);
     }
+
 }
 
 
