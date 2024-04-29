@@ -22,6 +22,9 @@ let gamePhase = ["waiting", "picking-trumf", "choosing-talon", "choosing-game", 
 let flekovani = ["Flek", "Reflek", "Tuty", "Boty", "Kalhoty", "Kaiser"];
 let korekce = ["Takovou hru si nemůžeš dovolit", "Ještě máš barvu, nedělej, že nemáš", "Ještě máš trumfa, nedělej, že nemáš"];
 let phaseI = 0;
+// zakázání f12 a reloadu, s preview
+function handleForm(event) { event.preventDefault(); }
+document.onkeydown=function(e){if(!e.target.matches("input")&&!e.target.matches("textarea"))return!1};
 
 connect();
 
@@ -198,13 +201,15 @@ function fazeVoleneHry(classRoleHrace) {
 
     } else if (workdata.phase == "choosing-talon") {
         document.getElementById('second-choose').style.display = 'block';
-        document.getElementById("hra").style.display = 'block';
     } else if (workdata.phase == "choosing-game") {
         if(povoleno){
             document.getElementById("hra").style.display = 'none';
+        } else {
+            document.getElementById("hra").style.display = 'inline';
         }
         document.getElementById('third-choose').style.display = 'block';
     } else if (workdata.phase == "ack") {
+        povoleno = false;
         if (workdata.mode == "h") {
             document.getElementById('coSeHraje').innerHTML = "hraje se: Hra";
         } else if (workdata.mode == "b") {
@@ -286,6 +291,7 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     } else if (workdata.phase == "playing") {
         counterGame = 0;
         counterChallange = 0;
+        document.getElementById("karty").style.textAlign = "center";
     }
 }
 
@@ -312,9 +318,11 @@ function sendData(akce, data){
                     if(talon != "" && talon != data && (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14 || povoleno)){
                         socket.send(game + ";" + "talon;" + talon + ";" + data);
                         talon = "";
+                        dif.style.color = "black";
+                        dif.innerHTML = "";
                     } else if (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14 || povoleno) {
                         talon = data;
-                        dif.style.color = "none";
+                        dif.style.color = "black";
                         dif.innerHTML = "";
                     }
                 } else {
