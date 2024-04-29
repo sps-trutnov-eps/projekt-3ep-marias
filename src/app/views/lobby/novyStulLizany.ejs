@@ -1,0 +1,66 @@
+<%- include('../layout/hlavicka') %>
+
+<form name="form1" action="/lobby/pridaniStoluLizany" method="post">
+    <div class="d-flex justify-content-center pt-5">
+
+        <div class="row">
+            <div class="col-md-12 pt-5 fw-bold">
+                <label class="form-label">Jméno stolu:</label>
+                <input type="text" class="form-control" name="tableName" id="" placeholder="..." required />                
+            </div>
+
+            <div class="w-100"></div>
+
+            <div class="col-md-12 pt-5 fw-bold">
+                <label class="form-label">Heslo:</label>
+                <input type="text" class="form-control" name="password" placeholder="..." id=""/>
+            </div>
+
+            <div class="w-100"></div>
+
+            <div class="col-md-8 pt-5 mx-5 fst-italic text-start">
+                <label class="form-label fw-bold">Peněžní základ:</label>
+                <div class="form-check">
+                    <input class="form-check-input" name="penezniZaklad" value="Desetnikovy" type="radio" id="Desetnikovy" checked>
+                    <label class="form-check-label" for="Desetnikovy">Desetníkový mariáš</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="penezniZaklad" value="Dvacetnikovy" type="radio" id="Dvacetnikovy">
+                    <label class="form-check-label" for="Dvacetnikovy">Dvacetníkový mariáš</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="penezniZaklad" value="Korunovy" type="radio" id="Korunovy">
+                    <label class="form-check-label" for="Korunovy">Korunový mariáš</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="penezniZaklad" value="Dvoukorunovy" type="radio" id="Dvoukorunovy">
+                    <label class="form-check-label" for="Dvoukorunovy">Dvoukorunový mariáš</label>
+                  </div>
+            </div>
+
+            <div class="col-md-3 pt-5 fst-italic text-start">
+                <label class="form-label fw-bold">Výběr hracích karet:</label>
+                <div class="form-check">
+                    <input class="form-check-input" name="hraciKarty" value="Bohemsky" type="radio" id="Bohemsky" checked>
+                    <label class="form-check-label" for="Bohemsky">Bohémské hrací karty</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="hraciKarty" value="Rakousky" type="radio" id="Rakousky">
+                    <label class="form-check-label" for="Rakousky">Rakouské hrací karty</label>
+                </div>
+            </div>
+
+            <div class="w-100"></div>
+
+            <div class="col-md-12 pt-5 fst-italic text-center">
+                <button type="submit" class="btn btn-primary">Uložit a vytvořit hrací stůl</button>            
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+
+
+<%- include('../layout/paticka') %>

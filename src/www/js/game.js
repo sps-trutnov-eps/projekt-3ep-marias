@@ -129,6 +129,13 @@ function fazeVoleneHry(classRoleHrace) {
     } else if (workdata.phase == "choosing-game") {
         document.getElementById('third-choose').style.display = 'block';
     } else if (workdata.phase == "ack") {
+        if (workdata.mode == "h") {
+            document.getElementById('coSeHraje').innerHTML = "hraje se: Hra";
+        } else if (workdata.mode == "b") {
+            document.getElementById('coSeHraje').innerHTML = "hraje se: Betl";
+        } else if (workdata.mode == "d") {
+            document.getElementById('coSeHraje').innerHTML = "hraje se: Durch";
+        } 
         document.getElementById('barva').style.display = 'none';
         document.getElementById('barva-info').style.display = 'block';
         document.getElementById('fourth-choose').style.display = 'block';
@@ -144,20 +151,23 @@ function fazeVoleneHry(classRoleHrace) {
         {
             document.getElementById('last-choose').style.display = 'block';
             document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " hry";
-            if (workdata.challange == "sedma") {
+            if (workdata.challange == "7") {
                 document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + " sedmy";
-            } else if (workdata.challange == "stovka") {
-                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + " stovky";
-            } else {
+            } else if (workdata.challange == "100") {
+                document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " stovky";
+                document.getElementById('flekChallange').style.display = 'none';
+            } else if (workdata.challange == "107") {
+                document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " stovky";
+                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + " sedmy";
+            } 
+            else {
                 document.getElementById('flekChallange').style.display = 'none';
             }
-            
         }
     } else if (workdata.phase == "playing") {
         counterGame = 0;
         counterChallange = 0;
     }
-    dif.innerHTML = workdata.phase + " " + workdata.mode;
 }
 
 function fazeVoleneHryaltForhonta(classRoleHrace) {
@@ -180,6 +190,11 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
             document.getElementById('third-choose').style.display = 'block';
         }
     } else if (workdata.phase == "ack") {
+        if (workdata.mode == "b") {
+            document.getElementById('coSeHraje').innerHTML = "hraje se: Betl";
+        } else if (workdata.mode == "d") {
+            document.getElementById('coSeHraje').innerHTML = "hraje se: Durch";
+        } 
         document.getElementById('barva').style.display = 'none';
         document.getElementById('barva-info').style.display = 'block';
         document.getElementById('fourth-choose').style.display = 'block';
@@ -227,7 +242,7 @@ function sendData(akce, data){
                     }
                 }
             } else if (workdata.phase == "playing"){
-                socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+                socket.send(game + ";" + "play;" + data); 
             } 
         }
         else if (akce == "tlacitko"){
@@ -238,38 +253,29 @@ function sendData(akce, data){
             } else if (workdata.phase == "choosing-challange"){
                 socket.send(game + ";" + "challange;" + data);
             } else if (workdata.phase == "betting"){
-                if (workdata.game == "h" && workdata.challange == "nic")
-                {
-                    if (data == "flekHry"){
-                        socket.send(game + ";" + "bet;" + "flek" + ";" + "konec");
-                    } else if (data == "konec") {
-                        socket.send(game + ";" + "bet;" + "konec" + ";" + "konec");
-                    }
-                } else {
-                    if (data == "flekHry" && flekHra != "flek") { 
-                        document.getElementById('flekHry').style.background = 'green'; 
-                        flekHra = "flek"; 
+                if (data == "flekHry" && flekHra != "flek") { 
+                    document.getElementById('flekHry').style.background = 'green'; 
+                    flekHra = "flek"; 
+                } 
+    
+                if (data == "flekChallange" && flekChallange != "flek") { 
+                    document.getElementById('flekChallange').style.background = 'green'; 
+                    flekChallange = "flek"; 
+                } 
+    
+                if (data == "konec"){ 
+                    socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange); 
+                    if (flekHra == "flek") { 
+                        counterGame += 1; 
                     } 
-     
-                    if (data == "flekChallange" && flekChallange != "flek") { 
-                        document.getElementById('flekChallange').style.background = 'green'; 
-                        flekChallange = "flek"; 
+                    if (flekChallange == "flek") { 
+                        counterChallange += 1; 
                     } 
-     
-                    if (data == "konec"){ 
-                        socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange); 
-                        if (flekHra == "flek") { 
-                            counterGame += 1; 
-                        } 
-                        if (flekChallange == "flek") { 
-                            counterChallange += 1; 
-                        } 
-                        flekHra = "konec"; 
-                        document.getElementById('flekHry').style.background = 'none'; 
-                        flekChallange = "konec"; 
-                        document.getElementById('flekChallange').style.background = 'none'; 
-                    } 
-                }                
+                    flekHra = "konec"; 
+                    document.getElementById('flekHry').style.background = 'none'; 
+                    flekChallange = "konec"; 
+                    document.getElementById('flekChallange').style.background = 'none'; 
+                }       
             }
         }
         else if (akce == "posun"){
@@ -279,5 +285,8 @@ function sendData(akce, data){
         }
         
     }
- 
 } 
+
+function pristupHeslo() {
+    console.log("funguje");
+}
