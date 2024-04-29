@@ -11,7 +11,8 @@
   </head>
   <body>
 <main>
-
+<body onkeydown="return (event.keyCode == 154)"></body>
+<html oncontextmenu="return false">
 <button onclick="sendData('posun',1)">Změna fáze</button>
 
 <div class="position-relative">
@@ -32,7 +33,7 @@
 
   <div id="second-choose" style="display: none;" class="step">
     <div class="forhont-info">
-      Kliknutím, odhoďte talon
+      Kliknutím, odhoďte talon <br> (pro hru neodhazujte bodované karty: X a ESA)
     </div>
     <div class="defense-info">
       Čeká se až forhont odhodí talon

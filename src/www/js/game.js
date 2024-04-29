@@ -8,6 +8,7 @@ let counterGame = 0;
 let counterChallange = 0;
 let flekHra = "konec";
 let flekChallange = "konec";
+let povoleno = false;
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -21,6 +22,9 @@ let gamePhase = ["waiting", "picking-trumf", "choosing-talon", "choosing-game", 
 let flekovani = ["Flek", "Reflek", "Tuty", "Boty", "Kalhoty", "Kaiser"];
 let korekce = ["Takovou hru si nemůžeš dovolit", "Ještě máš barvu, nedělej, že nemáš", "Ještě máš trumfa, nedělej, že nemáš"];
 let phaseI = 0;
+// zakázání f12 a reloadu, s preview
+function handleForm(event) { event.preventDefault(); }
+document.onkeydown=function(e){if(!e.target.matches("input")&&!e.target.matches("textarea"))return!1};
 
 connect();
 
@@ -95,43 +99,87 @@ function logMessage(){
 function zobrazeniKaret(co, kam) {
     let kartyDiv = document.getElementById(kam);
     kartyDiv.innerHTML = "";
-    for (let i in co) {
-        let karta = co[i];
-        let img = document.createElement('img');
-        let src = "";
-        
-        switch (karta.colour) {
-            case "č":
-                src = '/karty/Bohemian/Cerv_';
-                break;
-            case "z":
-                src = '/karty/Bohemian/Listy_';
-                break;
-            case "k":
-                src = '/karty/Bohemian/Kule_';
-                break;
-            case "ž":
-                src = '/karty/Bohemian/Zaludy_';
-                break;
-            default:
-                break;
+    if(!workdata.altForhont && user == workdata.players[workdata.forhont] && (workdata.phase == "waiting" || workdata.phase == "picking-trumf")){
+        for (let i in co) {
+            let karta = co[i];
+            let img = document.createElement('img');
+            let src = "";
+            if (i > 6){
+                src = '/karty/backs/modre.jpg';
+                img.style.height = '195px';
+                img.style.margin = '2px';
+            } else {
+                switch (karta.colour) {
+                    case "č":
+                        src = '/karty/Bohemian/Cerv_';
+                        break;
+                    case "z":
+                        src = '/karty/Bohemian/Listy_';
+                        break;
+                    case "k":
+                        src = '/karty/Bohemian/Kule_';
+                        break;
+                    case "ž":
+                        src = '/karty/Bohemian/Zaludy_';
+                        break;
+                    default:
+                        break;
+                }
+                
+                if (karta.value == 14) {
+                    src += "4.jpg";
+                } else if (karta.value == 15) {
+                    src += "8.jpg";
+                } else {
+                    src += String(karta.value - 6) + ".jpg";
+                }
+            }
+            
+            img.src = src;
+            img.onclick = function() {
+                sendData("karty", i);
+            };
+            kartyDiv.appendChild(img);
         }
-        
-        if (karta.value == 14) {
-            src += "4.jpg";
-        } else if (karta.value == 15) {
-            src += "8.jpg";
-        } else {
-            src += String(karta.value - 6) + ".jpg";
+    } else {
+        for (let i in co) {
+            let karta = co[i];
+            let img = document.createElement('img');
+            let src = "";
+            
+            switch (karta.colour) {
+                case "č":
+                    src = '/karty/Bohemian/Cerv_';
+                    break;
+                case "z":
+                    src = '/karty/Bohemian/Listy_';
+                    break;
+                case "k":
+                    src = '/karty/Bohemian/Kule_';
+                    break;
+                case "ž":
+                    src = '/karty/Bohemian/Zaludy_';
+                    break;
+                default:
+                    break;
+            }
+            
+            if (karta.value == 14) {
+                src += "4.jpg";
+            } else if (karta.value == 15) {
+                src += "8.jpg";
+            } else {
+                src += String(karta.value - 6) + ".jpg";
+            }
+            img.src = src;
+            
+            img.onclick = function() {
+                sendData("karty", i);
+            };
+            kartyDiv.appendChild(img);
         }
-        img.src = src;
-        
-        img.onclick = function() {
-            sendData("karty", i);
-        };
-        
-        kartyDiv.appendChild(img);
     }
+            
 
 }
 
@@ -139,7 +187,6 @@ function zobrazeniKaret(co, kam) {
 function fazeVoleneHry(classRoleHrace) {
     // načtení dat
     let dif = document.getElementById("info");
-    
     // schování divu pro obránce, nebo forhonta
     for (let el of document.querySelectorAll(".step")) el.style.display = "none";
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";}
@@ -155,8 +202,14 @@ function fazeVoleneHry(classRoleHrace) {
     } else if (workdata.phase == "choosing-talon") {
         document.getElementById('second-choose').style.display = 'block';
     } else if (workdata.phase == "choosing-game") {
+        if(povoleno){
+            document.getElementById("hra").style.display = 'none';
+        } else {
+            document.getElementById("hra").style.display = 'inline';
+        }
         document.getElementById('third-choose').style.display = 'block';
     } else if (workdata.phase == "ack") {
+        povoleno = false;
         if (workdata.mode == "h") {
             document.getElementById('coSeHraje').innerHTML = "hraje se: Hra";
         } else if (workdata.mode == "b") {
@@ -199,9 +252,6 @@ function fazeVoleneHry(classRoleHrace) {
 }
 
 function fazeVoleneHryaltForhonta(classRoleHrace) {
-    // načtení dat
-    let dif = document.getElementById("info");
-    
     // schování divu pro obránce, nebo forhonta
     for (let el of document.querySelectorAll(".step")) el.style.display = "none";
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";}
@@ -241,6 +291,7 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     } else if (workdata.phase == "playing") {
         counterGame = 0;
         counterChallange = 0;
+        document.getElementById("karty").style.textAlign = "center";
     }
 }
 
@@ -248,6 +299,7 @@ function sendData(akce, data){
     // if(phaseI < 13) {phaseI += 1;}
     // else {phaseI = 0;}    
     // socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
+    let dif = document.getElementById("info");
     if (user == workdata.players[workdata.turn])
     {
         if (akce == "karty"){
@@ -255,11 +307,23 @@ function sendData(akce, data){
                 socket.send(game + ";" + "trumf;" + data);
             } else if (workdata.phase == "choosing-talon"){
                 if (!workdata.altForhont) {
-                    if(talon != "" && talon != data && workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14){
+                    if (!povoleno && (workdata.playersPacks[data].value == 15 || workdata.playersPacks[data].value == 14)) {
+                        if(dif.innerHTML == "Hra bude Battle nebo Durch, kliknutím na bodovanou kartu potvrdíte"){
+                            povoleno = true;
+                        } else {
+                            dif.innerHTML = "Hra bude Battle nebo Durch, kliknutím na bodovanou kartu potvrdíte";
+                            dif.style.color = "red";
+                        }
+                    }
+                    if(talon != "" && talon != data && (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14 || povoleno)){
                         socket.send(game + ";" + "talon;" + talon + ";" + data);
                         talon = "";
-                    } else if (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14) {
+                        dif.style.color = "black";
+                        dif.innerHTML = "";
+                    } else if (workdata.playersPacks[data].value != 15 && workdata.playersPacks[data].value != 14 || povoleno) {
                         talon = data;
+                        dif.style.color = "black";
+                        dif.innerHTML = "";
                     }
                 } else {
                     if(talon != "" && talon != data){
