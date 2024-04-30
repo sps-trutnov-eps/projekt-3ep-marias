@@ -13,7 +13,7 @@ exports.main = (req, res) => {
 
 exports.connect = (client, req) => {
     if (req.session.currentUser) {
-        tableModel.addPlayer(1, req.session.currentUser, client);
+        tableModel.addPlayer(1, req.session.currentUser, req.session.currentNickname, client);
         client.send(JSON.stringify(req.session.currentUser + ";" + "1"));
         update();
     }
@@ -47,13 +47,13 @@ exports.resolve = (client, event) => {
     } else if (command == "bet"){
         tableModel.bet(game, event.split(";")[2], event.split(";")[3]);
     } else if (command == "play"){
-        /*
         tableModel.checkMarias(game, event.split(";")[2], event.split(";")[3]);
         tableModel.playCard(game, event.split(";")[2], event.split(";")[3]);
+    } else if (command == "end"){
         tableModel.checkStych(game);
-        !tableModel.checkEnd(game);! - nehotovo
-        */
+        /*!tableModel.checkEnd(game);! - nehotovo*/
     }
+        
     //this.sortCards(1, true);
     update(game);
 }
