@@ -11,13 +11,23 @@
   </head>
   <body>
 <main>
-
+<!-- <body onkeydown="return (event.keyCode == 154)"></body>
+<html oncontextmenu="return false"> -->
 <button onclick="sendData('posun',1)">Změna fáze</button>
 
 <div class="position-relative">
-  <div id="odkladaci-misto-hlaska1" class="position-absolute top-0 start-0 rounded storage-place1"></div>
-  <div id="odkladaci-misto-hlaska2" class="position-absolute top-0 end-0 rounded storage-place2"></div>
+  
+  <div class="position-absolute top-0 start-0">
+    <p id="jmeno1" class="fw-bold player-name text-center">Jméno obránce</p>
+    <div id="odkladaci-misto-hlaska1" class="rounded storage-place1"></div>
+  </div>
+
+  <div class="position-absolute top-0 end-0">
+    <p id="jmeno2" class="fw-bold text-start player-name1">Jméno obránce</p>
+    <div id="odkladaci-misto-hlaska2" class="rounded storage-place2"></div>
+  </div>
 </div>
+
 <div id="odkladaci-misto-karty" class="position-absolute top-50 start-50 translate-middle rounded storage-place3"></div>
 
 <div id="game-progress">
@@ -32,7 +42,7 @@
 
   <div id="second-choose" style="display: none;" class="step">
     <div class="forhont-info">
-      Kliknutím, odhoďte talon
+      Kliknutím, odhoďte talon <br> (pro hru neodhazujte bodované karty: X a ESA)
     </div>
     <div class="defense-info">
       Čeká se až forhont odhodí talon
@@ -85,4 +95,15 @@
 </div>
 
 <div id="info"></div>
-<div class="fixed-bottom pb-2" id="karty"></div>
+<div id="log-messages">
+  <h3>Log messages</h3>
+  <div class="log-content">
+      <!-- Log messages will appear here -->
+  </div>
+</div>
+
+<div>
+  <div id="odkladaci-misto-hlaska3" class="storage-place4 fixed-bottom start-0"></div>
+  <p id="jmeno3" class="player-name2 fw-bold fixed-bottom text-start">Jméno forhonta</p>
+  <div class="fixed-bottom pb-2" id="karty"></div>
+</div>

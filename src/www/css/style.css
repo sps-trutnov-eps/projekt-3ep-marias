@@ -38,3 +38,91 @@ a {
     height: 400px;
     background-color: rgb(40, 153, 40);
 }
+
+.storage-place3 {
+    width: 500px;
+    height: 400px;
+    background-color: rgb(40, 153, 40);
+}
+
+#log-messages {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 280px; 
+    height: 200px; 
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+#log-messages h3 {
+    margin-top: 0;
+    font-size: 16px;
+    padding-bottom: 1em;
+    font-weight: bold;
+    border-bottom: solid black 1px;
+}
+
+#log-messages .log-content {
+    max-height: calc(100% - 40px);
+    margin-left: 20px;
+    overflow-y: hidden;
+}
+
+#karty {
+    margin-right: 320px;
+    text-align: right;
+    margin-bottom: 9px;
+}
+
+#log-messages {
+    display: block;
+}
+
+div > .player-name {
+    margin-left: 95px;
+    transform: translateY(+42px);
+}
+
+div > .player-name1 {
+    margin-left: 20px;
+    transform: translateY(+42px);
+}
+
+div > .player-name2 {
+    margin-left: 180px;
+    transform: translateY(-250px);
+}
+
+@media screen and (max-width: 1590px){
+    #log-messages {
+        display: block;
+    }
+    #karty {
+        margin-right: 10px;
+        text-align: center;
+    }
+    #log-messages {
+        right: 15px;
+    }
+} 
+@media screen and (min-width: 1260px) and (max-width: 1590px){ 
+    #log-messages {
+        display: none;
+    }
+}
+@media screen and (max-width: 950px){
+    #log-messages {
+        width: 240px;
+        right: 25px;
+        display: block;
+    }
+}
+@media screen and (max-width: 909px){
+    #log-messages {
+        display: none;
+    }
+}
