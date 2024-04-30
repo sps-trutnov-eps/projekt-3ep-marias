@@ -558,7 +558,7 @@ exports.playCard = (gameID, player, cardIndex) => {
                 if (highestCard.colour != game.trumf){
                     if (game.table[1].colour == game.trumf) highestCard = game.table[1];
                     else if (game.table[1].value > highestCard.value) highestCard = game.table[1];
-                } else {
+                } else if (highestCard.colour == game.table[1].colour) {
                     if (highestCard.value < game.table[1].value) highestCard = game.table[1];
                 }
             }
@@ -579,7 +579,7 @@ exports.playCard = (gameID, player, cardIndex) => {
                         let higher = false;
                         for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
                             if (game.playersPacks[playerIndex].colour == playedCard.colour){
-                                if (game.playersPacks[playerIndex].value > playedCard.value){
+                                if (game.playersPacks[playerIndex].value > highestCard.value){
                                     higher = true;
                                 } 
                             }
@@ -603,7 +603,7 @@ exports.playCard = (gameID, player, cardIndex) => {
                     let higher = false;
                     for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
                         if (game.playersPacks[playerIndex].colour == playedCard.colour){
-                            if (game.playersPacks[playerIndex].value > playedCard.value){
+                            if (game.playersPacks[playerIndex].value > highestCard.value){
                                 higher = true;
                             } 
                         }
@@ -624,11 +624,46 @@ exports.playCard = (gameID, player, cardIndex) => {
                 if (game.playersPacks[playerIndex][i] == game.table[0].colour) colour = true;
             }
             if (!colour){
-                game.playersPacks[playerIndex].splice(cardIndex, 1);
-                game.table.push(playedCard);
-
-                if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
-                game.turn = (game.turn + 1) % game.players.length;
+                // nejsilnější karta na stole
+                let highestCard = table[0];
+                if (game.table.length == 2){
+                    if (highestCard.colour != game.trumf){
+                        if (game.table[1].colour == game.trumf) highestCard = game.table[1];
+                        else if (game.table[1].value > highestCard.value) highestCard = game.table[1];
+                    } else if (highestCard.colour == game.table[1].colour) {
+                        if (highestCard.value < game.table[1].value) highestCard = game.table[1];
+                    }
+                }
+                if (highestCard.colour != game.trumf){
+                    game.playersPacks[playerIndex].splice(cardIndex, 1);
+                    game.table.push(playedCard);
+                    if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                    game.turn = (game.turn + 1) % game.players.length;
+                } else {
+                    if (highestCard.value < playedCard.value) {
+                        game.playersPacks[playerIndex].splice(cardIndex, 1);
+                        game.table.push(playedCard);
+                        if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                        game.turn = (game.turn + 1) % game.players.length;
+                    }
+                    else {
+                        let higher = false;
+                        for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
+                            if (game.playersPacks[playerIndex].colour == playedCard.colour){
+                                if (game.playersPacks[playerIndex].value > highestCard.value){
+                                    higher = true;
+                                } 
+                            }
+                        }
+                        if (higher) game.result = "Ještě máš vyšší kartu, nedělej, že nemáš";
+                        else {
+                            game.playersPacks[playerIndex].splice(cardIndex, 1);
+                            game.table.push(playedCard);
+                            if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                            game.turn = (game.turn + 1) % game.players.length;
+                        }
+                    }
+                }
             } else game.result = "Ještě máš barvu, nedělej, že nemáš";
         } // Jakýkoliv jiný případ 
         else {
