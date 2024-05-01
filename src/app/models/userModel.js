@@ -56,6 +56,11 @@ exports.UserIdGet = (jmeno) => {
     return false;
 }
 
+exports.UserNicknameGet = (id) => {
+    let user = db.get(id);
+    return user.prezdivka;
+}
+
 exports.userHasSamePasswd = (jmeno, password) => {
     const allUsers = db.JSON();
 
