@@ -43,6 +43,7 @@ exports.addTable = () => {
         'phase': 'waiting',
         'bet': 1,
         'bet7': 1,
+        'continueBet':[true, true],
         'trumf': '',
         'mode': '',
         'challange':'',
@@ -446,7 +447,7 @@ exports.bet = (gameID, gameBet, sevenBet) => {
         if(game.altForhont === undefined) f = game.forhont;
         else f = game.altForhont;
 
-        if (gameBet){
+        if (gameBet && game.continueBet[0]){
             if (game.turn == f){
                 game.bet *= 2;
                 if (game.bet == 64){
@@ -458,14 +459,11 @@ exports.bet = (gameID, gameBet, sevenBet) => {
                 }
             } else {
                 game.bet *= 2;
-                game.turn = (game.turn + 1) % 3;
-                if (game.turn != f){
-                    game.turn = f;
-                }
+                game.turn = f;
                 game.result = "Obránce zvedl sázku hry";
             }
-        }
-        if (sevenBet){
+        } else game.continueBet[0] = false;
+        if (sevenBet && game.continueBet[1]){
             if (game.turn == f){
                 game.bet7 *= 2;
                 if (game.bet7 == 64){
@@ -478,14 +476,11 @@ exports.bet = (gameID, gameBet, sevenBet) => {
                 }
             } else {
                 game.bet7 *= 2;
-                game.turn = (game.turn + 1) % 3;
-                if (game.turn != f){
-                    game.turn = f;
-                }
+                game.turn = f;
                 if (game.result.includes("hry")) game.result += " a sedmy";
                 else game.result = "Obránce zvedl sázku sedmy";
             }
-        }
+        } else game.continueBet[1] = false;
 
         db.set(gameID, game);
     }
@@ -503,11 +498,13 @@ exports.noBet = (gameID) => {
     } else {
         game.turn = (game.turn + 1) % 3;
         if (game.turn == f){
-            if (game.bet == 1) {
+            if (game.bet == 1 && game.bet7 == 1) {
                 game.phase = "paying";
                 game.result = "Bez fleku - budu sem muset vypsat zprávu o tom, jak zobrazit placení hráči"
-            }
-            else if (Math.log2(game.bet) % 2 == 0) {
+            } else if (Math.log2(game.bet) % 2 == 0 && game.continueBet[0]) {
+                game.phase = "playing";
+                game.result = "Flekování ukončeno na" + game.bet + " násobku ceny";
+            } else if (Math.log2(game.bet7) % 2 == 0 && game.continueBet[1]) {
                 game.phase = "playing";
                 game.result = "Flekování ukončeno na" + game.bet + " násobku ceny";
             }
