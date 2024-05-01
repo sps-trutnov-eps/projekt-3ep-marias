@@ -447,7 +447,7 @@ exports.bet = (gameID, gameBet, sevenBet) => {
         if(game.altForhont === undefined) f = game.forhont;
         else f = game.altForhont;
 
-        if (gameBet && game.continueBet[0]){
+        if (gameBet == "flek" && game.continueBet[0]){
             if (game.turn == f){
                 game.bet *= 2;
                 if (game.bet == 64){
@@ -459,11 +459,11 @@ exports.bet = (gameID, gameBet, sevenBet) => {
                 }
             } else {
                 game.bet *= 2;
-                game.turn = f;
+                if (sevenBet == "konec" || !game.continueBet[1]) game.turn = f;
                 game.result = "Obránce zvedl sázku hry";
             }
         } else game.continueBet[0] = false;
-        if (sevenBet && game.continueBet[1]){
+        if (sevenBet == "flek" && game.continueBet[1]){
             if (game.turn == f){
                 game.bet7 *= 2;
                 if (game.bet7 == 64){
