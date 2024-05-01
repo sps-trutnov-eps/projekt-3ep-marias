@@ -473,7 +473,7 @@ exports.bet = (gameID, gameBet, sevenBet) => {
                     game.result = "Nelze flekovat výše, jde se hrát";
                 } else {
                     game.turn = (game.turn + 1) % 3;
-                    if (game.result.includes("hry")) game.result += "a sedmy";
+                    if (game.result.includes("hry")) game.result += " a sedmy";
                     else game.result = "Forhont zvedl sázku sedmy";
                 }
             } else {
@@ -482,7 +482,7 @@ exports.bet = (gameID, gameBet, sevenBet) => {
                 if (game.turn != f){
                     game.turn = f;
                 }
-                if (game.result.includes("hry")) game.result += "a sedmy";
+                if (game.result.includes("hry")) game.result += " a sedmy";
                 else game.result = "Obránce zvedl sázku sedmy";
             }
         }
@@ -509,7 +509,7 @@ exports.noBet = (gameID) => {
             }
             else if (Math.log2(game.bet) % 2 == 0) {
                 game.phase = "playing";
-                game.result = "Flekování ukončeno na" + game.bet + "násobku ceny";
+                game.result = "Flekování ukončeno na" + game.bet + " násobku ceny";
             }
         }
     }

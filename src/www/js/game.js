@@ -338,11 +338,11 @@ function sendData(akce, data){
             } 
         }
         else if (akce == "tlacitko"){
-            if (workdata.phase == "choosing-game"){
+            if (workdata.phase == "choosing-game" && (data == 'h' || data == 'b' || data == 'd' )){
                 socket.send(game + ";" + "game;" + data);
-            } else if (workdata.phase == "ack"){
+            } else if (workdata.phase == "ack" && (data == 'dobra' || data == 'spatna')){
                 socket.send(game + ";" + data);
-            } else if (workdata.phase == "choosing-challange"){
+            } else if (workdata.phase == "choosing-challange" && (data == '100' || data == '7' || data == '107' || data == 'h')){
                 socket.send(game + ";" + "challange;" + data);
             } else if (workdata.phase == "betting"){
                 if (data == "flekHry" && flekHra != "flek") { 
