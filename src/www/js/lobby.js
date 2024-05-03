@@ -1,18 +1,19 @@
 function getTablesVoleny() {
-    fetch('lobby/stolyVoleny', {
+    fetch('stolyVoleny', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
     })      
-    .then(response => response.json)
+    .then(response => response.json())
     .then(data => {
-        console.log(JSON.parse(data));
+        // data je teď velký list plný všech her co máš v databázi
+        console.log(data);
     });
 }
 
 function getTablesLizany() {
-    fetch('lobby/stolyLizany')
+    fetch('stolyLizany')
         .then()
         .then()
 }
