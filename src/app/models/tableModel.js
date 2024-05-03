@@ -729,10 +729,10 @@ exports.getGame = (gameID) => {
 }
 
 exports.getGamesVoleny = () => {
-    let veschnyStoly = JSON.parse(db.JSON());
+    let veschnyStoly = db.JSON();
     let stolyVolene = [];
     for (let index in veschnyStoly){
-        if (veschnyStoly[index].type == "voleny") veschnyStoly.push(veschnyStoly[index]);
+        if (veschnyStoly[index].type == "voleny") stolyVolene.push(veschnyStoly[index]);
     }
     return stolyVolene;
 }
