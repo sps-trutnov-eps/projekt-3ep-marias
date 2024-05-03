@@ -722,3 +722,12 @@ exports.skip = (gameID, gamePhase) => {
 exports.getGame = (gameID) => {
     return db.get(gameID);
 }
+
+exports.getGamesVoleny = () => {
+    let veschnyStoly = JSON.parse(db.JSON());
+    let stolyVolene = [];
+    for (let index in veschnyStoly){
+        if (veschnyStoly[index].type == "voleny") veschnyStoly.push(veschnyStoly[index]);
+    }
+    return stolyVolene;
+}

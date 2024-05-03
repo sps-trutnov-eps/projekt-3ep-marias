@@ -39,3 +39,7 @@ exports.pridaniStoluVoleny = (req, res) => {
     console.log(req.body);
     res.render('lobby/index');
 }
+
+exports.stolyVoleny = (req, res) => {
+    res.send(JSON.stringify(tableModel.getGamesVoleny()));
+}
