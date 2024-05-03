@@ -3,9 +3,7 @@ let socket;
 let user = "";
 let workdata;
 let game = 0;
-let talon = "";
-let counterGame = 0;
-let counterChallange = 0;
+let talon = ""; 
 let flekHra = "konec";
 let flekChallange = "konec";
 let povoleno = false;
@@ -231,23 +229,25 @@ function fazeVoleneHry(classRoleHrace) {
         if(user == workdata.players[workdata.turn])
         {
             document.getElementById('last-choose').style.display = 'block';
-            document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " hry";
+            document.getElementById('flekHry').innerHTML = flekovani[Math.log2(workdata.bet)] + " na hru";
             if (workdata.challange == "7") {
-                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + " sedmy";
+                document.getElementById('flekChallange').innerHTML = flekovani[Math.log2(workdata.bet7)] + " na sedmu";
             } else if (workdata.challange == "100") {
-                document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " stovky";
+                document.getElementById('flekHry').innerHTML = flekovani[Math.log2(workdata.bet)] + " na stovku";
                 document.getElementById('flekChallange').style.display = 'none';
             } else if (workdata.challange == "107") {
-                document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " stovky";
-                document.getElementById('flekChallange').innerHTML = flekovani[counterChallange] + " sedmy";
+                document.getElementById('flekHry').innerHTML = flekovani[Math.log2(workdata.bet)] + " na stovku";
+                document.getElementById('flekChallange').innerHTML = flekovani[Math.log2(workdata.bet7)] + " na sedmu";
             } 
             else {
                 document.getElementById('flekChallange').style.display = 'none';
             }
         }
     } else if (workdata.phase == "playing") {
-        counterGame = 0;
-        counterChallange = 0;
+        document.getElementById("karty").style.textAlign = "center";
+        if(window.getComputedStyle(document.getElementById("karty")).getPropertyValue("margin-right") === "320px"){
+            document.getElementById("karty").style.marginRight = "11px";
+        }
     }
 }
 
@@ -285,13 +285,14 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
         if(user == workdata.players[workdata.turn])
         {
             document.getElementById('last-choose').style.display = 'block';
-            document.getElementById('flekHry').innerHTML = flekovani[counterGame] + " hry";
+            document.getElementById('flekHry').innerHTML = flekovani[Math.log2(workdata.bet)] + " na hru";
             document.getElementById('flekChallange').style.display = 'none';
         }
     } else if (workdata.phase == "playing") {
-        counterGame = 0;
-        counterChallange = 0;
         document.getElementById("karty").style.textAlign = "center";
+        if(window.getComputedStyle(document.getElementById("karty")).getPropertyValue("margin-right") === "320px"){
+            document.getElementById("karty").style.marginRight = "11px";
+        }
     }
 }
 
@@ -344,25 +345,20 @@ function sendData(akce, data){
                 socket.send(game + ";" + data);
             } else if (workdata.phase == "choosing-challange" && (data == '100' || data == '7' || data == '107' || data == 'h')){
                 socket.send(game + ";" + "challange;" + data);
-            } else if (workdata.phase == "betting"){
-                if (data == "flekHry" && flekHra != "flek") { 
+            } else if (workdata.phase == "betting" && (workdata.bet <= 64 || workdata.bet7 <= 64)){
+                if (data == "flekHry" && flekHra != "flek" && workdata.continueBet[0]) { 
                     document.getElementById('flekHry').style.background = 'green'; 
                     flekHra = "flek"; 
                 } 
     
-                if (data == "flekChallange" && flekChallange != "flek") { 
+                if (data == "flekChallange" && flekChallange != "flek" && workdata.continueBet[1]) { 
                     document.getElementById('flekChallange').style.background = 'green'; 
                     flekChallange = "flek"; 
                 } 
     
                 if (data == "konec"){ 
                     socket.send(game + ";" + "bet;" + flekHra + ";" + flekChallange); 
-                    if (flekHra == "flek") { 
-                        counterGame += 1; 
-                    } 
-                    if (flekChallange == "flek") { 
-                        counterChallange += 1; 
-                    } 
+                    // vrácení nazpátek
                     flekHra = "konec"; 
                     document.getElementById('flekHry').style.background = 'none'; 
                     flekChallange = "konec"; 

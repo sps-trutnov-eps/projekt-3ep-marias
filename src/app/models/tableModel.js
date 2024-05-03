@@ -350,7 +350,12 @@ exports.good = (gameID) => {
     game.turn = (game.turn + 1) % 3;
     if (game.altForhont === undefined) {
         if (game.forhont == game.turn) {
-            game.phase = "choosing-challange";
+            if (game.mode == "h") {
+                game.phase = "choosing-challange";
+            } else if (game.mode == "b" || game.game == "d") {
+                game.phase = "betting";
+                game.turn = (game.turn + 1) % 3;
+            }
             game.result = mode + " byl/a odsouhlasen/a";
         }
     } else if (game.altForhont == game.turn) {
@@ -447,7 +452,7 @@ exports.bet = (gameID, gameBet, sevenBet) => {
         if(game.altForhont === undefined) f = game.forhont;
         else f = game.altForhont;
 
-        if (gameBet && game.continueBet[0]){
+        if (gameBet == "flek" && game.continueBet[0]){
             if (game.turn == f){
                 game.bet *= 2;
                 if (game.bet == 64){
@@ -459,11 +464,11 @@ exports.bet = (gameID, gameBet, sevenBet) => {
                 }
             } else {
                 game.bet *= 2;
-                game.turn = f;
+                if (sevenBet == "konec" || !game.continueBet[1]) game.turn = f;
                 game.result = "Obránce zvedl sázku hry";
             }
         } else game.continueBet[0] = false;
-        if (sevenBet && game.continueBet[1]){
+        if (sevenBet == "flek" && game.continueBet[1]){
             if (game.turn == f){
                 game.bet7 *= 2;
                 if (game.bet7 == 64){
@@ -503,10 +508,10 @@ exports.noBet = (gameID) => {
                 game.result = "Bez fleku - budu sem muset vypsat zprávu o tom, jak zobrazit placení hráči"
             } else if (Math.log2(game.bet) % 2 == 0 && game.continueBet[0]) {
                 game.phase = "playing";
-                game.result = "Flekování ukončeno na" + game.bet + " násobku ceny";
+                game.result = "Flekování ukončeno na " + game.bet + " násobku ceny";
             } else if (Math.log2(game.bet7) % 2 == 0 && game.continueBet[1]) {
                 game.phase = "playing";
-                game.result = "Flekování ukončeno na" + game.bet + " násobku ceny";
+                game.result = "Flekování ukončeno na " + game.bet + " násobku ceny";
             }
         }
     }
