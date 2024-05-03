@@ -350,7 +350,12 @@ exports.good = (gameID) => {
     game.turn = (game.turn + 1) % 3;
     if (game.altForhont === undefined) {
         if (game.forhont == game.turn) {
-            game.phase = "choosing-challange";
+            if (game.mode == "h") {
+                game.phase = "choosing-challange";
+            } else if (game.mode == "b" || game.game == "d") {
+                game.phase = "betting";
+                game.turn = (game.turn + 1) % 3;
+            }
             game.result = mode + " byl/a odsouhlasen/a";
         }
     } else if (game.altForhont == game.turn) {
@@ -503,10 +508,10 @@ exports.noBet = (gameID) => {
                 game.result = "Bez fleku - budu sem muset vypsat zprávu o tom, jak zobrazit placení hráči"
             } else if (Math.log2(game.bet) % 2 == 0 && game.continueBet[0]) {
                 game.phase = "playing";
-                game.result = "Flekování ukončeno na" + game.bet + " násobku ceny";
+                game.result = "Flekování ukončeno na " + game.bet + " násobku ceny";
             } else if (Math.log2(game.bet7) % 2 == 0 && game.continueBet[1]) {
                 game.phase = "playing";
-                game.result = "Flekování ukončeno na" + game.bet + " násobku ceny";
+                game.result = "Flekování ukončeno na " + game.bet + " násobku ceny";
             }
         }
     }
