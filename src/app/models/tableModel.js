@@ -719,8 +719,45 @@ exports.checkStych = (gameID) => {
             game.playersPacks[(game.turn + indexOfCards) % 3].push(game.table.shift());
         }
         game.table = [];
+        game.tableOrder = [];
         game.turn = (game.turn + indexOfCards) % 3;
         game.result += " a hráč " + game.players[game.turn] + " získal karty pro sebe";
+
+        if (game.mode == "b"){
+            if (game.turn == game.altForhont) game.phase = "betl-lost";
+        }
+        if (game.mode == "d"){
+            if (game.turn != game.altForhont) game.phase = "durch-lost";
+        }
+    }
+
+    db.set(gameID, game);
+}
+
+exports.checkEnd = (gameID) => {
+    let game = db.get(gameID);
+
+    if (game.mode == "h" && game.playersPacks[0] == 0){
+        game.phase = "paying";
+        let forPoints = 0;
+        let defPoints = 0;
+
+        if (game.turn == game.forhont) forPoints += 10;
+        else defPoints += 10;
+        // tady bude pokračovat počítání bodů...v hlavě jsem narazil na pár problému - třeba domyslet
+
+    } else if (game.mode == "b") {
+        if (game.phase == "betl-lost"){
+            // prohra betla
+        } else if (game.playersPacks[0] == 0){
+            // výhra betla
+        }
+    } else if (game.mode == "d") {
+        if (game.phase == "durch-lost"){
+            // prohra durcha
+        } else if (game.playersPacks[0] == 0){
+            // výhra durcha
+        }
     }
 
     db.set(gameID, game);
