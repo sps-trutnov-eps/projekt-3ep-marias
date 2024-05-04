@@ -97,6 +97,11 @@ div > .player-name2 {
     transform: translateY(-250px);
 }
 
+.checkbox-custom {
+    transform: scale(1.9);
+    margin-left: 8px; 
+}
+
 @media screen and (max-width: 1590px){
     #log-messages {
         display: block;
