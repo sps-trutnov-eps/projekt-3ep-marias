@@ -27,6 +27,14 @@
         10ti kartách, forhont se zatím smí podívat jen do prvních 7 z 12 karet.
     </p>
 
+    <h3>Míchání</h3>
+
+    <p>
+        Malý dodatek, pokud budete hrát s pravými kartami a ne na naší stránce. Karty se míchají pouze na začítku hry. Když se dohraje
+        jedno kolo, karty se sezbírají a rozdávající nechá zadáka "sejmout" (rozdělit balík na dva a horní část dát do spodu). Za míchání
+        karet se jinak platí "renonc" neboli pokuta, jejíž výše závisí na zvyklosti.
+    </p>
+
     <h2>Dohadování</h2>
     <h3>Volení trumfu</h3>
     <p>
@@ -86,7 +94,7 @@
     <h3>Hodnoty karet</h3>
 
     <p>
-        Hodnoty od nejnižší po nejvyšší jsou: 7, 8, 9, spodek, svršek, král, 10 a eso (nestandartní pozice desítky je 
+        Hodnoty od nejnižší po nejvyšší jsou: 7, 8, 9, spodek, svršek, král, X (10) a eso (nestandartní pozice desítky je 
         pravděpodobně určena jejím bodováním, ale k tomu později). Tyto hodnoty platí vždycky v rámci jedné barvy. To znamená
         že pokud zahraje první hráč např. zeleného krále, můžou ho přebít pouze zelená desítka anebo zelené eso. Vyjímku zde 
         tvoří trumfy. Trumfová barva je jediná, která může přebíjet ostatní barvy. I nejslabší trumfová karta může přebít
@@ -156,19 +164,24 @@
     <h3>Sedma - podrobnosti</h3>
 
     <p>
-        Sedma je nejčastější výzva. Pro forhonta výhodná, když má společně se sedmou i hodně trumfů. Pak se jedná o téměř jisté peníze
+        Sedma je nejčastější výzva. Pro forhonta výhodná, když má společně s trumfovou sedmou i hodně trumfů. Pak se jedná o téměř jisté peníze
         navíc. Cena sedmy je dvojnásob základu hry. Flekuje se separátně od hry. Pokud tedy jako obránce tušíte, že nemáte jak 
         forhontovi sedmu překazit, můžete dát "flek na hru" a sedma tak zůstane na dvojnásobku základu. Pokud si myslíte, že máte trumfů 
         dost a sedmu forhontovi překazíte, můžete dát pouze "flek na sedmu". Chcete-li flekovat obě části hry, stačí "flek".
         Dále platí, že flekovat se může jen to, co bylo flekováno v předchozím kole. Dáte-li tedy flek na jednu část hry, tu druhou
         již nesmí nikdo flekovat. Sedma se taky separátně platí. Například prohraje-li forhont na body, ale zvládne uhrát sedmu, dostane 
-        zaplaceno za sedmu, zatímco on zaplatí za hru.
+        zaplaceno za sedmu, zatímco on zaplatí za hru. Pokud se podaří uhrát sedmu, bez toho aniž by ji ohlásil, jedná se o takzvanou
+        "tichou sedmu", která má hodnotu základu hry a jelikož není hlášená, nedá se flekovat.
     </p>
 
     <h3>Stovka - podrobnosti</h3>
 
     <p>
-
+        V případě velmi dobrých karet může forhont zahlásit stovku, kdy se zavazuje, že zahraje alespoň 100 bodů. Do toho se mu počítá
+        pouze jedna hláška! To znamaná, že s klasickou hláškou musí uhrát minimálně 80 bodů ostatními kartami, s trumfovou jen 60.
+        Pokud se mu to podaří dostane zaplaceno čtyřnásobek základu hry. Navíc za každých 10 bodů nad 100 se cena dvojnásobí. 
+        Pokud by tedy měl dostat zaplaceno 4 koruny za 100, za 110 dostane 8 korun, za 120 bodů 16 korun a tak dále. Do toho se mu
+        počítají už i ostatní hlášky. Pokud ale s žádnou s hlášek osamotě nemá 100, ostatní hlášky se nepočítají.
     </p>
 
     <h3>Stosedm - podrobnosti</h3>
@@ -180,13 +193,21 @@
     <h2>Betl</h2>
 
     <p>
-
+        Betl je herní mód, který je určen pro situaci, kdy máte na ruce velmi nízké a špatně použitelné karty. Nehraje se vůbec na body.
+        Betl má zcela jiný cíl - nesebrat ani jednu kartu. Přesně tak, pokud máte pocit, že váš balíček je tak špatný, že byste nesebrali 
+        vůbec nic a nezískali tak žádný bod, můžete zahlásit, že chcete hrát betla. Vaším jediným úkolem je nevzít žádný štych.
+        Pokud se vám to povede, vyhráváte a získáte finanční odměnu obvykle ve výší pětinásobku základu hry od svých soupeřů. 
+        Podaří-li se vašim soupeřům vás donutit vzít štych, hra končí a vy platíte jim. Většina pravidel je stejná jako při Barvě, ale
+        liší třemi změnami. Ve hře není trumfová barva, nevykládají se hlášky a karty o hodnotě X (10) mají jinou hodnotu.
+        Pořadí hodnot karet v betlu je od nejnižší: 7, 8, 9, X (10), spodek, svršek, král a eso.
     </p>
 
     <h2>Durch</h2>
 
     <p>
-        
+        Durch je takový opak betlu. Pokud máte pocit, že vaše karty jsou tak dobré, že byste vzali všechny štychy, můžete zahlásit durch.
+        Platí se za něj desetinásobek základu. Platí při něm stejné změny jako při betlu, jinak zbytek pravidel zůstává. Trumfy nejsou,
+        hlášky se nehrají, body se nepočítají a karta X (10) je pod spodkem. Vaším cílem je vzít všechny karty a nepřijít ani o jeden štych.
     </p>
 
 <%- include('../layout/paticka') %>
