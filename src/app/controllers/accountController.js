@@ -28,7 +28,7 @@ exports.Login = (req,res) => {
             req.session.currentUser = userModel.UserIdGet(jmeno);
             req.session.currentNickname = userModel.UserNicknameGet(req.session.currentUser);
             console.log("Přihlášen: " + req.session.currentUser);
-            return res.redirect('../game/main');
+            return res.redirect('/lobby/index');
         }
     }
     else{

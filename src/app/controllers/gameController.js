@@ -13,14 +13,15 @@ exports.main = (req, res) => {
 
 exports.connect = (client, req) => {
     if (req.session.currentUser) {
-        tableModel.addPlayer(1, req.session.currentUser, req.session.currentNickname, client);
+        console.log("pripojuji");
+        tableModel.addPlayer(req.session.currentGameID, req.session.currentUser, req.session.currentNickname, client);
         client.send(JSON.stringify(req.session.currentUser + ";" + "1"));
         update();
     }
 }
 
 exports.disconnect = (client, req) => {
-    tableModel.removePlayer(1, req.session.currentUser, client);
+    tableModel.removePlayer(req.session.currentGameID, req.session.currentUser, client);
     update(1);
 }
 
