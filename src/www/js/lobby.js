@@ -47,12 +47,16 @@ function getTablesVoleny() {
         
             tableButton.addEventListener('click', () => {
                 if (password.length > 0) {
-                    const passwordInput = prompt('Zadejte heslo pro připojení k hře:');
-                    if (passwordInput === password) {
-                        console.log(`Heslo pro stůl ${table.name} bylo správné.`);
-                    } else {
-                        console.log(`Zadali jste nesprávné heslo pro stůl ${table.name}.`);
-                    }
+                    $('#passwordModalVoleny').modal('show');
+                    document.getElementById('confirmPasswordBtn').onclick = () => {
+                        const passwordInput = document.getElementById('passwordInput').value;
+                        if (passwordInput === password) {
+                            console.log(`Heslo pro stůl ${table.name} bylo správné.`);
+                            $('#passwordModalVoleny').modal('hide');
+                        } else {
+                            console.log(`Zadali jste nesprávné heslo pro stůl ${table.name}.`);
+                        }
+                    };
                 } else {
                     console.log(`Připojuji se k hře na stolu ${table.name}.`);
                 }
@@ -110,18 +114,22 @@ setInterval(getTablesVoleny, 3000);
 //             listItem.appendChild(tableButton); 
 //             listItem.classList.add('mb-2');
 
-//             tableButton.addEventListener('click', () => {
-//                 if (password.length > 0) {
-//                     const passwordInput = prompt('Zadejte heslo pro připojení k hře:');
-//                     if (passwordInput === password) {
-//                         console.log(`Heslo pro stůl ${table.name} bylo správné.`);
-//                     } else {
-//                         console.log(`Zadali jste nesprávné heslo pro stůl ${table.name}.`);
-//                     }
-//                 } else {
-//                     console.log(`Připojuji se k hře na stolu ${table.name}.`);
-//                 }
-//             });
+                // tableButton.addEventListener('click', () => {
+                //     if (password.length > 0) {
+                //         $('#passwordModalLizany').modal('show');
+                //         document.getElementById('confirmPasswordBtn').onclick = () => {
+                //             const passwordInput = document.getElementById('passwordInput').value;
+                //             if (passwordInput === password) {
+                //                 console.log(`Heslo pro stůl ${table.name} bylo správné.`);
+                //                 $('#passwordModalLizany').modal('hide');
+                //             } else {
+                //                 console.log(`Zadali jste nesprávné heslo pro stůl ${table.name}.`);
+                //             }
+                //         };
+                //     } else {
+                //         console.log(`Připojuji se k hře na stolu ${table.name}.`);
+                //     }
+                // });
 
 //             tableList.appendChild(listItem);
 //         });
