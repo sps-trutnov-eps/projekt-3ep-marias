@@ -1,6 +1,3 @@
-const { response } = require("express");
-const { method } = require("lodash");
-
 // Klientský kód
 let socket;
 let user = "";
@@ -24,8 +21,8 @@ let flekovani = ["Flek", "Reflek", "Tuty", "Boty", "Kalhoty", "Kaiser"];
 let korekce = ["Takovou hru si nemůžeš dovolit", "Ještě máš barvu, nedělej, že nemáš", "Ještě máš trumfa, nedělej, že nemáš"];
 let phaseI = 0;
 // zakázání f12 a reloadu, s preview
-function handleForm(event) { event.preventDefault(); }
-document.onkeydown=function(e){if(!e.target.matches("input")&&!e.target.matches("textarea"))return!1};
+//function handleForm(event) { event.preventDefault(); }
+//document.onkeydown=function(e){if(!e.target.matches("input")&&!e.target.matches("textarea"))return!1};
 
 connect();
 
@@ -37,6 +34,7 @@ function connect() {
                 console.log("Parse: " + JSON.parse(event.data));
                 user = (JSON.parse(event.data)).split(";")[0];
                 game = (JSON.parse(event.data)).split(";")[1];
+                socket.send(game + ";repeat");
             } else accept(event.data);
         socket = ws;
     }
