@@ -19,14 +19,14 @@ if(!db.has('next_id')) {
     db.set('next_id', 1);
 }
 
-exports.addTable = () => {
-    let type = "voleny";
+exports.addTable = (type, name, password, betBase, cardStyle) => {
     let id = db.get('next_id');
 
     db.set(id, {
         'type': type,
-        'name': 'testovaciStul',
-        'password': '',
+        'name': name,
+        'password': password,
+        'cardStyle': cardStyle,
         'cardPack': [],
         'players': [],
         'nicknames': [],
@@ -42,6 +42,7 @@ exports.addTable = () => {
         'table': [],
         'tableOrder':[],
         'phase': 'waiting',
+        'betBase': betBase,
         'bet': 1,
         'bet7': 1,
         'continueBet':[true, true],

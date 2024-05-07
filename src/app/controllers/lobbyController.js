@@ -27,7 +27,10 @@ exports.novyStulLizany = (req, res) => {
 }
 
 exports.novyStulVoleny = (req, res) => {
-    res.render('lobby/novyStulVoleny');
+    if (req.session.currentUser)
+        return res.render('lobby/novyStulVoleny');
+    else
+        return res.redirect('/account/index');
 }
 
 exports.pridaniStoluLizany = (req, res) => {
@@ -36,8 +39,11 @@ exports.pridaniStoluLizany = (req, res) => {
 }
 
 exports.pridaniStoluVoleny = (req, res) => {
-    console.log(req.body);
-    res.render('lobby/index');
+    if (req.session.currentUser) {
+        let id = tableModel.addTable("voleny", req.body.tableName, req.body.password, parseFloat(req.body.penezniZaklad), req.body.hraciKarty);
+        req.session.currentGameID = id;
+        return res.redirect("/game/main");
+    } else res.render('/account/index');
 }
 
 exports.stolyVoleny = (req, res) => {
