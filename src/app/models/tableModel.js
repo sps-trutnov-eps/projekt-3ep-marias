@@ -23,6 +23,7 @@ exports.addTable = (type, name, password, betBase, cardStyle) => {
     let id = db.get('next_id');
 
     db.set(id, {
+        'id': id,
         'type': type,
         'name': name,
         'password': password,

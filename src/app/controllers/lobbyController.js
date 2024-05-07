@@ -43,9 +43,16 @@ exports.pridaniStoluVoleny = (req, res) => {
         let id = tableModel.addTable("voleny", req.body.tableName, req.body.password, parseFloat(req.body.penezniZaklad), req.body.hraciKarty);
         req.session.currentGameID = id;
         return res.redirect("/game/main");
-    } else res.render('/account/index');
+    } else res.redirect('/account/index');
 }
 
 exports.stolyVoleny = (req, res) => {
     res.send(JSON.stringify(tableModel.getGamesVoleny()));
+}
+
+exports.pripoj = (req, res) => {
+    if (req.session.currentUser) {
+        req.session.currentGameID = req.params.id;
+        return res.redirect("/game/main");
+    } else res.redirect('/account/index');
 }

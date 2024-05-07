@@ -18,12 +18,12 @@ function getTablesVoleny() {
         const tableList = document.querySelector('#tableDivVoleny ul');
 
         newTables.forEach(table => {
+            const { name, password, id } = table;
+
             const tableButton = document.createElement('button');
             tableButton.textContent = 'Připojit do hry';
             tableButton.classList.add('btn', 'btn-success', 'mx-3');
             const listItem = document.createElement('li');
-        
-            const { name, password } = table;
         
             const nameElement = document.createElement('span');
             nameElement.textContent = name;
@@ -51,14 +51,16 @@ function getTablesVoleny() {
                     document.getElementById('confirmPasswordBtn').onclick = () => {
                         const passwordInput = document.getElementById('passwordInput').value;
                         if (passwordInput === password) {
-                            console.log(`Heslo pro stůl ${table.name} bylo správné.`);
+                            console.log(`Heslo pro stůl ${table.name}, ${table.id} bylo správné.`);
                             $('#passwordModalVoleny').modal('hide');
+                            window.location.href = location.hostname + "/lobby/pripoj/" + id;
                         } else {
                             console.log(`Zadali jste nesprávné heslo pro stůl ${table.name}.`);
                         }
                     };
                 } else {
                     console.log(`Připojuji se k hře na stolu ${table.name}.`);
+                    window.location.href = location.hostname + "/lobby/pripoj/" + id;
                 }
             });
         
