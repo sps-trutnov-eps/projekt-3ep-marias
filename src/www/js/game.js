@@ -7,6 +7,8 @@ let talon = "";
 let flekHra = "konec";
 let flekChallange = "konec";
 let povoleno = false;
+let hracVpravo = 0;
+let hracVlevo = 0;
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -21,8 +23,8 @@ let flekovani = ["Flek", "Reflek", "Tuty", "Boty", "Kalhoty", "Kaiser"];
 let korekce = ["Takovou hru si nemůžeš dovolit", "Ještě máš barvu, nedělej, že nemáš", "Ještě máš trumfa, nedělej, že nemáš"];
 let phaseI = 0;
 // zakázání f12 a reloadu, s preview
-function handleForm(event) { event.preventDefault(); }
-document.onkeydown=function(e){if(!e.target.matches("input")&&!e.target.matches("textarea"))return!1};
+// function handleForm(event) { event.preventDefault(); }
+// document.onkeydown=function(e){if(!e.target.matches("input")&&!e.target.matches("textarea"))return!1};
 
 connect();
 
@@ -67,9 +69,9 @@ function accept(data) {
             fazeVoleneHryaltForhonta(".defense-info");
         }
     }
-    zobrazeniKaret(workdata.playersPacks, "karty");
-    zobrazeniKaret(workdata.table, "odkladaci-misto-karty");
+    zobrazeniHracichKaret();
     logMessage();
+    ZobrazeniHracu();
     
 }
 
@@ -95,12 +97,55 @@ function logMessage(){
     logContent.scrollTop = logContent.scrollHeight;
 }
 
-function zobrazeniKaret(co, kam) {
-    let kartyDiv = document.getElementById(kam);
+function ZobrazeniHracu() {
+    for (let i in workdata.players) {
+        if (user == workdata.players[i]) {
+            document.getElementById("jmeno3").innerHTML = workdata.nicknames[i];
+            document.getElementById("points3").innerHTML = workdata.playersPoints[i];
+            if (workdata.players.length == 2) {
+                if (i == 0) {
+                    hracVpravo = workdata.players[i+1];
+                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
+                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
+                } else {
+                    hracVlevo = workdata.players[i-1];
+                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-1];
+                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-1];
+                }                
+            } else if (workdata.players.length == 3) {
+                if (i == 0) {
+                    hracVpravo = workdata.players[i+1];
+                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
+                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
+                    hracVlevo = workdata.players[i+2];
+                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i+2];
+                    document.getElementById("points1").innerHTML = workdata.playersPoints[i+2];
+                } else if (i == 1) {
+                    hracVpravo = workdata.players[i+1];
+                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
+                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
+                    hracVlevo = workdata.players[i-1];
+                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-1];
+                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-1];
+                } else {
+                    hracVpravo = workdata.players[i-1];
+                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i-1];
+                    document.getElementById("points2").innerHTML = workdata.playersPoints[i-1];
+                    hracVlevo = workdata.players[i-2];
+                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-2];
+                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-2];
+                }       
+            }
+        }
+    }
+}
+
+function zobrazeniHracichKaret() {
+    let kartyDiv = document.getElementById("karty");
     kartyDiv.innerHTML = "";
     if(!workdata.altForhont && user == workdata.players[workdata.forhont] && (workdata.phase == "waiting" || workdata.phase == "picking-trumf")){
-        for (let i in co) {
-            let karta = co[i];
+        for (let i in workdata.playersPacks) {
+            let karta = workdata.playersPacks[i];
             let img = document.createElement('img');
             let src = "";
             if (i > 6){
@@ -141,8 +186,8 @@ function zobrazeniKaret(co, kam) {
             kartyDiv.appendChild(img);
         }
     } else {
-        for (let i in co) {
-            let karta = co[i];
+        for (let i in workdata.playersPacks) {
+            let karta = workdata.playersPacks[i];
             let img = document.createElement('img');
             let src = "";
             
