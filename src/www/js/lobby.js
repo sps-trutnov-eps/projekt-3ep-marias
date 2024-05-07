@@ -53,14 +53,14 @@ function getTablesVoleny() {
                         if (passwordInput === password) {
                             console.log(`Heslo pro stůl ${table.name}, ${table.id} bylo správné.`);
                             $('#passwordModalVoleny').modal('hide');
-                            window.location.href = location.hostname + "/lobby/pripoj/" + id;
+                            window.location.href = "/lobby/pripoj/" + id;
                         } else {
                             console.log(`Zadali jste nesprávné heslo pro stůl ${table.name}.`);
                         }
                     };
                 } else {
                     console.log(`Připojuji se k hře na stolu ${table.name}.`);
-                    window.location.href = location.hostname + "/lobby/pripoj/" + id;
+                    window.location.href = "/lobby/pripoj/" + id;
                 }
             });
         
