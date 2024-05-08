@@ -7,8 +7,8 @@ let talon = "";
 let flekHra = "konec";
 let flekChallange = "konec";
 let povoleno = false;
-let hracVpravo = user;
-let hracVlevo = user;
+let hracVpravo = undefined;
+let hracVlevo = undefined;
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -107,8 +107,8 @@ function zobrazeniHracu() {
         document.getElementById("jmeno3").innerHTML = workdata.nicknames[currentPlayerIndex];
         document.getElementById("points3").innerHTML = workdata.playersPoints[currentPlayerIndex];
         
-        hracVlevo = user;
-        hracVpravo = user;
+        hracVlevo = undefined;
+        hracVpravo = undefined;
         let nextPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
         let prevPlayerIndex = (currentPlayerIndex + numPlayers - 1) % numPlayers;
 
@@ -149,7 +149,7 @@ function zobrazeniTrumfa() {
     Div2.innerHTML = "";
     Div3.innerHTML = "";
 
-    if (workdata.trumf != '' && !workdata.altForhont && workdata.mode != 'b' && workdata.mode != 'd' && hracVlevo != user && hracVpravo != user) {
+    if (workdata.trumf != '' && !workdata.altForhont && workdata.mode != 'b' && workdata.mode != 'd' && hracVlevo != undefined && hracVpravo != undefined) {
         //tvorba img
         let img = document.createElement('img');
         //
@@ -189,100 +189,30 @@ function zobrazeniTrumfa() {
 }
 
 function zobrazeniHlasek() {
-    if (hracVlevo != user && hracVpravo != user && workdata.phase == "playing") {  
-        // načtení a ničení
-        let Hlaska1 = document.getElementById("odkladaci-misto-hlaska1");
-        let Hlaska2 = document.getElementById("odkladaci-misto-hlaska2");
-        let Hlaska3 = document.getElementById("odkladaci-misto-hlaska3");
-        Hlaska1.innerHTML = "";
-        Hlaska2.innerHTML = "";
-        Hlaska3.innerHTML = "";
+    // načtení a ničení
+    let Hlaska1 = document.getElementById("odkladaci-misto-hlaska1");
+    let Hlaska2 = document.getElementById("odkladaci-misto-hlaska2");
+    let Hlaska3 = document.getElementById("odkladaci-misto-hlaska3");
+    Hlaska1.innerHTML = "";
+    Hlaska2.innerHTML = "";
+    Hlaska3.innerHTML = "";
 
-        for (let player in workdata.playersMariages) {
-            for (let i in workdata.playersMariages[player]) {
-                let img = document.createElement('img');
-                
-                switch (workdata.playersMariages[player][i]) {
-                    case "č":
-                        img.src = '/karty/' + workdata.cardStyle + '/Cerv_6.jpg';
-                        break;
-                    case "z":
-                        img.src = '/karty/' + workdata.cardStyle + '/Listy_6.jpg';
-                        break;
-                    case "k":
-                        img.src = '/karty/' + workdata.cardStyle + '/Kule_6.jpg';
-                        break;
-                    case "ž":
-                        img.src = '/karty/' + workdata.cardStyle + '/Zaludy_6.jpg';
-                        break;
-                    default:
-                        break;
-                }
-    
-                img.style.height = "200px";
-
-                switch (workdata.players[player]) {
-                    case user:
-                        Hlaska3.appendChild(img);
-                        break;
-                    case hracVlevo:
-                        Hlaska1.appendChild(img);
-                        break;
-                    case hracVpravo:
-                        Hlaska2.appendChild(img);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-    }
-}
-
-function zobrazeniZahranychKaret() {
-    if (hracVlevo != user && hracVpravo != user && workdata.phase == "playing") {  
-        let kartyDiv = document.getElementById("odkladaci-misto-karty");
-        kartyDiv.innerHTML = "";
-        for (let i in workdata.table) {
-            let karta = workdata.table[i];
+    for (let player in workdata.playersMariages) {
+        for (let i in workdata.playersMariages[player]) {
             let img = document.createElement('img');
-            let src = "";
             
-            switch (karta.colour) {
+            switch (workdata.playersMariages[player][i]) {
                 case "č":
-                    src = '/karty/' + workdata.cardStyle + '/Cerv_';
+                    img.src = '/karty/' + workdata.cardStyle + '/Cerv_6.jpg';
                     break;
                 case "z":
-                    src = '/karty/' + workdata.cardStyle + '/Listy_';
+                    img.src = '/karty/' + workdata.cardStyle + '/Listy_6.jpg';
                     break;
                 case "k":
-                    src = '/karty/' + workdata.cardStyle + '/Kule_';
+                    img.src = '/karty/' + workdata.cardStyle + '/Kule_6.jpg';
                     break;
                 case "ž":
-                    src = '/karty/' + workdata.cardStyle + '/Zaludy_';
-                    break;
-                default:
-                    break;
-            }
-
-            if (karta.value == 14) {
-                src += "4.jpg";
-            } else if (karta.value == 15) {
-                src += "8.jpg";
-            } else {
-                src += String(karta.value - 6) + ".jpg";
-            }
-            img.src = src;
-
-            switch (workdata.players[workdata.tableOrder[i]]) {
-                case user:
-                    img.id = "Dole";
-                    break;
-                case hracVlevo:
-                    img.id = "Vlevo";
-                    break;
-                case hracVpravo:
-                    img.id = "Vpravo";
+                    img.src = '/karty/' + workdata.cardStyle + '/Zaludy_6.jpg';
                     break;
                 default:
                     break;
@@ -290,10 +220,79 @@ function zobrazeniZahranychKaret() {
 
             img.style.height = "200px";
 
-            kartyDiv.appendChild(img);
+            switch (workdata.players[player]) {
+                case user:
+                    Hlaska3.appendChild(img);
+                    break;
+                case hracVlevo:
+                    Hlaska1.appendChild(img);
+                    break;
+                case hracVpravo:
+                    Hlaska2.appendChild(img);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
+
+
+function zobrazeniZahranychKaret() {
+    let kartyDiv = document.getElementById("odkladaci-misto-karty");
+    kartyDiv.innerHTML = "";
+    for (let i in workdata.table) {
+        let karta = workdata.table[i];
+        let img = document.createElement('img');
+        let src = "";
+        
+        switch (karta.colour) {
+            case "č":
+                src = '/karty/' + workdata.cardStyle + '/Cerv_';
+                break;
+            case "z":
+                src = '/karty/' + workdata.cardStyle + '/Listy_';
+                break;
+            case "k":
+                src = '/karty/' + workdata.cardStyle + '/Kule_';
+                break;
+            case "ž":
+                src = '/karty/' + workdata.cardStyle + '/Zaludy_';
+                break;
+            default:
+                break;
+        }
+
+        if (karta.value == 14) {
+            src += "4.jpg";
+        } else if (karta.value == 15) {
+            src += "8.jpg";
+        } else {
+            src += String(karta.value - 6) + ".jpg";
+        }
+        img.src = src;
+
+        switch (workdata.players[workdata.tableOrder[i]]) {
+            case user:
+                img.id = "Dole";
+                break;
+            case hracVlevo:
+                img.id = "Vlevo";
+                break;
+            case hracVpravo:
+                img.id = "Vpravo";
+                break;
+            default:
+                img.id = "Neoznaceno";
+                break
+        }
+
+        img.style.height = "200px";
+
+        kartyDiv.appendChild(img);
+    }
+}
+
 
 function zobrazeniHracichKaret() {
     let kartyDiv = document.getElementById("karty");
