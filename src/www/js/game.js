@@ -490,7 +490,13 @@ function sendData(akce, data){
                     }
                 }
             } else if (workdata.phase == "playing"){
-                socket.send(game + ";" + "play;" + data); 
+                if(workdata.table.length != 3) {
+                    socket.send(game + ";" + "play;" + data); 
+                } else {
+                    setTimeout(() => {
+                        socket.send(game + ";" + "end");
+                      }, 3600);
+                }
             } 
         }
         else if (akce == "tlacitko"){
