@@ -44,7 +44,6 @@ function connect() {
 
 function accept(data) {
     workdata = JSON.parse(data);
-    game = workdata.id;
     console.log("Přijatá data: " + workdata);
     if(!workdata.altForhont) {
         if(user == workdata.players[workdata.forhont]) {
@@ -149,7 +148,7 @@ function zobrazeniTrumfa() {
     Div2.innerHTML = "";
     Div3.innerHTML = "";
 
-    if (workdata.trumf != '' && !workdata.altForhont && workdata.mode == 'h' && hracVlevo != user && hracVpravo != user) {
+    if (workdata.trumf != '' && !workdata.altForhont && workdata.mode != 'b' && workdata.mode != 'd' && hracVlevo != user && hracVpravo != user) {
         //tvorba img
         let img = document.createElement('img');
         //
@@ -170,7 +169,7 @@ function zobrazeniTrumfa() {
                 break;
         }
 
-        img.style.height = '50px';
+        img.style.height = '25px';
 
         switch (workdata.players[workdata.forhont]) {
             case hracVlevo:
@@ -189,7 +188,7 @@ function zobrazeniTrumfa() {
 }
 
 function zobrazeniZahranychKaret() {
-    if (hracVlevo != user && hracVravo != user && workdata.phase == "playing") {  
+    if (hracVlevo != user && hracVpravo != user && workdata.phase == "playing") {  
         let kartyDiv = document.getElementById("odkladaci-misto-karty");
         kartyDiv.innerHTML = "";
         for (let i in workdata.table) {
