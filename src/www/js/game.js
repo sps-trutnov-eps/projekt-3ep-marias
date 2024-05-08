@@ -2,13 +2,13 @@
 let socket;
 let user = "";
 let workdata;
-let game = 0;
+let game = 2;
 let talon = ""; 
 let flekHra = "konec";
 let flekChallange = "konec";
 let povoleno = false;
-let hracVpravo = 0;
-let hracVlevo = 0;
+let hracVpravo = user;
+let hracVlevo = user;
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -44,6 +44,7 @@ function connect() {
 
 function accept(data) {
     workdata = JSON.parse(data);
+    game = workdata.id;
     console.log("Přijatá data: " + workdata);
     if(!workdata.altForhont) {
         if(user == workdata.players[workdata.forhont]) {
@@ -69,9 +70,10 @@ function accept(data) {
             fazeVoleneHryaltForhonta(".defense-info");
         }
     }
+    zobrazeniHracu();
+
     zobrazeniHracichKaret();
     logMessage();
-    ZobrazeniHracu();
     
 }
 
@@ -97,45 +99,99 @@ function logMessage(){
     logContent.scrollTop = logContent.scrollHeight;
 }
 
-function ZobrazeniHracu() {
-    for (let i in workdata.players) {
-        if (user == workdata.players[i]) {
-            document.getElementById("jmeno3").innerHTML = workdata.nicknames[i];
-            document.getElementById("points3").innerHTML = workdata.playersPoints[i];
-            if (workdata.players.length == 2) {
-                if (i == 0) {
-                    hracVpravo = workdata.players[i+1];
-                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
-                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
-                } else {
-                    hracVlevo = workdata.players[i-1];
-                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-1];
-                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-1];
-                }                
-            } else if (workdata.players.length == 3) {
-                if (i == 0) {
-                    hracVpravo = workdata.players[i+1];
-                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
-                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
-                    hracVlevo = workdata.players[i+2];
-                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i+2];
-                    document.getElementById("points1").innerHTML = workdata.playersPoints[i+2];
-                } else if (i == 1) {
-                    hracVpravo = workdata.players[i+1];
-                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
-                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
-                    hracVlevo = workdata.players[i-1];
-                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-1];
-                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-1];
-                } else {
-                    hracVpravo = workdata.players[i-1];
-                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i-1];
-                    document.getElementById("points2").innerHTML = workdata.playersPoints[i-1];
-                    hracVlevo = workdata.players[i-2];
-                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-2];
-                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-2];
-                }       
+function zobrazeniHracu() {
+    const numPlayers = workdata.players.length;
+    const currentPlayerIndex = workdata.players.findIndex(player => player === user);
+
+    if (currentPlayerIndex !== -1) {
+        document.getElementById("jmeno3").innerHTML = workdata.nicknames[currentPlayerIndex];
+        document.getElementById("points3").innerHTML = workdata.playersPoints[currentPlayerIndex];
+        
+        hracVlevo = user;
+        hracVpravo = user;
+        let nextPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
+        let prevPlayerIndex = (currentPlayerIndex + numPlayers - 1) % numPlayers;
+
+        if (numPlayers === 3) {
+            hracVpravo = workdata.players[prevPlayerIndex];
+            document.getElementById("jmeno2").innerHTML = workdata.nicknames[prevPlayerIndex];
+            document.getElementById("points2").innerHTML = workdata.playersPoints[prevPlayerIndex];
+            hracVlevo = workdata.players[nextPlayerIndex];
+            document.getElementById("jmeno1").innerHTML = workdata.nicknames[nextPlayerIndex];
+            document.getElementById("points1").innerHTML = workdata.playersPoints[nextPlayerIndex];
+        } else if (numPlayers === 2 && currentPlayerIndex !== 1) {
+            document.getElementById("jmeno2").innerHTML = "Jmeno obránce";
+            document.getElementById("points2").innerHTML = "0";
+            hracVlevo = workdata.players[nextPlayerIndex];
+            document.getElementById("jmeno1").innerHTML = workdata.nicknames[nextPlayerIndex];
+            document.getElementById("points1").innerHTML = workdata.playersPoints[nextPlayerIndex];
+        } else if (numPlayers === 2 && currentPlayerIndex === 1) {
+            document.getElementById("jmeno1").innerHTML = "Jmeno obránce";
+            document.getElementById("points1").innerHTML = "0";
+            hracVpravo = workdata.players[nextPlayerIndex];
+            document.getElementById("jmeno2").innerHTML = workdata.nicknames[nextPlayerIndex];
+            document.getElementById("points2").innerHTML = workdata.playersPoints[nextPlayerIndex];
+        } else {
+            document.getElementById("jmeno2").innerHTML = "Jmeno obránce";
+            document.getElementById("points2").innerHTML = "0";
+            document.getElementById("jmeno1").innerHTML = "Jmeno obránce";
+            document.getElementById("points1").innerHTML = "0";
+        }
+
+    }
+
+}
+
+function zobrazeniZahranychKaret() {
+    if (hracVlevo != user && hracVravo != user) {  
+        let kartyDiv = document.getElementById("odkladaci-misto-karty");
+        kartyDiv.innerHTML = "";
+        for (let i in workdata.table) {
+            let karta = workdata.table[i];
+            let img = document.createElement('img');
+            let src = "";
+            
+            switch (karta.colour) {
+                case "č":
+                    src = '/karty/' + workdata.cardStyle + '/Cerv_';
+                    break;
+                case "z":
+                    src = '/karty/' + workdata.cardStyle + '/Listy_';
+                    break;
+                case "k":
+                    src = '/karty/' + workdata.cardStyle + '/Kule_';
+                    break;
+                case "ž":
+                    src = '/karty/' + workdata.cardStyle + '/Zaludy_';
+                    break;
+                default:
+                    break;
             }
+
+            if (karta.value == 14) {
+                src += "4.jpg";
+            } else if (karta.value == 15) {
+                src += "8.jpg";
+            } else {
+                src += String(karta.value - 6) + ".jpg";
+            }
+            img.src = src;
+
+            switch (workdata.players[workdata.tableOrder[i]]) {
+                case user:
+                    img.id = "dole";
+                    break;
+                case hracVlevo:
+                    img.id = "Vlevo";
+                    break;
+                case hracVpravo:
+                    img.id = "Vpravo";
+                    break;
+                default:
+                    break;
+            }
+            
+            kartyDiv.appendChild(img);
         }
     }
 }
@@ -155,16 +211,16 @@ function zobrazeniHracichKaret() {
             } else {
                 switch (karta.colour) {
                     case "č":
-                        src = '/karty/Bohemian/Cerv_';
+                        src = '/karty/' + workdata.cardStyle + '/Cerv_';
                         break;
                     case "z":
-                        src = '/karty/Bohemian/Listy_';
+                        src = '/karty/' + workdata.cardStyle + '/Listy_';
                         break;
                     case "k":
-                        src = '/karty/Bohemian/Kule_';
+                        src = '/karty/' + workdata.cardStyle + '/Kule_';
                         break;
                     case "ž":
-                        src = '/karty/Bohemian/Zaludy_';
+                        src = '/karty/' + workdata.cardStyle + '/Zaludy_';
                         break;
                     default:
                         break;
@@ -193,16 +249,16 @@ function zobrazeniHracichKaret() {
             
             switch (karta.colour) {
                 case "č":
-                    src = '/karty/Bohemian/Cerv_';
+                    src = '/karty/' + workdata.cardStyle + '/Cerv_';
                     break;
                 case "z":
-                    src = '/karty/Bohemian/Listy_';
+                    src = '/karty/' + workdata.cardStyle + '/Listy_';
                     break;
                 case "k":
-                    src = '/karty/Bohemian/Kule_';
+                    src = '/karty/' + workdata.cardStyle + '/Kule_';
                     break;
                 case "ž":
-                    src = '/karty/Bohemian/Zaludy_';
+                    src = '/karty/' + workdata.cardStyle + '/Zaludy_';
                     break;
                 default:
                     break;
@@ -386,11 +442,11 @@ function sendData(akce, data){
         }
         else if (akce == "tlacitko"){
             if (workdata.phase == "choosing-game" && (data == 'h' || data == 'b' || data == 'd' )){
-               if(workdata.game == ""){
+               if(workdata.mode == ""){
                     socket.send(game + ";" + "game;" + data);
-               } else if (workdata.game == "h" && data != 'h') {
+               } else if (workdata.mode == "h" && data != 'h') {
                     socket.send(game + ";" + "game;" + data);
-               } else if ( workdata.game == "b" && data == 'd') {
+               } else if ( workdata.mode == "b" && data == 'd') {
                     socket.send(game + ";" + "game;" + data);
                }
             } else if (workdata.phase == "ack" && (data == 'dobra' || data == 'spatna')){
