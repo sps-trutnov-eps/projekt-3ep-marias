@@ -73,6 +73,7 @@ function accept(data) {
     zobrazeniHracichKaret();
     zobrazeniZahranychKaret();
     zobrazeniTrumfa();
+    zobrazeniHlasek(); 
     logMessage();
 }
 
@@ -185,6 +186,57 @@ function zobrazeniTrumfa() {
                 break;
         }
     } 
+}
+
+function zobrazeniHlasek() {
+    if (hracVlevo != user && hracVpravo != user && workdata.phase == "playing") {  
+        // načtení a ničení
+        let Hlaska1 = document.getElementById("odkladaci-misto-hlaska1");
+        let Hlaska2 = document.getElementById("odkladaci-misto-hlaska2");
+        let Hlaska3 = document.getElementById("odkladaci-misto-hlaska3");
+        Hlaska1.innerHTML = "";
+        Hlaska2.innerHTML = "";
+        Hlaska3.innerHTML = "";
+
+        for (let player in workdata.playersMariages) {
+            for (let i in workdata.playersMariages[player]) {
+                let img = document.createElement('img');
+                
+                switch (workdata.playersMariages[player][i]) {
+                    case "č":
+                        img.src = '/karty/' + workdata.cardStyle + '/Cerv_6.jpg';
+                        break;
+                    case "z":
+                        img.src = '/karty/' + workdata.cardStyle + '/Listy_6.jpg';
+                        break;
+                    case "k":
+                        img.src = '/karty/' + workdata.cardStyle + '/Kule_6.jpg';
+                        break;
+                    case "ž":
+                        img.src = '/karty/' + workdata.cardStyle + '/Zaludy_6.jpg';
+                        break;
+                    default:
+                        break;
+                }
+    
+                img.style.height = "200px";
+
+                switch (workdata.players[player]) {
+                    case user:
+                        Hlaska3.appendChild(img);
+                        break;
+                    case hracVlevo:
+                        Hlaska1.appendChild(img);
+                        break;
+                    case hracVpravo:
+                        Hlaska2.appendChild(img);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 }
 
 function zobrazeniZahranychKaret() {
