@@ -1,3 +1,5 @@
+const { words } = require("lodash");
+
 // Klientský kód
 let socket;
 let user = "";
@@ -71,7 +73,7 @@ function accept(data) {
         }
     }
     zobrazeniHracu();
-
+    zobrazeniZahranychKaret();
     zobrazeniHracichKaret();
     logMessage();
     
@@ -143,7 +145,7 @@ function zobrazeniHracu() {
 }
 
 function zobrazeniZahranychKaret() {
-    if (hracVlevo != user && hracVravo != user) {  
+    if (hracVlevo != user && hracVravo != user && workdata.phase == "playing") {  
         let kartyDiv = document.getElementById("odkladaci-misto-karty");
         kartyDiv.innerHTML = "";
         for (let i in workdata.table) {
