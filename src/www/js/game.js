@@ -1,10 +1,8 @@
-const { words } = require("lodash");
-
 // Klientský kód
 let socket;
 let user = "";
 let workdata;
-let game = 2;
+let game = 0;
 let talon = ""; 
 let flekHra = "konec";
 let flekChallange = "konec";
@@ -73,10 +71,10 @@ function accept(data) {
         }
     }
     zobrazeniHracu();
-    zobrazeniZahranychKaret();
     zobrazeniHracichKaret();
+    zobrazeniZahranychKaret();
+    zobrazeniTrumfa();
     logMessage();
-    
 }
 
 function logMessage(){
@@ -139,9 +137,55 @@ function zobrazeniHracu() {
             document.getElementById("jmeno1").innerHTML = "Jmeno obránce";
             document.getElementById("points1").innerHTML = "0";
         }
-
     }
 
+}
+
+function zobrazeniTrumfa() {
+    let Div1 = document.getElementById("Trumf1");
+    let Div2 = document.getElementById("Trumf2");
+    let Div3 = document.getElementById("Trumf3");
+    Div1.innerHTML = "";
+    Div2.innerHTML = "";
+    Div3.innerHTML = "";
+
+    if (workdata.trumf != '' && !workdata.altForhont && workdata.mode == 'h' && hracVlevo != user && hracVpravo != user) {
+        //tvorba img
+        let img = document.createElement('img');
+        //
+        switch (workdata.trumf) {
+            case "z":
+                img.src = '/karty/Types/leaf.png';
+                break;
+            case "č":
+                img.src = '/karty/Types/hearth.png';
+                break;
+            case "k":
+                img.src = '/karty/Types/bell.png';
+                break;
+            case "ž":
+                img.src = '/karty/Types/nut.png';
+                break;
+            default:
+                break;
+        }
+
+        img.style.height = '50px';
+
+        switch (workdata.players[workdata.forhont]) {
+            case hracVlevo:
+                Div1.appendChild(img);
+                break;
+            case hracVpravo:
+                Div2.appendChild(img);
+                break;
+            case user:
+                Div3.appendChild(img);
+                break;
+            default:
+                break;
+        }
+    } 
 }
 
 function zobrazeniZahranychKaret() {
@@ -192,7 +236,9 @@ function zobrazeniZahranychKaret() {
                 default:
                     break;
             }
-            
+
+            img.style.height = "200px";
+
             kartyDiv.appendChild(img);
         }
     }
@@ -241,6 +287,9 @@ function zobrazeniHracichKaret() {
             img.onclick = function() {
                 sendData("karty", i);
             };
+            
+            img.style.height = "200px";
+
             kartyDiv.appendChild(img);
         }
     } else {
@@ -278,6 +327,9 @@ function zobrazeniHracichKaret() {
             img.onclick = function() {
                 sendData("karty", i);
             };
+
+            img.style.height = "200px";
+
             kartyDiv.appendChild(img);
         }
     }
