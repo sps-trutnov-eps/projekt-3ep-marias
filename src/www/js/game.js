@@ -224,7 +224,7 @@ function zobrazeniZahranychKaret() {
 
             switch (workdata.players[workdata.tableOrder[i]]) {
                 case user:
-                    img.id = "dole";
+                    img.id = "Dole";
                     break;
                 case hracVlevo:
                     img.id = "Vlevo";
@@ -403,6 +403,12 @@ function fazeVoleneHry(classRoleHrace) {
         if(window.getComputedStyle(document.getElementById("karty")).getPropertyValue("margin-right") === "320px"){
             document.getElementById("karty").style.marginRight = "11px";
         }
+
+        if (workdata.table.length == 3){
+            setTimeout(() => {
+                socket.send(game + ";" + "end");
+              }, 3600);
+        }
     }
 }
 
@@ -448,6 +454,12 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
         if(window.getComputedStyle(document.getElementById("karty")).getPropertyValue("margin-right") === "320px"){
             document.getElementById("karty").style.marginRight = "11px";
         }
+
+        if (workdata.table.length == 3){
+            setTimeout(() => {
+                socket.send(game + ";" + "end");
+              }, 3600);
+        }
     }
 }
 
@@ -456,7 +468,7 @@ function sendData(akce, data){
     // else {phaseI = 0;}    
     // socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
     let dif = document.getElementById("info");
-    if (user == workdata.players[workdata.turn])
+    if (user == workdata.players[workdata.turn] && workdata.table.length != 3)
     {
         if (akce == "karty"){
             if (workdata.phase == "picking-trumf"){
@@ -490,13 +502,7 @@ function sendData(akce, data){
                     }
                 }
             } else if (workdata.phase == "playing"){
-                if(workdata.table.length != 3) {
-                    socket.send(game + ";" + "play;" + data); 
-                } else {
-                    setTimeout(() => {
-                        socket.send(game + ";" + "end");
-                      }, 3600);
-                }
+                    socket.send(game + ";" + "play;" + workdata.players[workdata.turn] + ";" + data);
             } 
         }
         else if (akce == "tlacitko"){
