@@ -7,8 +7,8 @@ let talon = "";
 let flekHra = "konec";
 let flekChallange = "konec";
 let povoleno = false;
-let hracVpravo = 0;
-let hracVlevo = 0;
+let hracVpravo = undefined;
+let hracVlevo = undefined;
 
 let talonB = document.getElementById("talon");
 let barvaB = document.getElementById("barva");
@@ -69,10 +69,12 @@ function accept(data) {
             fazeVoleneHryaltForhonta(".defense-info");
         }
     }
+    zobrazeniHracu();
     zobrazeniHracichKaret();
+    zobrazeniZahranychKaret();
+    zobrazeniTrumfa();
+    zobrazeniHlasek(); 
     logMessage();
-    ZobrazeniHracu();
-    
 }
 
 function logMessage(){
@@ -97,48 +99,200 @@ function logMessage(){
     logContent.scrollTop = logContent.scrollHeight;
 }
 
-function ZobrazeniHracu() {
-    for (let i in workdata.players) {
-        if (user == workdata.players[i]) {
-            document.getElementById("jmeno3").innerHTML = workdata.nicknames[i];
-            document.getElementById("points3").innerHTML = workdata.playersPoints[i];
-            if (workdata.players.length == 2) {
-                if (i == 0) {
-                    hracVpravo = workdata.players[i+1];
-                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
-                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
-                } else {
-                    hracVlevo = workdata.players[i-1];
-                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-1];
-                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-1];
-                }                
-            } else if (workdata.players.length == 3) {
-                if (i == 0) {
-                    hracVpravo = workdata.players[i+1];
-                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
-                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
-                    hracVlevo = workdata.players[i+2];
-                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i+2];
-                    document.getElementById("points1").innerHTML = workdata.playersPoints[i+2];
-                } else if (i == 1) {
-                    hracVpravo = workdata.players[i+1];
-                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i+1];
-                    document.getElementById("points2").innerHTML = workdata.playersPoints[i+1];
-                    hracVlevo = workdata.players[i-1];
-                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-1];
-                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-1];
-                } else {
-                    hracVpravo = workdata.players[i-1];
-                    document.getElementById("jmeno2").innerHTML = workdata.nicknames[i-1];
-                    document.getElementById("points2").innerHTML = workdata.playersPoints[i-1];
-                    hracVlevo = workdata.players[i-2];
-                    document.getElementById("jmeno1").innerHTML = workdata.nicknames[i-2];
-                    document.getElementById("points1").innerHTML = workdata.playersPoints[i-2];
-                }       
+function zobrazeniHracu() {
+    const numPlayers = workdata.players.length;
+    const currentPlayerIndex = workdata.players.findIndex(player => player === user);
+
+    if (currentPlayerIndex !== -1) {
+        document.getElementById("jmeno3").innerHTML = workdata.nicknames[currentPlayerIndex];
+        document.getElementById("points3").innerHTML = workdata.playersPoints[currentPlayerIndex];
+        
+        hracVlevo = undefined;
+        hracVpravo = undefined;
+        let nextPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
+        let prevPlayerIndex = (currentPlayerIndex + numPlayers - 1) % numPlayers;
+
+        if (numPlayers === 3) {
+            hracVpravo = workdata.players[prevPlayerIndex];
+            document.getElementById("jmeno2").innerHTML = workdata.nicknames[prevPlayerIndex];
+            document.getElementById("points2").innerHTML = workdata.playersPoints[prevPlayerIndex];
+            hracVlevo = workdata.players[nextPlayerIndex];
+            document.getElementById("jmeno1").innerHTML = workdata.nicknames[nextPlayerIndex];
+            document.getElementById("points1").innerHTML = workdata.playersPoints[nextPlayerIndex];
+        } else if (numPlayers === 2 && currentPlayerIndex !== 1) {
+            document.getElementById("jmeno2").innerHTML = "Jmeno obránce";
+            document.getElementById("points2").innerHTML = "0";
+            hracVlevo = workdata.players[nextPlayerIndex];
+            document.getElementById("jmeno1").innerHTML = workdata.nicknames[nextPlayerIndex];
+            document.getElementById("points1").innerHTML = workdata.playersPoints[nextPlayerIndex];
+        } else if (numPlayers === 2 && currentPlayerIndex === 1) {
+            document.getElementById("jmeno1").innerHTML = "Jmeno obránce";
+            document.getElementById("points1").innerHTML = "0";
+            hracVpravo = workdata.players[nextPlayerIndex];
+            document.getElementById("jmeno2").innerHTML = workdata.nicknames[nextPlayerIndex];
+            document.getElementById("points2").innerHTML = workdata.playersPoints[nextPlayerIndex];
+        } else {
+            document.getElementById("jmeno2").innerHTML = "Jmeno obránce";
+            document.getElementById("points2").innerHTML = "0";
+            document.getElementById("jmeno1").innerHTML = "Jmeno obránce";
+            document.getElementById("points1").innerHTML = "0";
+        }
+    }
+
+}
+
+function zobrazeniTrumfa() {
+    let Div1 = document.getElementById("Trumf1");
+    let Div2 = document.getElementById("Trumf2");
+    let Div3 = document.getElementById("Trumf3");
+    Div1.innerHTML = "";
+    Div2.innerHTML = "";
+    Div3.innerHTML = "";
+
+    if (workdata.trumf != '' && !workdata.altForhont && workdata.mode != 'b' && workdata.mode != 'd' && hracVlevo != undefined && hracVpravo != undefined) {
+        //tvorba img
+        let img = document.createElement('img');
+        //
+        switch (workdata.trumf) {
+            case "z":
+                img.src = '/karty/Types/leaf.png';
+                break;
+            case "č":
+                img.src = '/karty/Types/hearth.png';
+                break;
+            case "k":
+                img.src = '/karty/Types/bell.png';
+                break;
+            case "ž":
+                img.src = '/karty/Types/nut.png';
+                break;
+            default:
+                break;
+        }
+
+        img.style.height = '25px';
+
+        switch (workdata.players[workdata.forhont]) {
+            case hracVlevo:
+                Div1.appendChild(img);
+                break;
+            case hracVpravo:
+                Div2.appendChild(img);
+                break;
+            case user:
+                Div3.appendChild(img);
+                break;
+            default:
+                break;
+        }
+    } 
+}
+
+function zobrazeniHlasek() {
+    // načtení a ničení
+    let Hlaska1 = document.getElementById("odkladaci-misto-hlaska1");
+    let Hlaska2 = document.getElementById("odkladaci-misto-hlaska2");
+    let Hlaska3 = document.getElementById("odkladaci-misto-hlaska3");
+    Hlaska1.innerHTML = "";
+    Hlaska2.innerHTML = "";
+    Hlaska3.innerHTML = "";
+
+    for (let player in workdata.playersMariages) {
+        for (let i in workdata.playersMariages[player]) {
+            let img = document.createElement('img');
+            
+            switch (workdata.playersMariages[player][i]) {
+                case "č":
+                    img.src = '/karty/' + workdata.cardStyle + '/Cerv_6.jpg';
+                    break;
+                case "z":
+                    img.src = '/karty/' + workdata.cardStyle + '/Listy_6.jpg';
+                    break;
+                case "k":
+                    img.src = '/karty/' + workdata.cardStyle + '/Kule_6.jpg';
+                    break;
+                case "ž":
+                    img.src = '/karty/' + workdata.cardStyle + '/Zaludy_6.jpg';
+                    break;
+                default:
+                    break;
+            }
+
+            img.style.height = "200px";
+
+            switch (workdata.players[player]) {
+                case user:
+                    Hlaska3.appendChild(img);
+                    break;
+                case hracVlevo:
+                    Hlaska1.appendChild(img);
+                    break;
+                case hracVpravo:
+                    Hlaska2.appendChild(img);
+                    break;
+                default:
+                    break;
             }
         }
     }
 }
+
+
+function zobrazeniZahranychKaret() {
+    let kartyDiv = document.getElementById("odkladaci-misto-karty");
+    kartyDiv.innerHTML = "";
+    for (let i in workdata.table) {
+        let karta = workdata.table[i];
+        let img = document.createElement('img');
+        let src = "";
+        
+        switch (karta.colour) {
+            case "č":
+                src = '/karty/' + workdata.cardStyle + '/Cerv_';
+                break;
+            case "z":
+                src = '/karty/' + workdata.cardStyle + '/Listy_';
+                break;
+            case "k":
+                src = '/karty/' + workdata.cardStyle + '/Kule_';
+                break;
+            case "ž":
+                src = '/karty/' + workdata.cardStyle + '/Zaludy_';
+                break;
+            default:
+                break;
+        }
+
+        if (karta.value == 14) {
+            src += "4.jpg";
+        } else if (karta.value == 15) {
+            src += "8.jpg";
+        } else {
+            src += String(karta.value - 6) + ".jpg";
+        }
+        img.src = src;
+
+        switch (workdata.players[workdata.tableOrder[i]]) {
+            case user:
+                img.id = "Dole";
+                break;
+            case hracVlevo:
+                img.id = "Vlevo";
+                break;
+            case hracVpravo:
+                img.id = "Vpravo";
+                break;
+            default:
+                img.id = "Neoznaceno";
+                break
+        }
+
+        img.style.height = "200px";
+
+        kartyDiv.appendChild(img);
+    }
+}
+
 
 function zobrazeniHracichKaret() {
     let kartyDiv = document.getElementById("karty");
@@ -155,16 +309,16 @@ function zobrazeniHracichKaret() {
             } else {
                 switch (karta.colour) {
                     case "č":
-                        src = '/karty/Bohemian/Cerv_';
+                        src = '/karty/' + workdata.cardStyle + '/Cerv_';
                         break;
                     case "z":
-                        src = '/karty/Bohemian/Listy_';
+                        src = '/karty/' + workdata.cardStyle + '/Listy_';
                         break;
                     case "k":
-                        src = '/karty/Bohemian/Kule_';
+                        src = '/karty/' + workdata.cardStyle + '/Kule_';
                         break;
                     case "ž":
-                        src = '/karty/Bohemian/Zaludy_';
+                        src = '/karty/' + workdata.cardStyle + '/Zaludy_';
                         break;
                     default:
                         break;
@@ -183,6 +337,9 @@ function zobrazeniHracichKaret() {
             img.onclick = function() {
                 sendData("karty", i);
             };
+            
+            img.style.height = "200px";
+
             kartyDiv.appendChild(img);
         }
     } else {
@@ -193,16 +350,16 @@ function zobrazeniHracichKaret() {
             
             switch (karta.colour) {
                 case "č":
-                    src = '/karty/Bohemian/Cerv_';
+                    src = '/karty/' + workdata.cardStyle + '/Cerv_';
                     break;
                 case "z":
-                    src = '/karty/Bohemian/Listy_';
+                    src = '/karty/' + workdata.cardStyle + '/Listy_';
                     break;
                 case "k":
-                    src = '/karty/Bohemian/Kule_';
+                    src = '/karty/' + workdata.cardStyle + '/Kule_';
                     break;
                 case "ž":
-                    src = '/karty/Bohemian/Zaludy_';
+                    src = '/karty/' + workdata.cardStyle + '/Zaludy_';
                     break;
                 default:
                     break;
@@ -220,6 +377,9 @@ function zobrazeniHracichKaret() {
             img.onclick = function() {
                 sendData("karty", i);
             };
+
+            img.style.height = "200px";
+
             kartyDiv.appendChild(img);
         }
     }
@@ -294,6 +454,12 @@ function fazeVoleneHry(classRoleHrace) {
         if(window.getComputedStyle(document.getElementById("karty")).getPropertyValue("margin-right") === "320px"){
             document.getElementById("karty").style.marginRight = "11px";
         }
+
+        if (workdata.table.length == 3){
+            setTimeout(() => {
+                socket.send(game + ";" + "end");
+              }, 3600);
+        }
     }
 }
 
@@ -339,6 +505,12 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
         if(window.getComputedStyle(document.getElementById("karty")).getPropertyValue("margin-right") === "320px"){
             document.getElementById("karty").style.marginRight = "11px";
         }
+
+        if (workdata.table.length == 3){
+            setTimeout(() => {
+                socket.send(game + ";" + "end");
+              }, 3600);
+        }
     }
 }
 
@@ -347,7 +519,7 @@ function sendData(akce, data){
     // else {phaseI = 0;}    
     // socket.send(game + ";" + "skipTo;" + gamePhase[phaseI]);
     let dif = document.getElementById("info");
-    if (user == workdata.players[workdata.turn])
+    if (user == workdata.players[workdata.turn] && workdata.table.length != 3)
     {
         if (akce == "karty"){
             if (workdata.phase == "picking-trumf"){
@@ -381,16 +553,16 @@ function sendData(akce, data){
                     }
                 }
             } else if (workdata.phase == "playing"){
-                socket.send(game + ";" + "play;" + data); 
+                    socket.send(game + ";" + "play;" + workdata.players[workdata.turn] + ";" + data);
             } 
         }
         else if (akce == "tlacitko"){
             if (workdata.phase == "choosing-game" && (data == 'h' || data == 'b' || data == 'd' )){
-               if(workdata.game == ""){
+               if(workdata.mode == ""){
                     socket.send(game + ";" + "game;" + data);
-               } else if (workdata.game == "h" && data != 'h') {
+               } else if (workdata.mode == "h" && data != 'h') {
                     socket.send(game + ";" + "game;" + data);
-               } else if ( workdata.game == "b" && data == 'd') {
+               } else if ( workdata.mode == "b" && data == 'd') {
                     socket.send(game + ";" + "game;" + data);
                }
             } else if (workdata.phase == "ack" && (data == 'dobra' || data == 'spatna')){
