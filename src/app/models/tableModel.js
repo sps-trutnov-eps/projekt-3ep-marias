@@ -696,8 +696,8 @@ exports.playCard = (gameID, player, cardIndex) => {
                 game.tableOrder.push(playerIndex);
                 if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                 game.turn = (game.turn + 1) % game.players.length;
-            } else if (colour) game.result = "Ještě máš barvu, nedělej, že nemáš";
-            else if (trumf) game.result = "Ještě máš trumfa, nedělej, že nemáš";
+            } else if (trumf) game.result = "Ještě máš trumfa, nedělej, že nemáš";
+            else if (colour) game.result = "Ještě máš barvu, nedělej, že nemáš";
         }
     }
 
