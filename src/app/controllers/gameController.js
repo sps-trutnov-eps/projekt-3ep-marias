@@ -13,16 +13,15 @@ exports.main = (req, res) => {
 
 exports.connect = (client, req) => {
     if (req.session.currentUser) {
-        console.log("pripojuji");
         tableModel.addPlayer(req.session.currentGameID, req.session.currentUser, req.session.currentNickname, client);
-        client.send(JSON.stringify(req.session.currentUser + ";" + "1"));
-        update();
+        client.send(JSON.stringify(req.session.currentUser + ";" + req.session.currentGameID));
+        update(req.session.currentGameID);
     }
 }
 
 exports.disconnect = (client, req) => {
     tableModel.removePlayer(req.session.currentGameID, req.session.currentUser, client);
-    update(1);
+    update(req.session.currentGameID);
 }
 
 exports.resolve = (client, event) => {
@@ -55,7 +54,7 @@ exports.resolve = (client, event) => {
         /*!tableModel.checkEnd(game);! - nehotovo*/
     }
         
-    //this.sortCards(1, true);
+    //this.sortCards(game, true);
     update(game);
 }
 
@@ -80,8 +79,7 @@ exports.recollectCards = (req, res) => {
 }
 
 update = (gameID) => {
-    let game = tableModel.getGame(1);
-
+    let game = tableModel.getGame(gameID);
     for (let i = 0 ; i < game.clients.length; i++){
         let gameCopy = copyObj(game);
         gameCopy.playersPacks = game.playersPacks[i];

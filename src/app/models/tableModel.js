@@ -631,7 +631,7 @@ exports.playCard = (gameID, player, cardIndex) => {
         else if (playedCard.colour == game.trumf){
             let colour = false;
             for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
-                if (game.playersPacks[playerIndex][i] == game.table[0].colour) colour = true;
+                if (game.playersPacks[playerIndex][i].colour == game.table[0].colour) colour = true;
             }
             if (!colour){
                 // nejsilnější karta na stole
@@ -687,7 +687,7 @@ exports.playCard = (gameID, player, cardIndex) => {
 
             let colour = false;
             for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
-                if (game.playersPacks[playerIndex][i].colour == game.table[1]) colour = true;
+                if (game.playersPacks[playerIndex][i].colour == game.table[1].colour) colour = true;
             }
 
             if (!trumf && !colour){
@@ -696,8 +696,8 @@ exports.playCard = (gameID, player, cardIndex) => {
                 game.tableOrder.push(playerIndex);
                 if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                 game.turn = (game.turn + 1) % game.players.length;
-            } else if (trumf) game.result = "Ještě máš trumfa, nedělej, že nemáš";
-            else if (colour) game.result = "Ještě máš barvu, nedělej, že nemáš";
+            } else if (colour) game.result = "Ještě máš barvu, nedělej, že nemáš";
+            else if (trumf) game.result = "Ještě máš trumfa, nedělej, že nemáš";
         }
     }
 
@@ -722,7 +722,7 @@ exports.checkStych = (gameID) => {
         }
         game.table = [];
         game.tableOrder = [];
-        game.turn = (game.turn + indexOfCards) % 3;
+        game.turn = game.tableOrder[indexOfCards];
         game.result += " a hráč " + game.nicknames[game.turn] + " získal karty pro sebe";
 
         if (game.mode == "b"){

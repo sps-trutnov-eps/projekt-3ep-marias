@@ -29,16 +29,15 @@ let phaseI = 0;
 connect();
 
 function connect() {
-        let ws = new WebSocket("ws://" + location.host + "/game/test");
-        ws.onmessage = (event) => {
+        socket = new WebSocket("ws://" + location.host + "/game/test");
+        socket.onmessage = (event) => {
             console.log("Event: " + event.data);
             if (user === ""){
                 console.log("Parse: " + JSON.parse(event.data));
                 user = (JSON.parse(event.data)).split(";")[0];
                 game = (JSON.parse(event.data)).split(";")[1];
-                socket.send(game + ";repeat");
+                socket.send(game + ";" + "repeat");
             } else accept(event.data);
-        socket = ws;
     }
 }
 
