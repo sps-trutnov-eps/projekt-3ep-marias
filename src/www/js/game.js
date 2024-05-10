@@ -399,12 +399,14 @@ function fazeVoleneHry(classRoleHrace) {
     //fáze hry
     if (workdata.phase == "waiting") {
         dif.innerHTML = "Čekáme na hráče";
+        workdata.trumf = '';
     } else if (workdata.phase == "picking-trumf") {
         dif.innerHTML = "";
         document.getElementById('first-choose').style.display = 'block';
-
+        workdata.trumf = '';
     } else if (workdata.phase == "choosing-talon") {
         document.getElementById('second-choose').style.display = 'block';
+        workdata.trumf = '';
     } else if (workdata.phase == "choosing-game") {
         if(povoleno){
             document.getElementById("hra").style.display = 'none';
@@ -412,6 +414,7 @@ function fazeVoleneHry(classRoleHrace) {
             document.getElementById("hra").style.display = 'inline';
         }
         document.getElementById('third-choose').style.display = 'block';
+        workdata.trumf = '';
     } else if (workdata.phase == "ack") {
         povoleno = false;
         if (workdata.mode == "h") {
@@ -429,8 +432,10 @@ function fazeVoleneHry(classRoleHrace) {
             document.getElementById('barva-info').style.display = 'none';
             document.getElementById('barva').style.display = 'block';
         }
+        workdata.trumf = '';
     } else if (workdata.phase == "choosing-challange") {
         document.getElementById('fifth-choose').style.display = 'block';
+        workdata.trumf = '';
     } else if (workdata.phase == "betting") {
         if(user == workdata.players[workdata.turn])
         {
@@ -451,7 +456,7 @@ function fazeVoleneHry(classRoleHrace) {
         }
     } else if (workdata.phase == "playing") {
         document.getElementById("karty").style.textAlign = "center";
-        if(window.getComputedStyle(document.getElementById("karty")).getPropertyValue("margin-right") === "320px"){
+        if (window.getComputedStyle(document.getElementById("karty")).getPropertyValue("margin-right") === "320px"){
             document.getElementById("karty").style.marginRight = "11px";
         }
 
