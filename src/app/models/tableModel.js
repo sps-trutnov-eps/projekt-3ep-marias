@@ -19,14 +19,15 @@ if(!db.has('next_id')) {
     db.set('next_id', 1);
 }
 
-exports.addTable = () => {
-    let type = "voleny";
+exports.addTable = (type, name, password, betBase, cardStyle) => {
     let id = db.get('next_id');
 
     db.set(id, {
+        'id': id,
         'type': type,
-        'name': 'testovaciStul',
-        'password': '',
+        'name': name,
+        'password': password,
+        'cardStyle': cardStyle,
         'cardPack': [],
         'players': [],
         'nicknames': [],
@@ -42,6 +43,7 @@ exports.addTable = () => {
         'table': [],
         'tableOrder':[],
         'phase': 'waiting',
+        'betBase': betBase,
         'bet': 1,
         'bet7': 1,
         'continueBet':[true, true],
@@ -247,7 +249,7 @@ exports.trumf = (gameID, indx) => {
 
     game.trumf = game.playersPacks[game.forhont][indx].colour;
     game.phase = "choosing-talon";
-    game.result = "Forhont vybral trumf: " + game.trumf;
+    game.result = "Forhont vybral trumf";
 
     db.set(gameID, game);
 }
@@ -348,16 +350,35 @@ exports.good = (gameID) => {
             break;
     }
 
+    let trumfy = game.trumf;
+    switch (trumfy) {
+        case "č":
+            trumfy = "červené";
+            break;
+        case "z":
+            trumfy = "zelené";
+            break;
+        case "k":
+            trumfy = "kule";
+            break;
+        case "ž":
+            trumfy = "žaludy";
+            break;
+        default:
+            break;
+    }
+
     game.turn = (game.turn + 1) % 3;
     if (game.altForhont === undefined) {
         if (game.forhont == game.turn) {
             if (game.mode == "h") {
                 game.phase = "choosing-challange";
+                game.result = mode + " byl/a odsouhlasen/a \n Trumfy jsou: " + trumfy;
             } else if (game.mode == "b" || game.game == "d") {
                 game.phase = "betting";
                 game.turn = (game.turn + 1) % 3;
+                game.result = mode + " byl/a odsouhlasen/a";
             }
-            game.result = mode + " byl/a odsouhlasen/a";
         }
     } else if (game.altForhont == game.turn) {
         game.turn = (game.turn + 1) % 3;
@@ -531,7 +552,7 @@ exports.checkMarias = (gameID, player, cardIndex) => {
                     if (game.playersPacks[playerIndex][i].colour == checkedCard.colour){
                         if (game.playersPacks[playerIndex][i].value == 13){
                             game.playersMariages[playerIndex].push(checkedCard.colour);
-                            game.result = "Hráč " + game.players[game.turn] + " zahrál hlášku";
+                            game.result = "Hráč " + game.nicknames[game.turn] + " zahrál hlášku";
                         }
                     }
                 }
@@ -551,12 +572,12 @@ exports.playCard = (gameID, player, cardIndex) => {
             game.playersPacks[playerIndex].splice(cardIndex, 1);
             game.table.push(playedCard);
             game.tableOrder.push(playerIndex);
-            if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+            if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
             game.turn = (game.turn + 1) % game.players.length;
         } // Karta má stejnou barvu
          else if (playedCard.colour == game.table[0].colour){
             // nejsilnější karta na stole
-            let highestCard = table[0];
+            let highestCard = game.table[0];
             if (game.table.length == 2){
                 if (highestCard.colour != game.trumf){
                     if (game.table[1].colour == game.trumf) highestCard = game.table[1];
@@ -571,14 +592,14 @@ exports.playCard = (gameID, player, cardIndex) => {
                     game.playersPacks[playerIndex].splice(cardIndex, 1);
                     game.table.push(playedCard);
                     game.tableOrder.push(playerIndex);
-                    if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                    if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                     game.turn = (game.turn + 1) % game.players.length;
                 } else {
                     if (playedCard.value > highestCard.value){
                         game.playersPacks[playerIndex].splice(cardIndex, 1);
                         game.table.push(playedCard);
                         game.tableOrder.push(playerIndex);
-                        if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                        if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                         game.turn = (game.turn + 1) % game.players.length;
                     } else {
                         let higher = false;
@@ -594,7 +615,7 @@ exports.playCard = (gameID, player, cardIndex) => {
                             game.playersPacks[playerIndex].splice(cardIndex, 1);
                             game.table.push(playedCard);
                             game.tableOrder.push(playerIndex);
-                            if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                            if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                             game.turn = (game.turn + 1) % game.players.length;
                         }
                     }
@@ -604,7 +625,7 @@ exports.playCard = (gameID, player, cardIndex) => {
                     game.playersPacks[playerIndex].splice(cardIndex, 1);
                     game.table.push(playedCard);
                     game.tableOrder.push(playerIndex);
-                    if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                    if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                     game.turn = (game.turn + 1) % game.players.length;
                 } else {
                     let higher = false;
@@ -620,7 +641,7 @@ exports.playCard = (gameID, player, cardIndex) => {
                         game.playersPacks[playerIndex].splice(cardIndex, 1);
                         game.table.push(playedCard);
                         game.tableOrder.push(playerIndex);
-                        if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                        if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                         game.turn = (game.turn + 1) % game.players.length;
                     }
                 }
@@ -633,7 +654,7 @@ exports.playCard = (gameID, player, cardIndex) => {
             }
             if (!colour){
                 // nejsilnější karta na stole
-                let highestCard = table[0];
+                let highestCard = game.table[0];
                 if (game.table.length == 2){
                     if (highestCard.colour != game.trumf){
                         if (game.table[1].colour == game.trumf) highestCard = game.table[1];
@@ -646,14 +667,14 @@ exports.playCard = (gameID, player, cardIndex) => {
                     game.playersPacks[playerIndex].splice(cardIndex, 1);
                     game.table.push(playedCard);
                     game.tableOrder.push(playerIndex);
-                    if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                    if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                     game.turn = (game.turn + 1) % game.players.length;
                 } else {
                     if (highestCard.value < playedCard.value) {
                         game.playersPacks[playerIndex].splice(cardIndex, 1);
                         game.table.push(playedCard);
                         game.tableOrder.push(playerIndex);
-                        if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                        if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                         game.turn = (game.turn + 1) % game.players.length;
                     }
                     else {
@@ -670,7 +691,7 @@ exports.playCard = (gameID, player, cardIndex) => {
                             game.playersPacks[playerIndex].splice(cardIndex, 1);
                             game.table.push(playedCard);
                             game.tableOrder.push(playerIndex);
-                            if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                            if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                             game.turn = (game.turn + 1) % game.players.length;
                         }
                     }
@@ -692,7 +713,7 @@ exports.playCard = (gameID, player, cardIndex) => {
                 game.playersPacks[playerIndex].splice(cardIndex, 1);
                 game.table.push(playedCard);
                 game.tableOrder.push(playerIndex);
-                if (!game.result.includes("hlášku")) game.result = "Hráč " + game.players[game.turn] + " zahrál kartu";
+                if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                 game.turn = (game.turn + 1) % game.players.length;
             } else if (trumf) game.result = "Ještě máš trumfa, nedělej, že nemáš";
             else if (colour) game.result = "Ještě máš barvu, nedělej, že nemáš";
@@ -715,13 +736,13 @@ exports.checkStych = (gameID) => {
         }
     
         let indexOfCards = game.table.indexOf(strongestCards);
-        for (let i = 1; i < 3; i++){
-            game.playersPacks[(game.turn + indexOfCards) % 3].push(game.table.shift());
+        for (let i = 0; i < 3; i++){
+            game.playersCollected[(game.turn + indexOfCards) % 3].push(game.table.shift());
         }
         game.table = [];
         game.tableOrder = [];
         game.turn = (game.turn + indexOfCards) % 3;
-        game.result += " a hráč " + game.players[game.turn] + " získal karty pro sebe";
+        game.result += " a hráč " + game.nicknames[game.turn] + " získal karty pro sebe";
 
         if (game.mode == "b"){
             if (game.turn == game.altForhont) game.phase = "betl-lost";
