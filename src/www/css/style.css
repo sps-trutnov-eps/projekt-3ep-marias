@@ -10,7 +10,7 @@ a {
 }
 
 #karty img {
-    width: 125px;
+    height: 190px;
 }
 
 #karty img:hover {
@@ -39,15 +39,16 @@ a {
     background-color: rgb(40, 153, 40);
 }
 
-.storage-place3 {
-    width: 500px;
-    height: 400px;
+.storage-place4 {
+    width: 150px;
+    height: 200px;
     background-color: rgb(40, 153, 40);
 }
 
+
 #log-messages {
     position: fixed;
-    bottom: 20px;
+    bottom: 255px;
     right: 20px;
     width: 280px; 
     height: 200px; 
@@ -73,8 +74,7 @@ a {
 }
 
 #karty {
-    margin-right: 320px;
-    text-align: right;
+    text-align: center;
     margin-bottom: 9px;
 }
 
@@ -83,7 +83,7 @@ a {
 }
 
 div > .player-name {
-    margin-left: 95px;
+    margin-left: 35px;
     transform: translateY(+42px);
 }
 
@@ -92,14 +92,39 @@ div > .player-name1 {
     transform: translateY(+42px);
 }
 
-div > .player-name2 {
-    margin-left: 180px;
-    transform: translateY(-250px);
+div > .player-name2, .points3 {
+    margin-left: 500px;
+    transform: translateY(-280px);
 }
 
 .checkbox-custom {
     transform: scale(1.9);
     margin-left: 8px; 
+}
+
+#Trumf1 {
+    margin-left: 30px;
+}
+
+#Trumf2 {
+    margin-right: 100px;
+}
+
+#Trumf3 {
+    padding-left: 530px;
+    transform: translateY(630px);
+}
+
+img#Dole {
+
+}
+
+img#Vlevo {
+
+}
+
+img#Vpravo {
+    
 }
 
 @media screen and (max-width: 1590px){

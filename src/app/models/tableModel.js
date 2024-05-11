@@ -249,7 +249,7 @@ exports.trumf = (gameID, indx) => {
 
     game.trumf = game.playersPacks[game.forhont][indx].colour;
     game.phase = "choosing-talon";
-    game.result = "Forhont vybral trumf: " + game.trumf;
+    game.result = "Forhont vybral trumf";
 
     db.set(gameID, game);
 }
@@ -350,16 +350,35 @@ exports.good = (gameID) => {
             break;
     }
 
+    let trumfy = game.trumf;
+    switch (trumfy) {
+        case "č":
+            trumfy = "červené";
+            break;
+        case "z":
+            trumfy = "zelené";
+            break;
+        case "k":
+            trumfy = "kule";
+            break;
+        case "ž":
+            trumfy = "žaludy";
+            break;
+        default:
+            break;
+    }
+
     game.turn = (game.turn + 1) % 3;
     if (game.altForhont === undefined) {
         if (game.forhont == game.turn) {
             if (game.mode == "h") {
                 game.phase = "choosing-challange";
+                game.result = mode + " byl/a odsouhlasen/a \n Trumfy jsou: " + trumfy;
             } else if (game.mode == "b" || game.game == "d") {
                 game.phase = "betting";
                 game.turn = (game.turn + 1) % 3;
+                game.result = mode + " byl/a odsouhlasen/a";
             }
-            game.result = mode + " byl/a odsouhlasen/a";
         }
     } else if (game.altForhont == game.turn) {
         game.turn = (game.turn + 1) % 3;
