@@ -829,11 +829,25 @@ exports.checkEnd = (gameID) => {
 
     if (game.mode == "h" && game.playersPacks[0] == 0){
         game.phase = "paying";
+        let defWin = false;
         let forPoints = 0;
         let defPoints = 0;
 
         if (game.turn == game.forhont) forPoints += 10;
         else defPoints += 10;
+
+        for(let i = 0; i < game.playersCollected.length; i++){
+            for(let j = 0; j < game.playersCollected[i].length; j++){
+                if (game.playersCollected[i][j].value == 14 || game.playersCollected[i][j].value == 15){
+                    if (i == game.forhont) forPoints += 10;
+                    else defPoints += 10;
+                }
+            }
+        }
+
+        if (game.challange == "h"){
+
+        }
         // tady bude pokračovat počítání bodů...v hlavě jsem narazil na pár problému - třeba domyslet
 
     } else if (game.mode == "b") {
