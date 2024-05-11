@@ -218,8 +218,6 @@ function zobrazeniHlasek() {
                     break;
             }
 
-            img.style.height = "200px";
-
             switch (workdata.players[player]) {
                 case user:
                     Hlaska3.appendChild(img);
@@ -287,8 +285,6 @@ function zobrazeniZahranychKaret() {
                 break
         }
 
-        img.style.height = "200px";
-
         kartyDiv.appendChild(img);
     }
 }
@@ -304,7 +300,7 @@ function zobrazeniHracichKaret() {
             let src = "";
             if (i > 6){
                 src = '/karty/backs/modre.jpg';
-                img.style.height = '195px';
+                img.style.height = '185px';
                 img.style.margin = '2px';
             } else {
                 switch (karta.colour) {
@@ -337,8 +333,6 @@ function zobrazeniHracichKaret() {
             img.onclick = function() {
                 sendData("karty", i);
             };
-            
-            img.style.height = "200px";
 
             kartyDiv.appendChild(img);
         }
@@ -377,8 +371,6 @@ function zobrazeniHracichKaret() {
             img.onclick = function() {
                 sendData("karty", i);
             };
-
-            img.style.height = "200px";
 
             kartyDiv.appendChild(img);
         }
