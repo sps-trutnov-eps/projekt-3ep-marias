@@ -1,4 +1,3 @@
-const session = require("express-session");
 const userModel = require("../models/userModel");
 
 exports.index = (req, res) => {
@@ -27,8 +26,9 @@ exports.Login = (req,res) => {
         if(userModel.userInDatabase(jmeno) && userModel.userHasSamePasswd(jmeno, heslo))
         {
             req.session.currentUser = userModel.UserIdGet(jmeno);
+            req.session.currentNickname = userModel.UserNicknameGet(req.session.currentUser);
             console.log("Přihlášen: " + req.session.currentUser);
-            return res.redirect('../game/main');
+            return res.redirect('/lobby/index');
         }
     }
     else{

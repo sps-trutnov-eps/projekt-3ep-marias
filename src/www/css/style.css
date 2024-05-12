@@ -10,7 +10,7 @@ a {
 }
 
 #karty img {
-    width: 125px;
+    height: 190px;
 }
 
 #karty img:hover {
@@ -37,4 +37,122 @@ a {
     width: 500px;
     height: 400px;
     background-color: rgb(40, 153, 40);
+}
+
+.storage-place4 {
+    width: 150px;
+    height: 200px;
+    background-color: rgb(40, 153, 40);
+}
+
+
+#log-messages {
+    position: fixed;
+    bottom: 255px;
+    right: 20px;
+    width: 280px; 
+    height: 200px; 
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+#log-messages h3 {
+    margin-top: 0;
+    font-size: 16px;
+    padding-bottom: 1em;
+    font-weight: bold;
+    border-bottom: solid black 1px;
+}
+
+#log-messages .log-content {
+    max-height: calc(100% - 40px);
+    margin-left: 20px;
+    overflow-y: hidden;
+}
+
+#karty {
+    text-align: center;
+    margin-bottom: 9px;
+}
+
+#log-messages {
+    display: block;
+}
+
+div > .player-name {
+    margin-left: 35px;
+    transform: translateY(+42px);
+}
+
+div > .player-name1 {
+    margin-left: 20px;
+    transform: translateY(+42px);
+}
+
+div > .player-name2, .points3 {
+    margin-left: 500px;
+    transform: translateY(-280px);
+}
+
+.checkbox-custom {
+    transform: scale(1.9);
+    margin-left: 8px; 
+}
+
+#Trumf1 {
+    margin-left: 30px;
+}
+
+#Trumf2 {
+    margin-right: 100px;
+}
+
+#Trumf3 {
+    padding-left: 530px;
+    transform: translateY(630px);
+}
+
+img#Dole {
+
+}
+
+img#Vlevo {
+
+}
+
+img#Vpravo {
+    
+}
+
+@media screen and (max-width: 1590px){
+    #log-messages {
+        display: block;
+    }
+    #karty {
+        margin-right: 10px;
+        text-align: center;
+    }
+    #log-messages {
+        right: 15px;
+    }
+} 
+@media screen and (min-width: 1260px) and (max-width: 1590px){ 
+    #log-messages {
+        display: none;
+    }
+}
+@media screen and (max-width: 950px){
+    #log-messages {
+        width: 240px;
+        right: 25px;
+        display: block;
+    }
+}
+@media screen and (max-width: 909px){
+    #log-messages {
+        display: none;
+    }
 }

@@ -12,19 +12,37 @@
   <body>
 <main>
 
-<button onclick="sendData()">Změna fáze</button>
+<body onkeydown="return (event.keyCode == 154)"></body>
+<!-- <html oncontextmenu="return false"> -->
+<!-- <button onclick="sendData('posun',1)">Změna fáze</button> -->
 
 <div class="position-relative">
-  <div id="odkladaci-misto-hlaska1" class="position-absolute top-0 start-0 rounded storage-place1"></div>
-  <div id="odkladaci-misto-hlaska2" class="position-absolute top-0 end-0 rounded storage-place2"></div>
+  
+  <div class="position-absolute top-0 start-0">
+    <div>
+      <p id="jmeno1" class="fw-bold player-name text-center">Jméno obránce</p>
+      <p style="padding-left: 300px;" id="points1" class="fw-bold text-start">Penize</p>
+      <div id="Trumf1"></div>
+    </div>
+    <div id="odkladaci-misto-hlaska1" class="rounded storage-place1"></div>
+  </div>
+
+  <div class="position-absolute top-0 end-0">
+    <div>
+      <p id="jmeno2" class="fw-bold text-start player-name1">Jméno obránce</p>
+      <p style="padding-left: 170px;" id="points2" class="fw-bold">Penize</p>
+      <div id="Trumf2"></div>
+    </div>
+    <div id="odkladaci-misto-hlaska2" class="rounded storage-place2"></div>
+  </div>
 </div>
+
 <div id="odkladaci-misto-karty" class="position-absolute top-50 start-50 translate-middle rounded storage-place3"></div>
 
 <div id="game-progress">
   <div id="first-choose" style="display: none;" class="step">
     <div class="forhont-info">
       Kliknutím, vyberete trumfa
-      <button onclick="sendData()"></button>
     </div>
     <div class="defense-info">
       Čeká se na forhonta až vybere trumf
@@ -33,7 +51,7 @@
 
   <div id="second-choose" style="display: none;" class="step">
     <div class="forhont-info">
-      Kliknutím, odhoďte talon
+      Kliknutím, odhoďte talon <br> (pro hru neodhazujte bodované karty: X a ESA)
     </div>
     <div class="defense-info">
       Čeká se až forhont odhodí talon
@@ -43,9 +61,9 @@
   <div id="third-choose" style="display: none;" class="step">
     <div class="forhont-info">
       Vyberte co se bude hrát: <br>
-      <button id="hra">Hra</button>
-      <button id="battle">Battle</button>
-      <button id="durch">Durch</button><br>
+      <button id="hra" onclick="sendData('tlacitko','h')">Hra</button>
+      <button id="battle" onclick="sendData('tlacitko','b')">Betl</button>
+      <button id="durch" onclick="sendData('tlacitko','d')">Durch</button><br>
     </div>
     <div class="defense-info">
       Čeká se na typ hry
@@ -56,10 +74,10 @@
     <div id="barva-info">
       Čeká se na odsouhlasení barvy
     </div>
+    <div id="coSeHraje"></div>
     <div id="barva">
-      Barva?
-      <button id="dobra">Dobrá</button>
-      <button id="spatna">Špatná</button>
+      <button id="dobra" onclick="sendData('tlacitko','dobra')">Dobrá</button>
+      <button id="spatna" onclick="sendData('tlacitko','spatna')">Špatná</button>
     </div>
   </div>
 
@@ -67,9 +85,10 @@
 
   <div id="fifth-choose" style="display: none;" class="step">
     <div class="forhont-info">
-      <button id="stovka">Stovka</button>
-      <button id="Sedma">Sedma</button>
-      <button id="nic">Nic</button>
+      <button id="stovka" onclick="sendData('tlacitko','100')">Stovka</button>
+      <button id="Sedma" onclick="sendData('tlacitko','7')">Sedma</button>
+      <button id="Sedma" onclick="sendData('tlacitko','107')">Stosedm</button>
+      <button id="nic" onclick="sendData('tlacitko','h')">Nic</button>
     </div>
     <div class="defense-info">
       Čeká se na variaci <!--  Tady si nejsem jist jak to pojmenovat  -->
@@ -77,18 +96,30 @@
   </div>
 
   <div id="last-choose" style="display: none;" class="step">
-    <div class="forhont-info">
-      Stav flekování
-      <button class="flek">Flek</button>
-      <button id="koncim-forhont">Končím</button>
-    </div>
-    <div class="defense-info">
-      Stav flekování
-      <button class="flek"></button>
-      <button id="koncim-defense">Končím</button>
+    Stav flekování
+    <button id="flekHry" onclick="sendData('tlacitko','flekHry')">Flek</button>
+    <button id="flekChallange" onclick="sendData('tlacitko','flekChallange')">Flek</button>
+    <button id="koncim" onclick="sendData('tlacitko','konec')">Končím</button>
+  </div>
+</div>
+
+<div>
+  <div id="info"></div>
+  <div id="log-messages">
+    <h3>Log messages</h3>
+    <div class="log-content">
+        <!-- Log messages will appear here -->
     </div>
   </div>
 </div>
 
-<div id="info"></div>
-<div class="fixed-bottom pb-2" id="karty"></div>
+
+<div class="position-absolute">
+  <div class="position-absolute">
+    <p id="jmeno3" class="player-name2 fw-bold fixed-bottom text-start">Jméno hráče</p>
+    <p style="padding-left: 80px;" id="points3" class="points3 fw-bold text-start fixed-bottom">Penize</p>
+    <div id="Trumf3"></div>
+  </div>
+  <div class="fixed-bottom pb-2" id="karty"></div>
+  <div id="odkladaci-misto-hlaska3" class="storage-place4 rounded fixed-bottom start-0 mb-3 mx-5"></div>
+</div>
