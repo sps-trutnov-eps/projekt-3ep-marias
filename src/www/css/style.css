@@ -115,18 +115,6 @@ div > .player-name2, .points3 {
     transform: translateY(630px);
 }
 
-img#Dole {
-
-}
-
-img#Vlevo {
-
-}
-
-img#Vpravo {
-    
-}
-
 @media screen and (max-width: 1590px){
     #log-messages {
         display: block;

@@ -1,4 +1,3 @@
-// Klientský kód
 let socket;
 let user = "";
 let workdata;
@@ -199,6 +198,7 @@ function zobrazeniHlasek() {
     for (let player in workdata.playersMariages) {
         for (let i in workdata.playersMariages[player]) {
             let img = document.createElement('img');
+            img.style.height = '190px';
             
             switch (workdata.playersMariages[player][i]) {
                 case "č":
@@ -272,17 +272,24 @@ function zobrazeniZahranychKaret() {
         switch (workdata.players[workdata.tableOrder[i]]) {
             case user:
                 img.id = "Dole";
+                img.style.height = '190px';
+                img.classList.add("top-0", "start-50", "translate-middle-x");
                 break;
             case hracVlevo:
                 img.id = "Vlevo";
+                img.style.height = '190px';
+                img.classList.add("top-50", "start-0", "translate-middle-y");
                 break;
             case hracVpravo:
                 img.id = "Vpravo";
+                img.style.height = '190px';
+                img.classList.add("top-50", "end-0", "translate-middle-y");
                 break;
             default:
                 img.id = "Neoznaceno";
-                break
+                break;
         }
+        
 
         kartyDiv.appendChild(img);
     }
