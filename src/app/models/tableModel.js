@@ -384,6 +384,7 @@ exports.good = (gameID) => {
                 game.result = mode + " byl/a odsouhlasen/a \n Trumfy jsou: " + trumfy;
             } else if (game.mode == "b" || game.game == "d") {
                 game.phase = "betting";
+                game.continueBet = [true, false];
                 game.turn = (game.turn + 1) % 3;
                 game.result = mode + " byl/a odsouhlasen/a";
             }
@@ -391,6 +392,7 @@ exports.good = (gameID) => {
     } else if (game.altForhont == game.turn) {
         game.turn = (game.turn + 1) % 3;
         game.phase = "betting";
+        game.continueBet = [true, false];
         game.result = mode + " byl/a odsouhlasen/a";
     }
 
@@ -415,6 +417,7 @@ exports.challange = (gameID, challange) => {
     if (challange == "h"){
         game.challange = challange;
         game.phase = "betting";
+        game.continueBet = [true, false];
         game.turn = (game.turn + 1) % 3;
         game.result = "Forhont se zavázal k tomu zahrát hru";
     } else if (challange == "7"){
@@ -423,6 +426,7 @@ exports.challange = (gameID, challange) => {
                 if (game.playersPacks[game.forhont][i].value == 7){
                     game.challange = challange;
                     game.phase = "betting";
+                    game.continueBet = [true, true];
                     game.turn = (game.turn + 1) % 3;
                     game.result = "Forhont se zavázal k tomu zahrát " + challange;
                 }
@@ -437,6 +441,7 @@ exports.challange = (gameID, challange) => {
                     if (game.playersPacks[game.forhont][i].colour == game.playersPacks[game.forhont][j].colour && game.playersPacks[game.forhont][j].value == 13){
                         game.challange = challange;
                         game.phase = "betting";
+                        game.continueBet = [true, false];
                         game.turn = (game.turn + 1) % 3;
                         game.result = "Forhont se zavázal k tomu zahrát " + challange;
                     }
@@ -460,6 +465,7 @@ exports.challange = (gameID, challange) => {
                         if (game.playersPacks[game.forhont][i].colour == game.playersPacks[game.forhont][j].colour && game.playersPacks[game.forhont][j].value == 13){
                             game.challange = challange;
                             game.phase = "betting";
+                            game.continueBet = [true, true];
                             game.turn = (game.turn + 1) % 3;
                             game.result = "Forhont se zavázal k tomu zahrát " + challange;
                         }
@@ -534,8 +540,13 @@ exports.noBet = (gameID) => {
         game.turn = (game.turn + 1) % 3;
         if (game.turn == f){
             if (game.bet == 1 && game.bet7 == 1) {
-                game.phase = "paying";
-                game.result = "Bez fleku - budu sem muset vypsat zprávu o tom, jak zobrazit placení hráči"
+                if (game.challange == "h" || game.challange == "7"){
+                    game.phase = "no-flek";
+                    this.checkEnd(gameID);
+                } else {
+                    game.phase = "playing";
+                    game.result = "Flekování ukončeno na " + game.bet + " násobku ceny";
+                }
             } else if (Math.log2(game.bet) % 2 == 0 && game.continueBet[0]) {
                 game.phase = "playing";
                 game.result = "Flekování ukončeno na " + game.bet + " násobku ceny";
@@ -810,7 +821,7 @@ exports.checkStych = (gameID) => {
             game.playersCollected[game.turn].push(game.table.shift());
         }
         game.table = [];
-        game.tableOrder = [];
+        if (game.playersPacks[0].length != 0) game.tableOrder = [];
         game.result += " a hráč " + game.nicknames[game.turn] + " získal karty pro sebe";
 
         if (game.mode == "b"){
@@ -824,47 +835,99 @@ exports.checkStych = (gameID) => {
     db.set(gameID, game);
 }
 
+/*
+FORMÁT DAT ODESÍLANÝCH KLIENTOVI
+coSeHraje	    -> bool:bool:bool:bool:bool (hra, 7, 100, belt, durch)
+coForhontVyhrál	-> bool:bool:bool:bool:bool (hra, 7, 100, belt, durch)
+bodyForhonta;	-> int
+bodyObrany;	    -> int
+základHry;	    -> float
+sto; 		    -> bool:float
+trumfČervená; 	-> bool:float
+fleky; 		    -> int:float (kolik fleků a na jakou hodnotu)
+tichéSto;   	-> bool:float
+celkovaCena     -> float
+ticháSedma; 	-> bool:float
+sedma; 		    -> bool:float
+flekySedmy; 	-> int:float
+celkovaCena7    -> float
+kdoKolikZíská   -> float:float:float
+*/
+
 exports.checkEnd = (gameID) => {
     let game = db.get(gameID);
 
-    if (game.mode == "h" && game.playersPacks[0] == 0){
+    if (game.gamePhase == "no-flek"){
         game.phase = "paying";
-        let defWin = false;
-        let forPoints = 0;
-        let defPoints = 0;
+        let price = game.betBase;
+        if (game.continueBet[1]) price += 2 * price;
 
-        if (game.turn == game.forhont) forPoints += 10;
-        else defPoints += 10;
+        game.playersPoints[game.forhont] += 2 * price;
+        game.playersPoints[(game.forhont + 1) % 3] -= price;
+        game.playersPoints[(game.forhont + 2) % 3] -= price;
 
-        for(let i = 0; i < game.playersCollected.length; i++){
-            for(let j = 0; j < game.playersCollected[i].length; j++){
-                if (game.playersCollected[i][j].value == 14 || game.playersCollected[i][j].value == 15){
-                    if (i == game.forhont) forPoints += 10;
-                    else defPoints += 10;
+        game.result = "";
+    } 
+    else {
+        if (game.mode == "h" && game.playersPacks[0] == 0){
+            game.phase = "paying";
+            let defWin = false;
+            let forPoints = 0;
+            let defPoints = 0;
+
+            if (game.turn == game.forhont) forPoints += 10;
+            else defPoints += 10;
+
+            for(let i = 0; i < game.playersCollected.length; i++){
+                for(let j = 0; j < game.playersCollected[i].length; j++){
+                    if (game.playersCollected[i][j].value == 14 || game.playersCollected[i][j].value == 15){
+                        if (i == game.forhont) forPoints += 10;
+                        else defPoints += 10;
+                    }
                 }
             }
-        }
 
-        if (game.challange == "h"){
+            if (game.challange == "h"){
+                for(let i = 0; i < game.playersMariages.length; i++){
+                    for(let j = 0; j < game.playersMariages[i].length; j++){
+                        if (game.playersMariages[i][j] == game.trumf){
+                            if (i == game.forhont) forPoints += 40;
+                            else defPoints += 40;
+                        } else {
+                            if (i == game.forhont) forPoints += 20;
+                            else defPoints += 20;
+                        }
+                    }
+                }
 
-        }
-        // tady bude pokračovat počítání bodů...v hlavě jsem narazil na pár problému - třeba domyslet
+                let price = game.betBase * game.bet;
+                if (game.trumf == "č") price *= 2;
+                // tiché sto...pořeším po obědě
+            }
 
-    } else if (game.mode == "b") {
-        if (game.phase == "betl-lost"){
-            // prohra betla
-        } else if (game.playersPacks[0] == 0){
-            // výhra betla
-        }
-    } else if (game.mode == "d") {
-        if (game.phase == "durch-lost"){
-            // prohra durcha
-        } else if (game.playersPacks[0] == 0){
-            // výhra durcha
+        } else if (game.mode == "b") {
+            if (game.phase == "betl-lost"){
+                // prohra betla
+            } else if (game.playersPacks[0] == 0){
+                // výhra betla
+            }
+        } else if (game.mode == "d") {
+            if (game.phase == "durch-lost"){
+                // prohra durcha
+            } else if (game.playersPacks[0] == 0){
+                // výhra durcha
+            }
         }
     }
-
     db.set(gameID, game);
+}
+
+exports.continue = (gameID, player) => {
+
+}
+
+exports.newRound = (gameID) => {
+
 }
 
 exports.skip = (gameID, gamePhase) => {
