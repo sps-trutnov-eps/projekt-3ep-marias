@@ -902,7 +902,56 @@ exports.checkEnd = (gameID) => {
 
                 let price = game.betBase * game.bet;
                 if (game.trumf == "č") price *= 2;
-                // tiché sto...pořeším po obědě
+
+                // tiché sto
+                let higher = 0;
+                if (forPoints >= 100) higher = forPoints;
+                if (defPoints >= 100) higher = defPoints;
+                if (higher >= 100){
+                    for (let i = 100; i <= 100; i += 10){
+                        price *= 2;
+                    }
+                }
+
+                // tichá sedma
+                let price7 = 0;
+                for(let i = 0; i < game.playersCollected.length; i++){
+                    if (game.playersCollected[i].length > 0){
+                        lastCards = game.playersCollected[i].slice(-3);
+                        let seven = false;
+                        let sevenIndex = 0;
+                        for (let c = 0; c < lastCards.length; c++){
+                            if (lastCards[c].value == 7){
+                                if (lastCards[c].colour == game.trumf) {
+                                    seven = true;
+                                    sevenIndex = c;
+                                }
+                            }
+                        }
+                        if (seven){
+                            let higher = false;
+                            let higherIndex = 0;
+                            for (let v = 0; v < lastCards.length; v++){
+                                if (lastcards[v].colour == game.trumf && v != sevenIndex) higher = true;
+                            }
+                            if (higher){
+                                if (game.tableOrder[higherIndex] == game.forhont) price7 = 1;
+                                else price7 = -1;
+                            }
+                            else {
+                                if (game.tableOrder[sevenIndex] == game.forhont) price7 = 1;
+                                else price7 = -1;
+                            }
+                        }
+                    }
+                }
+
+            } else if (game.challange == "7"){
+
+            } else if (game.challange == "100"){
+
+            } else if (game.challange == "107"){
+
             }
 
         } else if (game.mode == "b") {
