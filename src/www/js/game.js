@@ -1,4 +1,3 @@
-// Klientský kód
 let socket;
 let user = "";
 let workdata;
@@ -148,44 +147,45 @@ function zobrazeniTrumfa() {
     Div2.innerHTML = "";
     Div3.innerHTML = "";
 
-    if (workdata.trumf != '' && !workdata.altForhont && workdata.mode != 'b' && workdata.mode != 'd' && hracVlevo != undefined && hracVpravo != undefined) {
+    //if (workdata.trumf != '' && !workdata.altForhont && workdata.mode != 'b' && workdata.mode != 'd' && hracVlevo != undefined && hracVpravo != undefined) {
         //tvorba img
         let img = document.createElement('img');
         //
-        switch (workdata.trumf) {
-            case "z":
-                img.src = '/karty/Types/leaf.png';
-                break;
-            case "č":
-                img.src = '/karty/Types/hearth.png';
-                break;
-            case "k":
-                img.src = '/karty/Types/bell.png';
-                break;
-            case "ž":
-                img.src = '/karty/Types/nut.png';
-                break;
-            default:
-                break;
-        }
+        img.src = '/karty/Types/leaf.png';
+        // switch (workdata.trumf) {
+        //     case "z":
+        //         img.src = '/karty/Types/leaf.png';
+        //         break;
+        //     case "č":
+        //         img.src = '/karty/Types/hearth.png';
+        //         break;
+        //     case "k":
+        //         img.src = '/karty/Types/bell.png';
+        //         break;
+        //     case "ž":
+        //         img.src = '/karty/Types/nut.png';
+        //         break;
+        //     default:
+        //         break;
+        // }
 
         img.style.height = '25px';
-
-        switch (workdata.players[workdata.forhont]) {
-            case hracVlevo:
-                Div1.appendChild(img);
-                break;
-            case hracVpravo:
-                Div2.appendChild(img);
-                break;
-            case user:
-                Div3.appendChild(img);
-                break;
-            default:
-                break;
-        }
+        Div3.appendChild(img);
+        // switch (workdata.players[workdata.forhont]) {
+        //     case hracVlevo:
+        //         Div1.appendChild(img);
+        //         break;
+        //     case hracVpravo:
+        //         Div2.appendChild(img);
+        //         break;
+        //     case user:
+        //         Div3.appendChild(img);
+        //         break;
+        //     default:
+        //         break;
+        // }
     } 
-}
+//}
 
 function zobrazeniHlasek() {
     // načtení a ničení
@@ -199,6 +199,7 @@ function zobrazeniHlasek() {
     for (let player in workdata.playersMariages) {
         for (let i in workdata.playersMariages[player]) {
             let img = document.createElement('img');
+            img.style.height = '190px';
             
             switch (workdata.playersMariages[player][i]) {
                 case "č":
@@ -272,17 +273,24 @@ function zobrazeniZahranychKaret() {
         switch (workdata.players[workdata.tableOrder[i]]) {
             case user:
                 img.id = "Dole";
+                img.style.height = '190px';
+                img.classList.add("top-0", "start-50", "translate-middle-x");
                 break;
             case hracVlevo:
                 img.id = "Vlevo";
+                img.style.height = '190px';
+                img.classList.add("top-50", "start-0", "translate-middle-y");
                 break;
             case hracVpravo:
                 img.id = "Vpravo";
+                img.style.height = '190px';
+                img.classList.add("top-50", "end-0", "translate-middle-y");
                 break;
             default:
                 img.id = "Neoznaceno";
-                break
+                break;
         }
+        
 
         kartyDiv.appendChild(img);
     }
