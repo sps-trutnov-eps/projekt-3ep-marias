@@ -39,6 +39,25 @@ a {
     background-color: rgb(40, 153, 40);
 }
 
+#Dole {
+    position: relative;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#Vlevo {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+#Vpravo {
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
 .storage-place4 {
     width: 150px;
     height: 200px;

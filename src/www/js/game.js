@@ -274,17 +274,14 @@ function zobrazeniZahranychKaret() {
             case user:
                 img.id = "Dole";
                 img.style.height = '190px';
-                img.classList.add("top-0", "start-50", "translate-middle-x");
                 break;
             case hracVlevo:
                 img.id = "Vlevo";
                 img.style.height = '190px';
-                img.classList.add("top-50", "start-0", "translate-middle-y");
                 break;
             case hracVpravo:
                 img.id = "Vpravo";
                 img.style.height = '190px';
-                img.classList.add("top-50", "end-0", "translate-middle-y");
                 break;
             default:
                 img.id = "Neoznaceno";
@@ -460,9 +457,9 @@ function fazeVoleneHry(classRoleHrace) {
         }
 
         if (workdata.table.length == 3){
-            setTimeout(() => {
-                socket.send(game + ";" + "end");
-              }, 3600);
+            // setTimeout(() => {
+            //     socket.send(game + ";" + "end");
+            //   }, 3600);
         }
     }
 }
