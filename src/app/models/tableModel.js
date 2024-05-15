@@ -1017,11 +1017,200 @@ exports.checkEnd = (gameID) => {
                     game.result = ""; // tady pak dle schématu odeslat výsledek
                 }
             } else if (game.challange == "100"){
+                let price = game.betBase * 4 * game.bet;
+                if (game.trumf == "č") price *= 2;
 
+                trumfM = false;
+                for (let i = 0; i < game.playersMariages[game.forhont].length; i++){
+                    if (game.playersMariages[game.forPoints][i] == game.trumf) trumfM = true;
+                }
+
+                let hundred = false;
+                if(trumfM){
+                    if(defPoints > 30){
+                        for(let j = 0; j < game.playersMariages[(game.forhont + 1) % 3].length; j++){
+                            defPoints += 20;
+                        }
+                        for(let j = 0; j < game.playersMariages[(game.forhont + 2) % 3].length; j++){
+                            defPoints += 20;
+                        }
+                    } else {
+                        hundred = true;
+                        for(let j = 0; j < game.playersMariages[game.forhont].length; j++){
+                            if (game.playersMariages[game.forhont][j] == game.trumf){
+                                forPoints += 40;
+                            } else {
+                                forPoints += 20;
+                            }
+                        }
+                    }
+                } else {
+                    if(defPoints > 10){
+                        for(let j = 0; j < game.playersMariages[(game.forhont + 1) % 3].length; j++){
+                            if (game.playersMariages[(game.forhont + 1) % 3][j] == game.trumf){
+                                defPoints += 40;
+                            } else {
+                                defPoints += 20;
+                            }
+                        }
+                        for(let j = 0; j < game.playersMariages[(game.forhont + 2) % 3].length; j++){
+                            if (game.playersMariages[(game.forhont + 2) % 3][j] == game.trumf){
+                                defPoints += 40;
+                            } else {
+                                defPoints += 20;
+                            }
+                        }
+                    } else {
+                        hundred = true;
+                        for(let j = 0; j < game.playersMariages[game.forhont].length; j++){
+                            forPoints += 20;
+                        }
+                    }
+                }
+
+                // tichá sedma
+                let price7 = 0;
+                for(let i = 0; i < game.playersCollected.length; i++){
+                    if (game.playersCollected[i].length > 0){
+                        lastCards = game.playersCollected[i].slice(-3);
+                        let seven = false;
+                        let sevenIndex = 0;
+                        for (let c = 0; c < lastCards.length; c++){
+                            if (lastCards[c].value == 7){
+                                if (lastCards[c].colour == game.trumf) {
+                                    seven = true;
+                                    sevenIndex = c;
+                                }
+                            }
+                        }
+                        if (seven){
+                            let higher = false;
+                            let higherIndex = 0;
+                            for (let v = 0; v < lastCards.length; v++){
+                                if (lastcards[v].colour == game.trumf && v != sevenIndex) higher = true;
+                            }
+                            if (higher){
+                                if (game.tableOrder[higherIndex] == game.forhont) price7 = 1;
+                                else price7 = -1;
+                            }
+                            else {
+                                if (game.tableOrder[sevenIndex] == game.forhont) price7 = 1;
+                                else price7 = -1;
+                            }
+                        }
+                    }
+                }
+
+                // vyplácení
+                if (hundred){
+                    for(let i = 100; i < forPoints; i += 10){
+                        price *= 2;
+                    }
+                    game.playersPoints[game.forhont] += 2 * price + price7;
+                    game.playersPoints[(game.forhont + 1) % 3] -= price - price7;
+                    game.playersPoints[(game.forhont + 2) % 3] -= price - price7;
+                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                } else {
+                    for(let i = 100; i < defPoints; i += 10){
+                        price *= 2;
+                    }
+                    game.playersPoints[game.forhont] -= 2 * price - price7;
+                    game.playersPoints[(game.forhont + 1) % 3] += price + price7;
+                    game.playersPoints[(game.forhont + 2) % 3] += price + price7;
+                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                }
             } else if (game.challange == "107"){
+                let price = game.betBase * 4 * game.bet;
+                if (game.trumf == "č") price *= 2;
 
+                trumfM = false;
+                for (let i = 0; i < game.playersMariages[game.forhont].length; i++){
+                    if (game.playersMariages[game.forPoints][i] == game.trumf) trumfM = true;
+                }
+
+                let hundred = false;
+                if(trumfM){
+                    if(defPoints > 30){
+                        for(let j = 0; j < game.playersMariages[(game.forhont + 1) % 3].length; j++){
+                            defPoints += 20;
+                        }
+                        for(let j = 0; j < game.playersMariages[(game.forhont + 2) % 3].length; j++){
+                            defPoints += 20;
+                        }
+                    } else {
+                        hundred = true;
+                        for(let j = 0; j < game.playersMariages[game.forhont].length; j++){
+                            if (game.playersMariages[game.forhont][j] == game.trumf){
+                                forPoints += 40;
+                            } else {
+                                forPoints += 20;
+                            }
+                        }
+                    }
+                } else {
+                    if(defPoints > 10){
+                        for(let j = 0; j < game.playersMariages[(game.forhont + 1) % 3].length; j++){
+                            if (game.playersMariages[(game.forhont + 1) % 3][j] == game.trumf){
+                                defPoints += 40;
+                            } else {
+                                defPoints += 20;
+                            }
+                        }
+                        for(let j = 0; j < game.playersMariages[(game.forhont + 2) % 3].length; j++){
+                            if (game.playersMariages[(game.forhont + 2) % 3][j] == game.trumf){
+                                defPoints += 40;
+                            } else {
+                                defPoints += 20;
+                            }
+                        }
+                    } else {
+                        hundred = true;
+                        for(let j = 0; j < game.playersMariages[game.forhont].length; j++){
+                            forPoints += 20;
+                        }
+                    }
+                }
+
+                let price7 = game.betBase * 2 * game.bet7;
+                let seven = false;
+                if (game.playersCollected[game.forhont].length > 0){
+                    lastCards = game.playersCollected[game.forhont].slice(-3);
+                    for (let i = 0; i < lastCards.length; i++){
+                        if (lastCards[i].value == 7){
+                            if (lastCards[i].colour == game.trumf) seven = true;
+                        }
+                    }
+                }
+
+                // vyplácení
+                if (seven){
+                    game.playersPoints[game.forhont] += 2 * price7;
+                    game.playersPoints[(game.forhont + 1) % 3] -= price7;
+                    game.playersPoints[(game.forhont + 2) % 3] -= price7;
+                } else {
+                    game.playersPoints[game.forhont] -= 2 * price7;
+                    game.playersPoints[(game.forhont + 1) % 3] += price7;
+                    game.playersPoints[(game.forhont + 2) % 3] += price7;
+                }
+
+                if (hundred){
+                    for(let i = 100; i < forPoints; i += 10){
+                        price *= 2;
+                    }
+                    game.playersPoints[game.forhont] += 2 * price;
+                    game.playersPoints[(game.forhont + 1) % 3] -= price;
+                    game.playersPoints[(game.forhont + 2) % 3] -= price;
+                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                } else {
+                    for(let i = 100; i < defPoints; i += 10){
+                        price *= 2;
+                    }
+                    game.playersPoints[game.forhont] -= 2 * price;
+                    game.playersPoints[(game.forhont + 1) % 3] += price;
+                    game.playersPoints[(game.forhont + 2) % 3] += price;
+                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                }
             }
-
         } else if (game.mode == "b") {
             if (game.phase == "betl-lost"){
                 // prohra betla
