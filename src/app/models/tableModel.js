@@ -837,7 +837,6 @@ exports.checkStych = (gameID) => {
 
 /*
 FORMÁT DAT ODESÍLANÝCH KLIENTOVI
-coSeHraje	    -> bool:bool:bool:bool:bool (hra, 7, 100, belt, durch)
 coForhontVyhrál	-> bool:bool:bool:bool:bool (hra, 7, 100, belt, durch)
 bodyForhonta;	-> int
 bodyObrany;	    -> int
@@ -871,7 +870,6 @@ exports.checkEnd = (gameID) => {
     else {
         if (game.mode == "h" && game.playersPacks[0] == 0){
             game.phase = "paying";
-            let defWin = false;
             let forPoints = 0;
             let defPoints = 0;
 
@@ -946,8 +944,78 @@ exports.checkEnd = (gameID) => {
                     }
                 }
 
+                // vyplácení
+                if (forPoints > defPoints){
+                    game.playersPoints[game.forhont] += 2 * price + price7;
+                    game.playersPoints[(game.forhont + 1) % 3] -= price - price7;
+                    game.playersPoints[(game.forhont + 2) % 3] -= price - price7;
+                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                } else {
+                    game.playersPoints[game.forhont] -= 2 * price - price7;
+                    game.playersPoints[(game.forhont + 1) % 3] += price + price7;
+                    game.playersPoints[(game.forhont + 2) % 3] += price + price7;
+                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                }
             } else if (game.challange == "7"){
+                for(let i = 0; i < game.playersMariages.length; i++){
+                    for(let j = 0; j < game.playersMariages[i].length; j++){
+                        if (game.playersMariages[i][j] == game.trumf){
+                            if (i == game.forhont) forPoints += 40;
+                            else defPoints += 40;
+                        } else {
+                            if (i == game.forhont) forPoints += 20;
+                            else defPoints += 20;
+                        }
+                    }
+                }
 
+                let price = game.betBase * game.bet;
+                if (game.trumf == "č") price *= 2;
+
+                // tiché sto
+                let higher = 0;
+                if (forPoints >= 100) higher = forPoints;
+                if (defPoints >= 100) higher = defPoints;
+                if (higher >= 100){
+                    for (let i = 100; i <= 100; i += 10){
+                        price *= 2;
+                    }
+                }
+
+                // sedma
+                let price7 = game.betBase * 2 * game.bet7;
+                let seven = false;
+                if (game.playersCollected[game.forhont].length > 0){
+                    lastCards = game.playersCollected[game.forhont].slice(-3);
+                    for (let i = 0; i < lastCards.length; i++){
+                        if (lastCards[i].value == 7){
+                            if (lastCards[i].colour == game.trumf) seven = true;
+                        }
+                    }
+                }
+
+                // vyplácení
+                if (seven){
+                    game.playersPoints[game.forhont] += 2 * price7;
+                    game.playersPoints[(game.forhont + 1) % 3] -= price7;
+                    game.playersPoints[(game.forhont + 2) % 3] -= price7;
+                } else {
+                    game.playersPoints[game.forhont] -= 2 * price7;
+                    game.playersPoints[(game.forhont + 1) % 3] += price7;
+                    game.playersPoints[(game.forhont + 2) % 3] += price7;
+                }
+
+                if (forPoints > defPoints){
+                    game.playersPoints[game.forhont] += 2 * price;
+                    game.playersPoints[(game.forhont + 1) % 3] -= price;
+                    game.playersPoints[(game.forhont + 2) % 3] -= price;
+                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                } else {
+                    game.playersPoints[game.forhont] -= 2 * price - price7;
+                    game.playersPoints[(game.forhont + 1) % 3] += price;
+                    game.playersPoints[(game.forhont + 2) % 3] += price;
+                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                }
             } else if (game.challange == "100"){
 
             } else if (game.challange == "107"){
