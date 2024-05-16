@@ -147,45 +147,45 @@ function zobrazeniTrumfa() {
     Div2.innerHTML = "";
     Div3.innerHTML = "";
 
-    //if (workdata.trumf != '' && !workdata.altForhont && workdata.mode != 'b' && workdata.mode != 'd' && hracVlevo != undefined && hracVpravo != undefined) {
+    if (workdata.trumf != '' && !workdata.altForhont && workdata.mode != 'b' && workdata.mode != 'd' && hracVlevo != undefined && hracVpravo != undefined) {
         //tvorba img
         let img = document.createElement('img');
         //
         img.src = '/karty/Types/leaf.png';
-        // switch (workdata.trumf) {
-        //     case "z":
-        //         img.src = '/karty/Types/leaf.png';
-        //         break;
-        //     case "č":
-        //         img.src = '/karty/Types/hearth.png';
-        //         break;
-        //     case "k":
-        //         img.src = '/karty/Types/bell.png';
-        //         break;
-        //     case "ž":
-        //         img.src = '/karty/Types/nut.png';
-        //         break;
-        //     default:
-        //         break;
-        // }
+        switch (workdata.trumf) {
+            case "z":
+                img.src = '/karty/Types/leaf.png';
+                break;
+            case "č":
+                img.src = '/karty/Types/hearth.png';
+                break;
+            case "k":
+                img.src = '/karty/Types/bell.png';
+                break;
+            case "ž":
+                img.src = '/karty/Types/nut.png';
+                break;
+            default:
+                break;
+        }
 
         img.style.height = '25px';
         Div3.appendChild(img);
-        // switch (workdata.players[workdata.forhont]) {
-        //     case hracVlevo:
-        //         Div1.appendChild(img);
-        //         break;
-        //     case hracVpravo:
-        //         Div2.appendChild(img);
-        //         break;
-        //     case user:
-        //         Div3.appendChild(img);
-        //         break;
-        //     default:
-        //         break;
-        // }
-    } 
-//}
+        switch (workdata.players[workdata.forhont]) {
+            case hracVlevo:
+                Div1.appendChild(img);
+                break;
+            case hracVpravo:
+                Div2.appendChild(img);
+                break;
+            case user:
+                Div3.appendChild(img);
+                break;
+            default:
+                break;
+        }
+    }
+}
 
 function zobrazeniHlasek() {
     // načtení a ničení
@@ -460,9 +460,9 @@ function fazeVoleneHry(classRoleHrace) {
         }
 
         if (workdata.table.length == 3){
-            // setTimeout(() => {
-            //     socket.send(game + ";" + "end");
-            //   }, 3600);
+            setTimeout(() => {
+                socket.send(game + ";" + "end");
+            }, 3600);
         }
     }
 }

@@ -40,22 +40,12 @@ a {
 }
 
 /* #Dole {
-    position: relative;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 #Vlevo {
-    position: relative;
-    top: 0;
-    left: 0;
 }
 
 #Vpravo {
-    position: relative;
-    top: 0;
-    right: 0;
 } */
 
 .storage-place4 {
@@ -102,18 +92,23 @@ a {
 }
 
 div > .player-name {
-    margin-left: 35px;
+    margin-right: 40px;
     transform: translateY(+42px);
 }
 
 div > .player-name1 {
-    margin-left: 20px;
     transform: translateY(+42px);
 }
 
-div > .player-name2, .points3 {
-    margin-left: 500px;
+div > .player-name2 {
+    margin-left: 400px;
     transform: translateY(-280px);
+}
+
+.points3 {
+    margin-left: 400px;
+    transform: translateY(-280px);
+
 }
 
 .checkbox-custom {
@@ -122,15 +117,17 @@ div > .player-name2, .points3 {
 }
 
 #Trumf1 {
-    margin-left: 30px;
+    position: absolute;
+    margin-left: 155px;
 }
 
 #Trumf2 {
-    margin-right: 100px;
+    position: absolute;
+    margin-left: 58px;
 }
 
 #Trumf3 {
-    padding-left: 530px;
+    padding-left: 460px;
     transform: translateY(630px);
 }
 
