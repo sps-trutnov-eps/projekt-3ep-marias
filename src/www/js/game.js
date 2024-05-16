@@ -274,14 +274,17 @@ function zobrazeniZahranychKaret() {
             case user:
                 img.id = "Dole";
                 img.style.height = '190px';
+                img.classList.add("position-relative", "top-50");
                 break;
             case hracVlevo:
                 img.id = "Vlevo";
                 img.style.height = '190px';
+                img.classList.add("position-relative", "m-2", "float-start");
                 break;
             case hracVpravo:
                 img.id = "Vpravo";
                 img.style.height = '190px';
+                img.classList.add("position-relative", "m-2", "float-end");
                 break;
             default:
                 img.id = "Neoznaceno";
