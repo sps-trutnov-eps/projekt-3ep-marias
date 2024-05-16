@@ -1213,15 +1213,45 @@ exports.checkEnd = (gameID) => {
             }
         } else if (game.mode == "b") {
             if (game.phase == "betl-lost"){
-                // prohra betla
+                game.phase = "paying";
+                game.playersPoints[game.altForhont] -= 2 * game.betBase * 5;
+                game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 5;
+                game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 5;
+                game.result = "";
             } else if (game.playersPacks[0] == 0){
-                // výhra betla
+                game.phase = "paying";
+                if (game.turn == game.altForhont){
+                    game.playersPoints[game.altForhont] -= 2 * game.betBase * 5;
+                    game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 5;
+                    game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 5;
+                    game.result = "";
+                } else {
+                    game.playersPoints[game.altForhont] += 2 * game.betBase * 5;
+                    game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 5;
+                    game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 5;
+                    game.result = "";
+                }
             }
         } else if (game.mode == "d") {
             if (game.phase == "durch-lost"){
-                // prohra durcha
+                game.phase = "paying";
+                game.playersPoints[game.altForhont] -= 2 * game.betBase * 10;
+                game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 10;
+                game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 10;
+                game.result = "";
             } else if (game.playersPacks[0] == 0){
-                // výhra durcha
+                game.phase = "paying";
+                if (game.turn != game.altForhont){
+                    game.playersPoints[game.altForhont] -= 2 * game.betBase * 5;
+                    game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 5;
+                    game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 5;
+                    game.result = "";
+                } else {
+                    game.playersPoints[game.altForhont] += 2 * game.betBase * 5;
+                    game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 5;
+                    game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 5;
+                    game.result = "";
+                }
             }
         }
     }
