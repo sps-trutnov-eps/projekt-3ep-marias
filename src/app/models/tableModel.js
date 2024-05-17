@@ -807,16 +807,16 @@ exports.checkStych = (gameID) => {
     let game = db.get(gameID);
 
     if (game.table.length == 3){
-        let strongestCards = game.table[0];
+        let strongestCard = game.table[0];
         for (let i = 1; i < 3; i++){
-            if (game.table[i].colour == strongestCards.colour)
-                if (game.table[i].value > strongestCards.value) strongestCards = game.table[i];
+            if (game.table[i].colour == strongestCard.colour)
+                if (game.table[i].value > strongestCard.value) strongestCard = game.table[i];
             else if (game.table[i].colour == game.trumf)
-                strongestCards = game.table[i];
+                strongestCard = game.table[i];
         }
     
-        let indexOfCards = game.table.indexOf(strongestCards);
-        game.turn = game.tableOrder[indexOfCards];
+        let indexOfCard = game.table.indexOf(strongestCard);
+        game.turn = game.tableOrder[indexOfCard];
         for (let i = 0; i < 3; i++){
             game.playersCollected[game.turn].push(game.table.shift());
         }
@@ -975,7 +975,10 @@ exports.checkEnd = (gameID) => {
                     game.playersPoints[game.forhont] -= 2 * price - price7;
                     game.playersPoints[(game.forhont + 1) % 3] += price + price7;
                     game.playersPoints[(game.forhont + 2) % 3] += price + price7;
-                    game.result = "false:false:false:false:false;"
+                    game.result = "false:false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase * (-1) + ";" +
+                    red + ":" + redPrice  * (-1) + ";" + Math.log2(game.bet) + ":" + flekPrice  * (-1) + ";" + sHundred + ":" + price * (-1) + ";" +
+                    price * (-1) + ";" + sSeven + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" (2 * (price * (-1)) + price7) + ":" +
+                    ((price * (-1)) - price7) + ":" + ((price * (-1)) - price7);
                 }
             } else if (game.challange == "7"){
                 for(let i = 0; i < game.playersMariages.length; i++){
@@ -1295,7 +1298,24 @@ exports.newRound = (gameID) => {
     let game = db.get(gameID);
 
     if (game.continue[0] && game.continue[1] && game.continue[2]){
-        // restart hry
+        game.altForhont = undefined;
+        game.forhont = (game.forhont + 1) % 3;
+        game.turn = game.forhont;
+        game.playersMariages[0] = [];
+        game.playersMariages[1] = [];
+        game.playersMariages[2] = [];
+        game.tableOrder = [];
+        game.phase = "picking-trumf";
+        game.bet = 1;
+        game.bet7 = 1;
+        game.continueBet = [true, true];
+        game.trumf = '';
+        game.mode = '';
+        game.challange = '';
+        game.result = "Další kolo"
+        game.continue = [false,false,false];
+
+        // sezbírat karty a pak zamíchat a rozdat
     }
 
     db.set(gameID, game);
