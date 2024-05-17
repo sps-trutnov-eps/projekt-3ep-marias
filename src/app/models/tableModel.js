@@ -825,10 +825,16 @@ exports.checkStych = (gameID) => {
         game.result += " a hráč " + game.nicknames[game.turn] + " získal karty pro sebe";
 
         if (game.mode == "b"){
-            if (game.turn == game.altForhont) game.phase = "betl-lost";
+            if (game.turn == game.altForhont) {
+                game.phase = "betl-lost";
+                this.checkEnd(gameID);
+            }
         }
         if (game.mode == "d"){
-            if (game.turn != game.altForhont) game.phase = "durch-lost";
+            if (game.turn != game.altForhont) {
+                game.phase = "durch-lost";
+                this.checkEnd(gameID);
+            }
         }
     }
 
@@ -841,17 +847,15 @@ coForhontVyhrál;-> bool:bool:bool:bool:bool (hra, 7, 100, belt, durch)
 bodyForhonta;	-> int
 bodyObrany;	    -> int
 základHry;	    -> float
-sto; 		    -> bool:float
 trumfČervená; 	-> bool:float
 fleky; 		    -> int:float (kolik fleků a na jakou hodnotu)
-tichéSto;   	-> bool:float
+sto; 		    -> bool:float
 celkovaCena     -> float
-ticháSedma; 	-> bool:float
 sedma; 		    -> bool:float
 flekySedmy; 	-> int:float
 celkovaCena7    -> float
 kdoKolikZíská   -> float:float:float
-příklad, forhont vyhrál sedmu v červené - true:true:false:false:false;60;30;0,1;false:0,1;true:0,2;
+příklad, forhont vyhrál sedmu v červené - "true:true:false:false:false;60;30;0,1;false:0,1;true:0,2;2:0,8;false:0,8;0,8;false:0,2;true:0,4;0:0,4;0,4;2,4:-1,2:-1,2"
 */
 
 exports.checkEnd = (gameID) => {
@@ -900,13 +904,22 @@ exports.checkEnd = (gameID) => {
                 }
 
                 let price = game.betBase * game.bet;
-                if (game.trumf == "č") price *= 2;
+                let flekPrice = price;
+                let red = false;
+                let redPrice = game.betBase;
+                if (game.trumf == "č") {
+                    price *= 2;
+                    redPrice *= 2;
+                    red = true;
+                }
 
                 // tiché sto
                 let higher = 0;
+                let sHundred = false;
                 if (forPoints >= 100) higher = forPoints;
                 if (defPoints >= 100) higher = defPoints;
                 if (higher >= 100){
+                    sHundred = true;
                     for (let i = 100; i <= 100; i += 10){
                         price *= 2;
                     }
@@ -914,6 +927,7 @@ exports.checkEnd = (gameID) => {
 
                 // tichá sedma
                 let price7 = 0;
+                let sSeven = false;
                 for(let i = 0; i < game.playersCollected.length; i++){
                     if (game.playersCollected[i].length > 0){
                         lastCards = game.playersCollected[i].slice(-3);
@@ -934,10 +948,12 @@ exports.checkEnd = (gameID) => {
                                 if (lastcards[v].colour == game.trumf && v != sevenIndex) higher = true;
                             }
                             if (higher){
+                                sSeven = true;
                                 if (game.tableOrder[higherIndex] == game.forhont) price7 = 1;
                                 else price7 = -1;
                             }
                             else {
+                                sSeven = true;
                                 if (game.tableOrder[sevenIndex] == game.forhont) price7 = 1;
                                 else price7 = -1;
                             }
@@ -951,12 +967,15 @@ exports.checkEnd = (gameID) => {
                     game.playersPoints[game.forhont] += 2 * price + price7;
                     game.playersPoints[(game.forhont + 1) % 3] -= price - price7;
                     game.playersPoints[(game.forhont + 2) % 3] -= price - price7;
-                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                    game.result = "true:false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
+                    red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + price + ";" +
+                    price + ";" + sSeven + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" (2 * price + price7) + ":" +
+                    (price - price7) + ":" + (price - price7);
                 } else {
                     game.playersPoints[game.forhont] -= 2 * price - price7;
                     game.playersPoints[(game.forhont + 1) % 3] += price + price7;
                     game.playersPoints[(game.forhont + 2) % 3] += price + price7;
-                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                    game.result = "false:false:false:false:false;"
                 }
             } else if (game.challange == "7"){
                 for(let i = 0; i < game.playersMariages.length; i++){
@@ -1264,11 +1283,22 @@ exports.checkEnd = (gameID) => {
 }
 
 exports.continue = (gameID, player) => {
+    let game = db.get(gameID);
 
+    indexofPlayer = game.players.findIndex(p => p == username);
+    game.continue[indexOfPlayer] = true;
+
+    db.set(gameID, game);
 }
 
 exports.newRound = (gameID) => {
+    let game = db.get(gameID);
 
+    if (game.continue[0] && game.continue[1] && game.continue[2]){
+        // restart hry
+    }
+
+    db.set(gameID, game);
 }
 
 exports.skip = (gameID, gamePhase) => {
