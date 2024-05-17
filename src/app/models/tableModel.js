@@ -837,7 +837,7 @@ exports.checkStych = (gameID) => {
 
 /*
 FORMÁT DAT ODESÍLANÝCH KLIENTOVI
-coForhontVyhrál	-> bool:bool:bool:bool:bool (hra, 7, 100, belt, durch)
+coForhontVyhrál;-> bool:bool:bool:bool:bool (hra, 7, 100, belt, durch)
 bodyForhonta;	-> int
 bodyObrany;	    -> int
 základHry;	    -> float
@@ -851,6 +851,7 @@ sedma; 		    -> bool:float
 flekySedmy; 	-> int:float
 celkovaCena7    -> float
 kdoKolikZíská   -> float:float:float
+příklad, forhont vyhrál sedmu v červené - true:true:false:false:false;60;30;0,1;false:0,1;true:0,2;
 */
 
 exports.checkEnd = (gameID) => {
@@ -943,6 +944,7 @@ exports.checkEnd = (gameID) => {
                         }
                     }
                 }
+                if (game.trumf == "č") price7 *= 2;
 
                 // vyplácení
                 if (forPoints > defPoints){
@@ -984,6 +986,7 @@ exports.checkEnd = (gameID) => {
 
                 // sedma
                 let price7 = game.betBase * 2 * game.bet7;
+                if (game.trumf == "č") price7 *= 2;
                 let seven = false;
                 if (game.playersCollected[game.forhont].length > 0){
                     lastCards = game.playersCollected[game.forhont].slice(-3);
@@ -1100,6 +1103,7 @@ exports.checkEnd = (gameID) => {
                         }
                     }
                 }
+                if (game.trumf == "č") price7 *= 2;
 
                 // vyplácení
                 if (hundred){
@@ -1172,6 +1176,7 @@ exports.checkEnd = (gameID) => {
                 }
 
                 let price7 = game.betBase * 2 * game.bet7;
+                if (game.trumf == "č") price7 *= 2;
                 let seven = false;
                 if (game.playersCollected[game.forhont].length > 0){
                     lastCards = game.playersCollected[game.forhont].slice(-3);
@@ -1221,35 +1226,35 @@ exports.checkEnd = (gameID) => {
             } else if (game.playersPacks[0] == 0){
                 game.phase = "paying";
                 if (game.turn == game.altForhont){
-                    game.playersPoints[game.altForhont] -= 2 * game.betBase * 5;
-                    game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 5;
-                    game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 5;
+                    game.playersPoints[game.altForhont] -= 2 * game.betBase * 5 * game.bet;
+                    game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 5 * game.bet;
+                    game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 5 * game.bet;
                     game.result = "";
                 } else {
-                    game.playersPoints[game.altForhont] += 2 * game.betBase * 5;
-                    game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 5;
-                    game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 5;
+                    game.playersPoints[game.altForhont] += 2 * game.betBase * 5 * game.bet;
+                    game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 5 * game.bet;
+                    game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 5 * game.bet;
                     game.result = "";
                 }
             }
         } else if (game.mode == "d") {
             if (game.phase == "durch-lost"){
                 game.phase = "paying";
-                game.playersPoints[game.altForhont] -= 2 * game.betBase * 10;
-                game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 10;
-                game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 10;
+                game.playersPoints[game.altForhont] -= 2 * game.betBase * 10 * game.bet;
+                game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 10 * game.bet;
+                game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 10 * game.bet;
                 game.result = "";
             } else if (game.playersPacks[0] == 0){
                 game.phase = "paying";
                 if (game.turn != game.altForhont){
-                    game.playersPoints[game.altForhont] -= 2 * game.betBase * 5;
-                    game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 5;
-                    game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 5;
+                    game.playersPoints[game.altForhont] -= 2 * game.betBase * 10 * game.bet;
+                    game.playersPoints[(game.altForhont + 1) % 3] += game.betBase * 10 * game.bet;
+                    game.playersPoints[(game.altForhont + 2) % 3] += game.betBase * 10 * game.bet;
                     game.result = "";
                 } else {
-                    game.playersPoints[game.altForhont] += 2 * game.betBase * 5;
-                    game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 5;
-                    game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 5;
+                    game.playersPoints[game.altForhont] += 2 * game.betBase * 10;
+                    game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 10;
+                    game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 10;
                     game.result = "";
                 }
             }
