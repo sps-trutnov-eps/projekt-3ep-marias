@@ -1,22 +1,40 @@
 <%- include('../layout/hlavicka') %>
 
-    <h1>Pravidla Voleného Mariáše</h1>
+<style>
+    body {
+        background-color: #f5f5f5;
+    }
+    .container-sm {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
 
-    <p>
+<div class="container-sm pt-5">
+
+    <h1 class="text-center">Pravidla Voleného Mariáše</h1>
+
+    <p class="lead">
         Volený Mariáš je hazardní zdvihová karetní hra pro 3 hráče. Hraje se s balíčkem 32 karet v barvách červené, kule, žaludy
         a listy. Hraje se na dva týmy, které se po každé odehrané partičce mění. Cílem je pro svůj tým získat více bodů
         než má druhá strana. Body se získávají sbíráním karet. Každý z hráčů v jednom
         kole odhodí po jedné kartě a ten, který hodil kartu nejsilnější si bere všechny. S těmito sebranými kartami dál již nehraje.
         Celkový postup ke hraní je ale o něco komplikovanější.
         Pomyslně by se dal Mariáš rozdělit do tří částí:
-    <ul>
-        <li>Rozdávání</li>
-        <li>Dohadování</li>
-        <li>Sehrávka</li>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"></li>
+        <li class="list-group-item fw-bold">Rozdávání</li>
+        <li class="list-group-item fw-bold">Dohadování</li>
+        <li class="list-group-item fw-bold">Sehrávka</li>
+        <li class="list-group-item"></li>
     </ul>
+    
     </p>
 
-    <h2>Rozdávání</h2>
+    <h2 class="pt-5">Rozdávání</h2>
 
     <p>
         Tuto část řeší sice webový Mariáš za vás, ale je důležité ji znát, neboť se při ní určují role/týmy. Rozdávající
@@ -27,7 +45,7 @@
         10ti kartách, forhont se zatím smí podívat jen do prvních 7 z 12 karet.
     </p>
 
-    <h3>Míchání</h3>
+    <h4 class="pt-4">Míchání</h4>
 
     <p>
         Malý dodatek, pokud budete hrát s pravými kartami a ne na naší stránce. Karty se míchají pouze na začítku hry. Když se dohraje
@@ -35,8 +53,8 @@
         karet se jinak platí "renonc" neboli pokuta, jejíž výše závisí na zvyklosti.
     </p>
 
-    <h2>Dohadování</h2>
-    <h3>Volení trumfu</h3>
+    <h2 class="pt-5">Dohadování</h2>
+    <h4 class="pt-4">Volení trumfu</h4>
     <p>
         Hned po rozdání má forhont jako první úkol vybrat z prvních 7 karet trumf. Trumf je označení pro barvu, která 
         bude ve hře mít schopnost, přebít jakoukoliv jinou kartu. Pokud tedy forhont vidí, že má například
@@ -44,21 +62,25 @@
         se odloží lícem dolů na stůl. Obráncům se odhalí až později. Pokud forhontovi karty nevyhovují, může takzvaně
         "volit z lidu", kdy vybere trumf z 5 karet, které ještě leží na stole a nesmí je vidět. Barvu trumfů pak nezná nikdo.
     </p>
-    <h3>Odhození talonu</h3>
+    <h4 class="pt-4">Odhození talonu</h4>
     <p>
         Po zvolení trumfů si forhont dobere zbývající karty. Jelikož má teď o 2 karty více než obránci (kartu s trumfem si po
-        odhalení vezme zpátky do ruky), musí dvě karty odhodit a nebude se s nimi hrát. Těmto kartám se říká "talon".
+        odhalení vezme zpátky do ruky), musí dvě karty odhodit a nebude se s nimi hrát. Těpto kartám se říká "talon".
         Talon nesmí obránci vidět.
     </p>
-    <h3>Výběr typu Mariáše</h3>
+    <h4 class="pt-4">Výběr typu Mariáše</h4>
     <p>
         Po vybrání talonu přichází pro forhonta další úkol. Výběr typu hry.
         Mariáš se totiž dělí na 3 typy: 
-        <ul>
-            <li>"Hra" nebo častěji "Barva" (Odvozeno od toho, že se hraje s trumfovou barvou)</li>
-            <li>"Betl" nebo jinak "Malý Mariáš"/"Malej"</li>
-            <li>"Durch" nebo jinak "Velký Mariáš"/"Velkej"</li>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"></li>
+            <li class="list-group-item fw-bold">Hra nebo Barva</li>
+            <li class="list-group-item fw-bold">Betl nebo Malý Mariáš</li>
+            <li class="list-group-item fw-bold">Durch nebo Velký Mariáš</li>
+            <li class="list-group-item"></li>
         </ul>
+
         Tyto typy si vysvětlíme níže. Teď nás zajímá, jestli budou chtít obránci hrát to, co forhont zvolil.
         Hry jsou totiž brány dle své "výše". Barva je nejnižší, Betl vyšší a Durch nejvyšší. Vybere-li forhont Barvu,
         zeptá se Obránců "Barva?". Obránci po směru hodinových ručiček odpovídají "Dobrá" nebo "Špatná". Pokud oba odsouhlasí,
@@ -68,7 +90,7 @@
         forhont ukáže obráncům odloženou kartu, aby i oni věděli, která barva je trumfová.
         Jakmile je odsouhlaseno a ukáže se trumf, začíná poslední část dohadování.
     </p>
-    <h3>Flekování</h3>
+    <h4 class="pt-4">Flekování</h4>
     <p>
         Jelikož Mariáš je hazardní hra, musí se určit, kolik se bude za výhru/prohru platit. Základem dříve bývaly desetníky,
         dnes je to většinou koruna, ale dle dohody se může určit jakákoliv cena. Tato základní cena se platí tomu týmu, 
@@ -82,7 +104,7 @@
         konec, tak začne hra.
     </p>
 
-    <h2>Hra/Barva</h2>
+    <h2 class="pt-5">Hra/Barva</h2>
 
     <p>
         Když se zahlásí Barva a fleky jsou již určené, je čas začít hrát. V každém jenom zdvihu (zvaný štych) všichni hráči
@@ -91,7 +113,7 @@
         směru hodinových ručiček. Takto se odhazuje, dokud se nerozhodí všechny karty. Jak ale určit, která je nejsilnější?
     </p>
 
-    <h3>Hodnoty karet</h3>
+    <h4 class="pt-4">Hodnoty karet</h4>
 
     <p>
         Hodnoty od nejnižší po nejvyšší jsou: 7, 8, 9, spodek, svršek, král, X (10) a eso (nestandartní pozice desítky je 
@@ -102,31 +124,21 @@
         ještě furt může přebýt eso trumfem. Pokud je ve štychu odhozeno více trumfů, vyhrává ten vyšší.
     </p>
 
-    <h3>Pravidla odhazování karet</h3>
+    <h4 class="pt-4">Pravidla odhazování karet</h4>
 
     <p>
         K tomu kdy se můžou odhodit jaké karty se v Mariáši bážou pevná pravidla. Díky nim je sice hráč omezen, ale může tak
         lépe taktizovat. Za porušení pravidel se uvaluje peněžní trest, takzvaný "renonc". Pravidla jsou:
-        <ol>
-            <li>
-                Ctění barvy - musí se zahrát taková barva, jaká byla na stůl odhozena jako první
-            </li>
-            <li>
-                Pokud stejnou barvu mám, přebíjím vyšší kartou, pokud vyšší nemám, hraju jakoukoliv jinou ve stejné barvě
-            </li>
-            <li>
-                Pokud nemám stejnou barvu, hraju trumfa
-            </li>
-            <li>
-                Pokud už někdo zahrál trumf přede mnou, taky ho musím přebít, pokud můžu, nemohu-li, hraju jakýkoliv jiný trumf
-            </li>
-            <li>
-                Pokud nemám ani trumf, hraju cokoliv
-            </li>
-        </ol>
+        <ul class="text-start py-5">
+            <li>Ctění barvy - musí se zahrát taková barva, jaká byla na stůl odhozena jako první</li>
+            <li>Pokud stejnou barvu mám, přebíjím vyšší kartou, pokud vyšší nemám, hraju jakoukoliv jinou ve stejné barvě</li>
+            <li>Pokud nemám stejnou barvu, hraju trumfa</li>
+            <li>Pokud už někdo zahrál trumf přede mnou, taky ho musím přebít, pokud můžu, nemohu-li, hraju jakýkoliv jiný trumf</li>
+            <li>Pokud nemám ani trumf, hraju cokoliv</li>
+        </ul>
     </p>
 
-    <h3>Bodování</h3>
+    <h4 class="pt-4">Bodování</h4>
 
     <p>
         Když už jsou všechny karty odhozeny je načase spočítat body, aby se vědělo, kdo bude platit komu. Každý se podívá do své
@@ -134,7 +146,7 @@
         který sebral poslední štych. Obráncům se počítají body dohromady. Který tým má méně bodů, platí částku, která byla naflekována.
     </p>
 
-    <h3>Mariáše neboli hlášky</h3>
+    <h4 class="pt-4">Mariáše neboli hlášky</h4>
 
     <p>
         Nyní si řekneme, jak získat ve hře další body. Podle tohoto způsobu je i celá hra pojmenovaná. Původní slovo, dle kterého se 
@@ -149,19 +161,21 @@
         odhodí a nejedná se tak o podvrh.
     </p>
 
-    <h3>Výzvy</h3>
+    <h4 class="pt-4">Výzvy</h4>
 
     <p>
         Když forhont ukazuje obráncům, jaká barva je trumfem, může u toho ještě zahlásit výzvu, kterou si může zvýšit svůj zisk.
         Těmito výzvymi jsou:
-        <ul>
-            <li>Sedma - poslední štych musí být uhrán trumfovou sedmičkou</li>
-            <li>Stovka - musí uhrát alespoň 100 bodů, přičemž se mu do toho počítá jen jedna hláška</li>
-            <li>Stosedm - zahrát sedmu i stovku zároveň</li>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"></li>
+            <li class="list-group-item fw-bold">Sedma - poslední štych musí být uhrán trumfovou sedmičkou</li>
+            <li class="list-group-item fw-bold">Stovka - musí uhrát alespoň 100 bodů, přičemž se mu do toho počítá jen jedna hláška</li>
+            <li class="list-group-item fw-bold">Stosedm - zahrát sedmu i stovku zároveň</li>
+            <li class="list-group-item"></li>
         </ul>
     </p>
 
-    <h3>Sedma - podrobnosti</h3>
+    <h4 class="pt-4">Sedma - podrobnosti</h4>
 
     <p>
         Sedma je nejčastější výzva. Pro forhonta výhodná, když má společně s trumfovou sedmou i hodně trumfů. Pak se jedná o téměř jisté peníze
@@ -174,7 +188,7 @@
         "tichou sedmu", která má hodnotu základu hry a jelikož není hlášená, nedá se flekovat.
     </p>
 
-    <h3>Stovka - podrobnosti</h3>
+    <h4 class="pt-4">Stovka - podrobnosti</h4>
 
     <p>
         V případě velmi dobrých karet může forhont zahlásit stovku, kdy se zavazuje, že zahraje alespoň 100 bodů. Do toho se mu počítá
@@ -190,14 +204,14 @@
         nějaké hlášky, prohráli, protože forhont dosáhl 100 bodů a potom je jedno, kolik měli obránci hlášek.
     </p>
 
-    <h3>Stosedm - podrobnosti</h3>
+    <h4 class="pt-4">Stosedm - podrobnosti</h4>
         Byť je nejtěžší na zahrání, nejlepe se vysvětluje (narozdíl od stovky...obávám se, že i po několika přečtení je pro nové hráce 
         nepochopitelná). Jedná se o kombinaci sedmy a stovky. Hry, které jsou vysvětleny výše.
     <p>
 
     </p>
 
-    <h2>Betl</h2>
+    <h2 class="pt-5">Betl</h2>
 
     <p>
         Betl je herní mód, který je určen pro situaci, kdy máte na ruce velmi nízké a špatně použitelné karty. Nehraje se vůbec na body.
@@ -209,12 +223,17 @@
         Pořadí hodnot karet v betlu je od nejnižší: 7, 8, 9, X (10), spodek, svršek, král a eso.
     </p>
 
-    <h2>Durch</h2>
+    <h2 class="pt-5">Durch</h2>
 
-    <p>
+    <p class="pb-5">
         Durch je takový opak betlu. Pokud máte pocit, že vaše karty jsou tak dobré, že byste vzali všechny štychy, můžete zahlásit durch.
         Platí se za něj desetinásobek základu. Platí při něm stejné změny jako při betlu, jinak zbytek pravidel zůstává. Trumfy nejsou,
         hlášky se nehrají, body se nepočítají a karta X (10) je pod spodkem. Vaším cílem je vzít všechny karty a nepřijít ani o jeden štych.
     </p>
 
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <%- include('../layout/paticka') %>
