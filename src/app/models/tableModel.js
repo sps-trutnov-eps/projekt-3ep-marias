@@ -848,16 +848,16 @@ exports.checkStych = (gameID) => {
 FORMÁT DAT ODESÍLANÝCH KLIENTOVI
 coForhontVyhrál;-> bool:bool:bool:bool:bool (hra, 7, 100, belt, durch)
 bodyForhonta;	-> int
-bodyObrany;	    -> int
-základHry;	    -> float
-trumfČervená; 	-> bool:float
-fleky; 		    -> int:float (kolik fleků a na jakou hodnotu)
-sto; 		    -> bool:float
+bodyObrany;	-> int
+základHry;	-> float
+trumfČervená; 	-> bool:float (jestli byl a na jakou hodnotu cenu dostal)
+fleky; 		-> int:float (kolik fleků a na jakou hodnotu cenu dostaly)
+sto; 		-> bool:float (jestli stovka byla (např. tichá) a na jakou hodnotu cenu dostal)
 celkovaCena     -> float
-sedma; 		    -> bool:float
-flekySedmy; 	-> int:float
+sedma; 		-> bool:float (jestli sedma byla (např. tichá) a na jakou hodnotu cenu dostala)
+flekySedmy; 	-> int:float (kolik fleků a na jakou hodnotu cenu dostaly)
 celkovaCena7    -> float
-kdoKolikZíská   -> float:float:float
+kdoKolikZíská   -> float:float:float (první forhont a pak dva obránci)
 příklad, forhont vyhrál sedmu v červené - "true:true:false:false:false;60;30;0,1;false:0,1;true:0,2;2:0,8;false:0,8;0,8;false:0,2;true:0,4;0:0,4;0,4;2,4:-1,2:-1,2"
 */
 
