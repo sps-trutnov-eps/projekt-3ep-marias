@@ -255,7 +255,7 @@ exports.trumf = (gameID, indx) => {
 
     game.trumf = game.playersPacks[game.forhont][indx].colour;
     game.phase = "choosing-talon";
-    game.result = "Forhont vybral trumf";
+    game.result = "Forhont (" + game.nicknames[game.forhont] + ") vybral trumf";
 
     db.set(gameID, game);
 }
@@ -282,7 +282,7 @@ exports.talon = (gameID, t1, t2) => {
 
     game.playersPacks[f] = newPack;
     game.phase = "choosing-game";
-    game.result = "Forhont odhodil karty do talonu";
+    game.result = "Forhont (" + game.nicknames[game.forhont] + ") odhodil karty do talonu";
 
     db.set(gameID, game);
 }
@@ -297,12 +297,14 @@ exports.mode = (gameID, mode) => {
             game.phase = "ack";
         } else if (mode == "b"){
             game = turnX(game);
+            game.altForhont = game.forhont;
             game.mode = mode;
             game.trumf = "";
             game.turn = (game.turn + 1) % 3;
             game.phase = "ack";
         } else if (mode == "d"){
             game = turnX(game);
+            game.altForhont = game.forhont;
             game.mode = mode;
             game.trumf = "";
             game.turn = (game.turn + 1) % 3;
@@ -324,7 +326,7 @@ exports.mode = (gameID, mode) => {
             break;
     }
 
-    game.result = "Forhont zvolil typ hry: " + mode;
+    game.result = "Forhont (" + game.nicknames[game.forhont] + ") zvolil typ hry: " + mode;
 
     db.set(gameID, game);
 }
@@ -753,7 +755,6 @@ exports.playCard = (gameID, player, cardIndex) => {
                 game.playersPacks[playerIndex].splice(cardIndex, 1);
                 game.table.push(playedCard);
                 game.tableOrder.push(playerIndex);
-                if (!game.result.includes("hlášku")) game.result = "Hráč " + game.nicknames[game.turn] + " zahrál kartu";
                 game.turn = (game.turn + 1) % game.players.length;
             } // Karta má stejnou barvu
             else if (playedCard.colour == game.table[0].colour){
