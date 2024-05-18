@@ -93,7 +93,9 @@ exports.removePlayer = (gameID, id, client) => {
         game.nicknames.splice(playerIndex, 1);
     }
 
+    db.set(gameID, game);
     this.newRound(gameID);
+    game = db.get(gameID);
     game.phase = "waiting";
 
     db.set(gameID, game);
@@ -545,7 +547,9 @@ exports.noBet = (gameID) => {
             if (game.bet == 1 && game.bet7 == 1) {
                 if (game.challange == "h" || game.challange == "7"){
                     game.phase = "no-flek";
+                    db.set(gameID, game);
                     this.checkEnd(gameID);
+                    game = db.get(gameID);
                 } else {
                     game.phase = "playing";
                     game.result = "Flekování ukončeno na " + game.bet + " násobku ceny";
@@ -814,8 +818,7 @@ exports.checkStych = (gameID) => {
         for (let i = 1; i < 3; i++){
             if (game.table[i].colour == strongestCard.colour)
                 if (game.table[i].value > strongestCard.value) strongestCard = game.table[i];
-            else if (game.table[i].colour == game.trumf)
-                strongestCard = game.table[i];
+            else if (game.table[i].colour == game.trumf) strongestCard = game.table[i];
         }
     
         let indexOfCard = game.table.indexOf(strongestCard);
@@ -830,13 +833,17 @@ exports.checkStych = (gameID) => {
         if (game.mode == "b"){
             if (game.turn == game.altForhont) {
                 game.phase = "betl-lost";
+                db.set(gameID, game);
                 this.checkEnd(gameID);
+                game = db.get(gameID);
             }
         }
         if (game.mode == "d"){
             if (game.turn != game.altForhont) {
                 game.phase = "durch-lost";
+                db.set(gameID, game);
                 this.checkEnd(gameID);
+                game = db.get(gameID);
             }
         }
     }
@@ -1362,6 +1369,11 @@ exports.newRound = (gameID) => {
         game.playersCollected  = [[],[],[]];
         game.talon = [];
         game.table = [];
+
+        game = turnXback(game);
+        db.set(gameID, game);
+        this.mixCards(gameID);
+        game = db.get(gameID);
     }
 
     db.set(gameID, game);
