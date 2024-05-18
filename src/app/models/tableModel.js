@@ -38,7 +38,7 @@ exports.addTable = (type, name, password, betBase, cardStyle) => {
         'playersPacks': [[], [], []],
         'playersCollected': [[], [], []],
         'playersMariages': [[], [], []],
-        'playersPoints': [0, 0, 0],
+        'playersPoints': [betBase*500, betBase*500, betBase*500],
         'talon': [],
         'table': [],
         'tableOrder':[],
@@ -92,6 +92,9 @@ exports.removePlayer = (gameID, id, client) => {
         game.players.splice(playerIndex, 1);
         game.nicknames.splice(playerIndex, 1);
     }
+
+    this.newRound(gameID);
+    game.phase = "waiting";
 
     db.set(gameID, game);
 }
@@ -1315,7 +1318,26 @@ exports.newRound = (gameID) => {
         game.result = "Další kolo"
         game.continue = [false,false,false];
 
-        // sezbírat karty a pak zamíchat a rozdat
+        for (let i = 0; i < game.table.length; i++){
+            game.cardPack.push(game.table[i]);
+        }
+        for (let i = 0; i < game.talon.length; i++){
+            game.cardPack.push(game.talon[i]);
+        }
+        for (let p = 0; i < game.palyers.length; p++){
+            for (let i = 0; i < game.playersPacks[p].length; i++){
+                game.cardPack.push(game.playersPacks[p][i]);
+            }
+        }
+        for (let p = 0; i < game.palyers.length; p++){
+            for (let i = 0; i < game.playersCollected[p].length; i++){
+                game.cardPack.push(game.playersCollected[p][i]);
+            }
+        }
+        game.playersPacks = [[],[],[]];
+        game.playersCollected  = [[],[],[]];
+        game.talon = [];
+        game.table = [];
     }
 
     db.set(gameID, game);
