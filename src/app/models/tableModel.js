@@ -1019,9 +1019,11 @@ exports.checkEnd = (gameID) => {
 
                 // tiché sto
                 let higher = 0;
+                let sHundred = false;
                 if (forPoints >= 100) higher = forPoints;
                 if (defPoints >= 100) higher = defPoints;
                 if (higher >= 100){
+                    sHundred = true;
                     for (let i = 100; i <= 100; i += 10){
                         price *= 2;
                     }
@@ -1118,8 +1120,8 @@ exports.checkEnd = (gameID) => {
                     }
                 }
 
-                // tichá sedma
                 let price7 = 0;
+                let sSeven = false;
                 for(let i = 0; i < game.playersCollected.length; i++){
                     if (game.playersCollected[i].length > 0){
                         lastCards = game.playersCollected[i].slice(-3);
@@ -1140,10 +1142,12 @@ exports.checkEnd = (gameID) => {
                                 if (lastcards[v].colour == game.trumf && v != sevenIndex) higher = true;
                             }
                             if (higher){
+                                sSeven = true;
                                 if (game.tableOrder[higherIndex] == game.forhont) price7 = 1;
                                 else price7 = -1;
                             }
                             else {
+                                sSeven = true;
                                 if (game.tableOrder[sevenIndex] == game.forhont) price7 = 1;
                                 else price7 = -1;
                             }
