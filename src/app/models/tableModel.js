@@ -966,23 +966,20 @@ exports.checkEnd = (gameID) => {
                 if (game.trumf == "č") price7 *= 2;
 
                 // vyplácení
-                if (forPoints > defPoints){
-                    game.playersPoints[game.forhont] += 2 * (price + price7);
-                    game.playersPoints[(game.forhont + 1) % 3] -= price - price7;
-                    game.playersPoints[(game.forhont + 2) % 3] -= price - price7;
-                    game.result = "true:false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
-                    red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + price + ";" +
-                    price + ";" + sSeven + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" (2 * price + price7) + ":" +
-                    (price - price7) + ":" + (price - price7);
-                } else {
-                    game.playersPoints[game.forhont] -= 2 * (price - price7);
-                    game.playersPoints[(game.forhont + 1) % 3] += price - price7;
-                    game.playersPoints[(game.forhont + 2) % 3] += price - price7;
-                    game.result = "true:false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
-                    red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + price + ";" +
-                    price + ";" + sSeven + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" (2 * price + price7) + ":" +
-                    (price - price7) + ":" + (price - price7);
+                let forWin = true;
+                if (forPoints < defPoints) {
+                    forWin = false;
+                    price *= -1;
                 }
+
+                game.playersPoints[game.forhont] += 2 * (price + price7);
+                game.playersPoints[(game.forhont + 1) % 3] -= price - price7;
+                game.playersPoints[(game.forhont + 2) % 3] -= price - price7;
+                game.result = forWin + ":false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
+                red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + Math.abs(price) + ";" +
+                price + ";" + sSeven + ":" + Math.abs(price7) + ";0:" + Math.abs(price7) + ";" + price7 + ";" + (2 * (price + price7)) + ":" +
+                (price - price7) + ":" + (price - price7);
+                
             } else if (game.challange == "7"){
                 for(let i = 0; i < game.playersMariages.length; i++){
                     for(let j = 0; j < game.playersMariages[i].length; j++){
@@ -1028,23 +1025,19 @@ exports.checkEnd = (gameID) => {
                 game.playersPoints[(game.forhont + 1) % 3] -= price7;
                 game.playersPoints[(game.forhont + 2) % 3] -= price7;
 
-                if (forPoints > defPoints){
-                    game.playersPoints[game.forhont] += 2 * price;
-                    game.playersPoints[(game.forhont + 1) % 3] -= price;
-                    game.playersPoints[(game.forhont + 2) % 3] -= price;
-                    game.result = "true:"+seven+":false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
-                    red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + price + ";" +
-                    price + ";true:" + game.betBase * 2 + ";" + Math.log2(game.bet7) + ":" + price7 + ";" + price7 + ";" +
-                    (2 * price + price7) + ":" + (price - price7) + ":" + (price - price7);
-                } else {
-                    game.playersPoints[game.forhont] -= 2 * price - price7;
-                    game.playersPoints[(game.forhont + 1) % 3] += price;
-                    game.playersPoints[(game.forhont + 2) % 3] += price;
-                    game.result = "false:"+seven+":false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
-                    red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + price + ";" +
-                    price + ";true:" + game.betBase * 2 + ";" + Math.log2(game.bet7) + ":" + price7 + ";" + price7 + ";" +
-                    (2 * price + price7) + ":" + (price - price7) + ":" + (price - price7);
+                let forWin = true;
+                if (forPoints < defPoints) {
+                    forWin = false;
+                    price *= -1;
                 }
+
+                game.playersPoints[game.forhont] += 2 * (price + price7);
+                game.playersPoints[(game.forhont + 1) % 3] -= price - price7;
+                game.playersPoints[(game.forhont + 2) % 3] -= price - price7;
+                game.result = forWin + ":" + seven +"false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
+                red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + Math.abs(price) + ";" +
+                price + ";true:" + redPrice * 2 + ";" + Math.log2(game.bet7) + ":" + Math.abs(price7) + ";" + price7 + ";" +
+                (2 * (price + price7)) + ":" + (price - price7) + ":" + (price - price7);
             } else if (game.challange == "100"){
                 let price = game.betBase * 4 * game.bet;
                 if (game.trumf == "č") price *= 2;
