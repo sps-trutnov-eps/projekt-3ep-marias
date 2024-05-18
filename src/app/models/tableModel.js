@@ -1359,23 +1359,6 @@ exports.newRound = (gameID) => {
         game.challange = '';
         game.result = "Další kolo"
         game.continue = [false,false,false];
-
-        for (let i = 0; i < game.table.length; i++){
-            game.cardPack.push(game.table.shift());
-        }
-        for (let i = 0; i < game.talon.length; i++){
-            game.cardPack.push(game.talon.shift());
-        }
-        for (let p = 0; p < game.players.length; p++){
-            for (let i = 0; i < game.playersPacks[p].length; i++){
-                game.cardPack.push(game.playersPacks[p].shift());
-            }
-        }
-        for (let p = 0; p < game.players.length; p++){
-            for (let i = 0; i < game.playersCollected[p].length; i++){
-                game.cardPack.push(game.playersCollected[p].shift());
-            }
-        }
         game.playersPacks = [[],[],[]];
         game.playersCollected  = [[],[],[]];
         game.talon = [];
@@ -1383,7 +1366,9 @@ exports.newRound = (gameID) => {
 
         game = turnXback(game);
         db.set(gameID, game);
+        this.addCards(gameID);
         this.mixCards(gameID);
+        if (game.type == "voleny") this.dealCardsVoleny(gameID);
         game = db.get(gameID);
     }
 
