@@ -339,7 +339,7 @@ turnX = (game) => {
 }
 
 turnXback = (game) => {
-    for(let j = 0; j < game.cardPack[i].length; j++){
+    for(let j = 0; j < game.cardPack.length; j++){
         if(game.cardPack[j].value == 10) game.cardPack[j].value = 14;
     }
     return game;
@@ -1338,7 +1338,7 @@ exports.continue = (gameID, player) => {
 exports.newRound = (gameID) => {
     let game = db.get(gameID);
 
-    if (game.continue[0] && game.continue[1] && game.continue[2] || game.players.length < 3){
+    if (game.continue[0] && game.continue[1] && game.continue[2] || game.players.length < 3 || game.phase == "paying"){
         game.altForhont = undefined;
         game.forhont = (game.forhont + 1) % 3;
         game.turn = game.forhont;
