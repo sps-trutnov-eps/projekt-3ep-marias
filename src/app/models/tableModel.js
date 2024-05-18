@@ -967,7 +967,7 @@ exports.checkEnd = (gameID) => {
 
                 // vyplácení
                 if (forPoints > defPoints){
-                    game.playersPoints[game.forhont] += 2 * price + price7;
+                    game.playersPoints[game.forhont] += 2 * (price + price7);
                     game.playersPoints[(game.forhont + 1) % 3] -= price - price7;
                     game.playersPoints[(game.forhont + 2) % 3] -= price - price7;
                     game.result = "true:false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
@@ -975,13 +975,13 @@ exports.checkEnd = (gameID) => {
                     price + ";" + sSeven + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" (2 * price + price7) + ":" +
                     (price - price7) + ":" + (price - price7);
                 } else {
-                    game.playersPoints[game.forhont] -= 2 * price - price7;
-                    game.playersPoints[(game.forhont + 1) % 3] += price + price7;
-                    game.playersPoints[(game.forhont + 2) % 3] += price + price7;
-                    game.result = "false:false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase * (-1) + ";" +
-                    red + ":" + redPrice  * (-1) + ";" + Math.log2(game.bet) + ":" + flekPrice  * (-1) + ";" + sHundred + ":" + price * (-1) + ";" +
-                    price * (-1) + ";" + sSeven + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" (2 * (price * (-1)) + price7) + ":" +
-                    ((price * (-1)) - price7) + ":" + ((price * (-1)) - price7);
+                    game.playersPoints[game.forhont] -= 2 * (price - price7);
+                    game.playersPoints[(game.forhont + 1) % 3] += price - price7;
+                    game.playersPoints[(game.forhont + 2) % 3] += price - price7;
+                    game.result = "true:false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
+                    red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + price + ";" +
+                    price + ";" + sSeven + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" (2 * price + price7) + ":" +
+                    (price - price7) + ":" + (price - price7);
                 }
             } else if (game.challange == "7"){
                 for(let i = 0; i < game.playersMariages.length; i++){
@@ -1021,28 +1021,29 @@ exports.checkEnd = (gameID) => {
                         }
                     }
                 }
+                if (!seven) price7 *= -1;
 
                 // vyplácení
-                if (seven){
-                    game.playersPoints[game.forhont] += 2 * price7;
-                    game.playersPoints[(game.forhont + 1) % 3] -= price7;
-                    game.playersPoints[(game.forhont + 2) % 3] -= price7;
-                } else {
-                    game.playersPoints[game.forhont] -= 2 * price7;
-                    game.playersPoints[(game.forhont + 1) % 3] += price7;
-                    game.playersPoints[(game.forhont + 2) % 3] += price7;
-                }
+                game.playersPoints[game.forhont] += 2 * price7;
+                game.playersPoints[(game.forhont + 1) % 3] -= price7;
+                game.playersPoints[(game.forhont + 2) % 3] -= price7;
 
                 if (forPoints > defPoints){
                     game.playersPoints[game.forhont] += 2 * price;
                     game.playersPoints[(game.forhont + 1) % 3] -= price;
                     game.playersPoints[(game.forhont + 2) % 3] -= price;
-                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                    game.result = "true:"+seven+":false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
+                    red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + price + ";" +
+                    price + ";true:" + game.betBase * 2 + ";" + Math.log2(game.bet7) + ":" + price7 + ";" + price7 + ";" +
+                    (2 * price + price7) + ":" + (price - price7) + ":" + (price - price7);
                 } else {
                     game.playersPoints[game.forhont] -= 2 * price - price7;
                     game.playersPoints[(game.forhont + 1) % 3] += price;
                     game.playersPoints[(game.forhont + 2) % 3] += price;
-                    game.result = ""; // tady pak dle schématu odeslat výsledek
+                    game.result = "false:"+seven+":false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
+                    red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + price + ";" +
+                    price + ";true:" + game.betBase * 2 + ";" + Math.log2(game.bet7) + ":" + price7 + ";" + price7 + ";" +
+                    (2 * price + price7) + ":" + (price - price7) + ":" + (price - price7);
                 }
             } else if (game.challange == "100"){
                 let price = game.betBase * 4 * game.bet;
