@@ -459,7 +459,7 @@ function fazeVoleneHry(classRoleHrace) {
             document.getElementById("karty").style.marginRight = "11px";
         }
 
-        if (workdata.table.length == 3){
+        if (workdata.table.length == 3 && user == workdata.players[workdata.turn]){
             setTimeout(() => {
                 socket.send(game + ";" + "end");
             }, 3600);
@@ -510,7 +510,7 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
             document.getElementById("karty").style.marginRight = "11px";
         }
 
-        if (workdata.table.length == 3){
+        if (workdata.table.length == 3 && user == workdata.players[workdata.turn]){
             setTimeout(() => {
                 socket.send(game + ";" + "end");
               }, 3600);
