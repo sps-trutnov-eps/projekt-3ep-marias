@@ -815,13 +815,20 @@ exports.checkStych = (gameID) => {
 
     if (game.table.length == 3){
         let strongestCard = game.table[0];
-        for (let i = 1; i < 3; i++){
-            if (game.table[i].colour == strongestCard.colour)
-                if (game.table[i].value > strongestCard.value) strongestCard = game.table[i];
-            else if (game.table[i].colour == game.trumf) strongestCard = game.table[i];
+
+        for (let i = 0; i < 3; i++){
+            if (game.table[i].colour == strongestCard.colour){
+                if (game.table[i].value > strongestCard.value){
+                    strongestCard = game.table[i];
+                }
+            }
+            else if (game.table[i].colour == game.trumf) {
+                strongestCard = game.table[i];
+            }
         }
     
         let indexOfCard = game.table.indexOf(strongestCard);
+
         game.turn = game.tableOrder[indexOfCard];
         for (let i = 0; i < 3; i++){
             game.playersCollected[game.turn].push(game.table.shift());
@@ -1331,7 +1338,7 @@ exports.continue = (gameID, player) => {
 exports.newRound = (gameID) => {
     let game = db.get(gameID);
 
-    if (game.continue[0] && game.continue[1] && game.continue[2]){
+    if (game.continue[0] && game.continue[1] && game.continue[2] || game.players.length < 3){
         game.altForhont = undefined;
         game.forhont = (game.forhont + 1) % 3;
         game.turn = game.forhont;
@@ -1350,19 +1357,19 @@ exports.newRound = (gameID) => {
         game.continue = [false,false,false];
 
         for (let i = 0; i < game.table.length; i++){
-            game.cardPack.push(game.table[i]);
+            game.cardPack.push(game.table.shift());
         }
         for (let i = 0; i < game.talon.length; i++){
-            game.cardPack.push(game.talon[i]);
+            game.cardPack.push(game.talon.shift());
         }
-        for (let p = 0; i < game.palyers.length; p++){
+        for (let p = 0; p < game.players.length; p++){
             for (let i = 0; i < game.playersPacks[p].length; i++){
-                game.cardPack.push(game.playersPacks[p][i]);
+                game.cardPack.push(game.playersPacks[p].shift());
             }
         }
-        for (let p = 0; i < game.palyers.length; p++){
+        for (let p = 0; p < game.players.length; p++){
             for (let i = 0; i < game.playersCollected[p].length; i++){
-                game.cardPack.push(game.playersCollected[p][i]);
+                game.cardPack.push(game.playersCollected[p].shift());
             }
         }
         game.playersPacks = [[],[],[]];
@@ -1377,6 +1384,11 @@ exports.newRound = (gameID) => {
     }
 
     db.set(gameID, game);
+}
+
+exports.checkNewRound = (gameID) => {
+    let game = db.get(gameID);
+    if (game.phase == "paying") this.newRound(gameID);
 }
 
 exports.skip = (gameID, gamePhase) => {

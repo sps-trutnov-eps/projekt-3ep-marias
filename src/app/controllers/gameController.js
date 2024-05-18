@@ -55,7 +55,8 @@ exports.resolve = (client, event) => {
     } else if (command == "continue"){
         tableModel.continue(game, event.split(";")[2])
     }
-        
+     
+    tableModel.checkNewRound(game);
     //this.sortCards(game, true);
     update(game);
 }
