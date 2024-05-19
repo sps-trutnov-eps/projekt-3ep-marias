@@ -623,9 +623,8 @@ function showDynamicModal() {
     let penezniZaklad = "korunový -> 1";
     let bylTrumfCervena = "nebyly trumfem";
  
-    // Zkontroluje, zda již modální okno existuje 
     if (document.getElementById('dynamicModal')) { 
-        return; // Pokud již existuje, nic nedělá 
+        return; 
     } 
     // Získání dat ze stringu 
     const result = workdata.result.split(";"); 
@@ -875,15 +874,12 @@ function showDynamicModal() {
             </div> 
         </div> 
     </div>`; 
- 
-    // Přidání modálního okna do placeholderu 
+  
     document.getElementById('vypisHry').innerHTML = modalHtml; 
  
-    // Inicializace a zobrazení modálního okna 
     const dynamicModal = new bootstrap.Modal(document.getElementById('dynamicModal')); 
     dynamicModal.show(); 
  
-    // Nastavení akcí pro tlačítka 
     document.getElementById('nextPageButton').onclick = () => { 
         window.location.href = '/lobby'; 
     }; 
