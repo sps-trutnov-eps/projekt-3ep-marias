@@ -1352,16 +1352,16 @@ exports.checkEnd = (gameID) => {
 exports.continue = (gameID, player) => {
     let game = db.get(gameID);
 
-    indexofPlayer = game.players.findIndex(p => p == username);
-    game.continue[indexOfPlayer] = true;
+    let indexofPlayer = game.players.findIndex(p => p == player);
+    game.continue[indexofPlayer] = true;
 
     db.set(gameID, game);
 }
 
 exports.newRound = (gameID) => {
     let game = db.get(gameID);
-    // Při testování tabulky ve fázi "paying" je třeba odstranit toto                      ..........................
-    if (game.continue[0] && game.continue[1] && game.continue[2] || game.players.length < 3 || game.phase == "paying"){
+    //Při testování tabulky ve fázi "paying" je třeba odstranit toto                      
+    if (game.continue[0] && game.continue[1] && game.continue[2] || game.players.length < 3){
         game.altForhont = undefined;
         game.forhont = (game.forhont + 1) % 3;
         game.turn = game.forhont;
