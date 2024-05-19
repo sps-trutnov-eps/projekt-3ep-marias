@@ -879,14 +879,32 @@ exports.checkEnd = (gameID) => {
 
     if (game.gamePhase == "no-flek"){
         game.phase = "paying";
+
         let price = game.betBase;
-        if (game.continueBet[1]) price += 2 * price;
+        let red = false;
+        let redPrice = price;
 
-        game.playersPoints[game.forhont] += 2 * price;
-        game.playersPoints[(game.forhont + 1) % 3] -= price;
-        game.playersPoints[(game.forhont + 2) % 3] -= price;
+        let price7 = 0;
+        let sevenWin = false;
+        if (game.mode == "7") {
+            price7 = price * 2 
+            sevenWin = true;
+        }
 
-        game.result = "";
+        if (game.trumf == "č"){
+            red = true;
+            redPrice *= 2;
+            price7 *= 2;
+        }
+        
+        game.playersPoints[game.forhont] += 2 * (price + price7);
+        game.playersPoints[(game.forhont + 1) % 3] -= price + price7;
+        game.playersPoints[(game.forhont + 2) % 3] -= price + price7;
+
+        game.result = "true:" + sevenWin + ":false:false:false;0;0;" + game.betBase + ";" +
+        red + ":" + redPrice + ";0:" + redPrice + ";false:" + redPrice + ";" +
+        price + ";" + sevenWin + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" + (2 * (price + price7)) + ":" +
+        (price - price7) + ":" + (price - price7);
     } 
     else {
         if (game.mode == "h" && game.playersPacks[0] == 0){
