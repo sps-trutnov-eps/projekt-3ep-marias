@@ -841,7 +841,7 @@ function showDynamicModal() {
         <div class="modal-dialog"> 
             <div class="modal-content"> 
                 <div class="modal-header"> 
-                    <h5 class="modal-title" style="margin: 0 auto;" id="dynamicModalLabel">Výsledky hry</h5> 
+                    <h5 class="modal-title" style="margin: 0 auto;" id="dynamicModalLabel">Výsledek hry</h5> 
                 </div> 
                 <div class="modal-body"> 
                     ${content}
