@@ -131,6 +131,10 @@ div > .player-name2 {
     transform: translateY(630px);
 }
 
+table.table td {
+    width: 50%;
+}
+
 @media screen and (max-width: 1590px){
     #log-messages {
         display: block;
