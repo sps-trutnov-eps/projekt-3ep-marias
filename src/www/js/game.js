@@ -396,17 +396,23 @@ function fazeVoleneHry(classRoleHrace) {
     for (let el of document.querySelectorAll(".step")) el.style.display = "none"; 
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";} 
     else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "block";} 
-    //schování výpisu Hry 
-    document.getElementById('vypisHry').style.display = 'none'; 
  
     //fáze hry 
     if (workdata.phase == "waiting") { 
         dif.innerHTML = "Čekáme na hráče"; 
         workdata.trumf = '';
+        document.getElementById('vypisHry').innerHTML = ""; 
+        if (document.querySelector('.modal-backdrop')) {
+            document.querySelector('.modal-backdrop').remove();
+        }
     } else if (workdata.phase == "picking-trumf") { 
         dif.innerHTML = ""; 
         document.getElementById('first-choose').style.display = 'block'; 
         workdata.trumf = ''; 
+        document.getElementById('vypisHry').innerHTML = ""; 
+        if (document.querySelector('.modal-backdrop')) {
+            document.querySelector('.modal-backdrop').remove();
+        }
     } else if (workdata.phase == "choosing-talon") { 
         document.getElementById('second-choose').style.display = 'block'; 
         workdata.trumf = ''; 
@@ -656,8 +662,11 @@ function showDynamicModal() {
     let penezniZaklad = "korunový -> 1";
     let bylTrumfCervena = "nebyly trumfem";
  
+    // Zkontroluje, zda již modální okno existuje 
     if (document.getElementById('dynamicModal')) { 
-        return; 
+        const dynamicModal = new bootstrap.Modal(document.getElementById('dynamicModal')); 
+        dynamicModal.hide();
+        return; // Pokud již existuje, nic nedělá 
     } 
     // Získání dat ze stringu 
     const result = workdata.result.split(";"); 
@@ -883,7 +892,7 @@ function showDynamicModal() {
         <div class="modal-dialog"> 
             <div class="modal-content"> 
                 <div class="modal-header"> 
-                    <h5 class="modal-title" style="margin: 0 auto;" id="dynamicModalLabel">Výsledek hry</h5> 
+                    <h5 class="modal-title" style="margin: 0 auto;" id="dynamicModalLabel">Výsledky hry</h5> 
                 </div> 
                 <div class="modal-body"> 
                     ${content}
@@ -917,12 +926,15 @@ function showDynamicModal() {
             </div> 
         </div> 
     </div>`; 
-  
+ 
+    // Přidání modálního okna do placeholderu 
     document.getElementById('vypisHry').innerHTML = modalHtml; 
  
+    // Inicializace a zobrazení modálního okna 
     const dynamicModal = new bootstrap.Modal(document.getElementById('dynamicModal')); 
     dynamicModal.show(); 
  
+    // Nastavení akcí pro tlačítka 
     document.getElementById('nextPageButton').onclick = () => { 
         window.location.href = '/lobby'; 
     }; 
