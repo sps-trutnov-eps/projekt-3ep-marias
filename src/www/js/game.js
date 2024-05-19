@@ -619,6 +619,9 @@ function showDynamicModal() {
     let vyherce = "Forhont prohrál";
     let penezniZaklad = "korunový -> 1";
     let bylTrumfCervena = "nebyly trumfem";
+    let stav1 = "";
+    let stav2 = "";
+    let stav3 = "";
  
     // Zkontroluje, zda již modální okno existuje 
     if (document.getElementById('dynamicModal')) { 
@@ -767,17 +770,36 @@ function showDynamicModal() {
     //celkova cena
     switch (user) {
         case workdata.players[workdata.forhont]: 
-            celkovaCena = celkovaCena.split(":")[0]; 
+            data.celkovaCena = data.celkovaCena.split(":")[0]; 
             break; 
         case workdata.players[(workdata.forhont+1)%3]: 
-            celkovaCena = celkovaCena.split(":")[1]; 
+            data.celkovaCena = data.celkovaCena.split(":")[1]; 
             break; 
         case workdata.players[(workdata.forhont+2)%3]: 
-            celkovaCena = celkovaCena.split(":")[2]; 
+            data.celkovaCena = data.celkovaCena.split(":")[2]; 
             break;
         default: 
             break; 
     }
+
+    for (let i = 0; i < workdata.continue.length; i++) { 
+        if (workdata.continue[i]){
+            switch (i) {
+                case 0: 
+                    stav1 = "checked";
+                    break; 
+                case 1: 
+                    stav2 = "checked";
+                    break; 
+                case 2:
+                    stav3 = "checked";
+                    break;
+                default: 
+                    break; 
+            }
+        }
+    }
+
     
     let content = ` 
     <table class="table table-striped table-bordered mb-3">
@@ -829,10 +851,6 @@ function showDynamicModal() {
             <td><strong>Celková Cena</strong></td> 
             <td>${data.celkovaCena}</td> 
         </tr> 
-        <tr> 
-            <td><strong>Kdo Kolik Získá</strong></td> 
-            <td>${data.kdoKolikZiska}</td> 
-        </tr> 
     </table> 
     <table class="table table-striped table-bordered">
         <tr> 
@@ -862,15 +880,15 @@ function showDynamicModal() {
 
                         <div class="col-6">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" disabled>
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" disabled ${stav1}>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" disabled>
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" disabled ${stav2}>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled ${stav3}>
                             </div> 
                         </div>
 
