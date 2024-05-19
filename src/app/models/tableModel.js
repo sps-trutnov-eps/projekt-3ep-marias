@@ -1195,7 +1195,7 @@ exports.checkEnd = (gameID) => {
 
                 trumfM = false;
                 for (let i = 0; i < game.playersMariages[game.forhont].length; i++){
-                    if (game.playersMariages[game.forPoints][i] == game.trumf) trumfM = true;
+                    if (game.playersMariages[game.forhont][i] == game.trumf) trumfM = true;
                 }
 
                 let hundred = false;
