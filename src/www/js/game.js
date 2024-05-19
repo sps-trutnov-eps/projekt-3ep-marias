@@ -43,9 +43,6 @@ function connect() {
 function accept(data) { 
     workdata = JSON.parse(data); 
     console.log("Přijatá data: " + workdata); 
-    workdata.result = "true:true:false:false:false;60;30;0,1;false:0,1;true:0,2;true:0,8;0,8;false:0,2;true:0,4;0,4;4:2:2" 
-    workdata.mode = "h"; 
-    workdata.challange = "7"; 
     if(!workdata.altForhont) { 
         if(user == workdata.players[workdata.forhont]) { 
             if(workdata.type == "voleny") 
@@ -402,11 +399,8 @@ function fazeVoleneHry(classRoleHrace) {
  
     //fáze hry 
     if (workdata.phase == "waiting") { 
-        // dif.innerHTML = "Čekáme na hráče"; 
-        // workdata.trumf = ''; 
-        document.getElementById('hra').style.display = 'none'; 
-        document.getElementById('vypisHry').style.display = 'block'; 
-        showDynamicModal(); 
+        dif.innerHTML = "Čekáme na hráče"; 
+        workdata.trumf = '';
     } else if (workdata.phase == "picking-trumf") { 
         dif.innerHTML = ""; 
         document.getElementById('first-choose').style.display = 'block'; 
@@ -473,8 +467,9 @@ function fazeVoleneHry(classRoleHrace) {
             }, 3600); 
         } 
     } else if (workdata.phase == "paying") { 
-        document.getElementById('flekChallange').style.display = 'none'; 
+        document.getElementById('hra').style.display = 'none'; 
         document.getElementById('vypisHry').style.display = 'block'; 
+        showDynamicModal(); 
     } 
 } 
  
@@ -483,7 +478,9 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     for (let el of document.querySelectorAll(".step")) el.style.display = "none"; 
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";} 
     else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "block";} 
- 
+    //schování výpisu Hry 
+    document.getElementById('vypisHry').style.display = 'none'; 
+
     //fáze hry 
     if (workdata.phase == "choosing-talon") { 
         document.getElementById('second-choose').style.display = 'block'; 
@@ -527,8 +524,8 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
               }, 3600); 
         } 
     } else if (workdata.phase == "paying") { 
-        document.getElementById('flekChallange').style.display = 'none'; 
         document.getElementById('vypisHry').style.display = 'block'; 
+        showDynamicModal(); 
     } 
 } 
  
@@ -636,15 +633,13 @@ function showDynamicModal() {
         trumfCervena: result[4], 
         fleky: result[5], 
         sto: result[6], 
-        celkovaCena: result[7], 
         sedma: result[8], 
         flekySedmy: result[9], 
-        celkovaCena7: result[10], 
-        kdoKolikZiska: result[11] 
+        celkovaCena: result[11]  
     }; 
 
     // Logika změny zobrazování 
-    
+
     //zde je přepisování, co kdo vyhrál a prohrál
     if (data.coForhontVyhral.includes("true")) { 
         vyherce = "Forhont Vyhrál"; 
@@ -768,6 +763,21 @@ function showDynamicModal() {
     } else {
         data.sedma = "nebyla uhrána";
     }
+
+    //celkova cena
+    switch (user) {
+        case workdata.players[workdata.forhont]: 
+            celkovaCena = celkovaCena.split(":")[0]; 
+            break; 
+        case workdata.players[(workdata.forhont+1)%3]: 
+            celkovaCena = celkovaCena.split(":")[1]; 
+            break; 
+        case workdata.players[(workdata.forhont+2)%3]: 
+            celkovaCena = celkovaCena.split(":")[2]; 
+            break;
+        default: 
+            break; 
+    }
     
     let content = ` 
     <table class="table table-striped table-bordered mb-3">
@@ -808,10 +818,6 @@ function showDynamicModal() {
             <td>${data.sto}</td> 
         </tr> 
         <tr> 
-            <td><strong>Celková Cena</strong></td> 
-            <td>${data.celkovaCena}</td> 
-        </tr> 
-        <tr> 
             <td><strong>Sedma</strong></td> 
             <td>${data.sedma}</td> 
         </tr> 
@@ -820,14 +826,8 @@ function showDynamicModal() {
             <td>${data.flekySedmy}</td> 
         </tr> 
         <tr> 
-            <td><strong>Celková Cena Sedmy</strong></td> 
-            <td>${data.celkovaCena7}</td> 
-        </tr> 
-    </table> 
-    <table class="table table-striped table-bordered">
-        <tr> 
-            <td><strong>Kdo Kolik Získá</strong></td> 
-            <td>${data.kdoKolikZiska}</td> 
+            <td><strong>Risk/zisk</strong></td> 
+            <td>${data.celkovaCena}</td> 
         </tr> 
     </table> 
     <ul class="list-group">`; 
