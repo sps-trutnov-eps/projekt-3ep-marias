@@ -389,18 +389,15 @@ exports.good = (gameID) => {
             if (game.mode == "h") {
                 game.phase = "choosing-challange";
                 game.result = mode + " byl/a odsouhlasen/a \n Trumfy jsou: " + trumfy;
-            } else if (game.mode == "b" || game.game == "d") {
-                game.phase = "betting";
-                game.continueBet = [true, false];
-                game.turn = (game.turn + 1) % 3;
-                game.result = mode + " byl/a odsouhlasen/a";
             }
         }
-    } else if (game.altForhont == game.turn) {
-        game.turn = (game.turn + 1) % 3;
-        game.phase = "betting";
-        game.continueBet = [true, false];
-        game.result = mode + " byl/a odsouhlasen/a";
+    } else {
+        if (game.altForhont == game.turn){
+            game.phase = "betting";
+            game.continueBet = [true, false];
+            game.result = mode + " byl/a odsouhlasen/a";
+            game.turn = (game.turn + 1) % 3;
+        }
     }
 
     db.set(gameID, game);
@@ -1075,7 +1072,7 @@ exports.checkEnd = (gameID) => {
 
                 trumfM = false;
                 for (let i = 0; i < game.playersMariages[game.forhont].length; i++){
-                    if (game.playersMariages[game.forPoints][i] == game.trumf) trumfM = true;
+                    if (game.playersMariages[game.forhont][i] == game.trumf) trumfM = true;
                 }
 
                 let hundred = false;
@@ -1298,7 +1295,7 @@ exports.checkEnd = (gameID) => {
                 Math.log2(game.bet) + ":" + game.betBase * 5 * game.bet + ";false:0;" + game.betBase * 5 * game.bet * (-1) +
                 ";false:0;0:0;0;" + (2 * game.betBase * 5 * game.bet * (-1)) + ":" + 
                 (game.betBase * 5 * game.bet) + ":" + (game.betBase * 5 * game.bet);
-            } else {
+            } else if (game.playersPacks[0] == 0) {
                 game.playersPoints[game.altForhont] += 2 * game.betBase * 5 * game.bet;
                 game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 5 * game.bet;
                 game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 5 * game.bet;
@@ -1317,7 +1314,7 @@ exports.checkEnd = (gameID) => {
                 Math.log2(game.bet) + ":" + game.betBase * 10 * game.bet + ";false:0;" + game.betBase * 10 * game.bet * (-1) +
                 ";false:0;0:0;0;" + (2 * game.betBase * 10 * game.bet * (-1)) + ":" + 
                 (game.betBase * 10 * game.bet) + ":" + (game.betBase * 10 * game.bet);
-            } else {
+            } else if (game.playersPacks[0] == 0) {
                 game.playersPoints[game.altForhont] += 2 * game.betBase * 10 * game.bet;
                 game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 10 * game.bet;
                 game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 10 * game.bet;
