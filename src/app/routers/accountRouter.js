@@ -9,7 +9,6 @@ router.get('/odhlasit', accountController.odhlasit);
 router.get('/prihlasit', accountController.prihlasit);
 router.post('/createUser', accountController.createUser);
 router.get('/user', (req, res) => {
-    console.log("Momentální uživatel: " + req.session.currentUser);
     res.redirect("/account/prihlasit");
 });
 

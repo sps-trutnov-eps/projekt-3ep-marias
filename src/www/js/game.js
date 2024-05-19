@@ -22,17 +22,15 @@ let flekovani = ["Flek", "Reflek", "Tuty", "Boty", "Kalhoty", "Kaiser"];
 let korekce = ["Takovou hru si nemůžeš dovolit", "Ještě máš barvu, nedělej, že nemáš", "Ještě máš trumfa, nedělej, že nemáš"]; 
 let phaseI = 0; 
 // zakázání f12 a reloadu, s preview 
-// function handleForm(event) { event.preventDefault(); } 
-// document.onkeydown=function(e){if(!e.target.matches("input")&&!e.target.matches("textarea"))return!1}; 
+function handleForm(event) { event.preventDefault(); } 
+document.onkeydown=function(e){if(!e.target.matches("input")&&!e.target.matches("textarea"))return!1}; 
  
 connect(); 
  
 function connect() { 
         socket = new WebSocket("ws://" + location.host + "/game/test"); 
         socket.onmessage = (event) => { 
-            console.log("Event: " + event.data); 
             if (user === ""){ 
-                console.log("Parse: " + JSON.parse(event.data)); 
                 user = (JSON.parse(event.data)).split(";")[0]; 
                 game = (JSON.parse(event.data)).split(";")[1]; 
                 socket.send(game + ";" + "repeat"); 
@@ -42,7 +40,6 @@ function connect() {
  
 function accept(data) { 
     workdata = JSON.parse(data); 
-    console.log("Přijatá data: " + workdata); 
     if(!workdata.altForhont) { 
         if(user == workdata.players[workdata.forhont]) { 
             if(workdata.type == "voleny") 

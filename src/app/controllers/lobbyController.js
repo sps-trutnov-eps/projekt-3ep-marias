@@ -14,7 +14,6 @@ exports.lizany = (req, res) => {
 }
 
 exports.voleny = (req, res) => {
-    console.log("Momentální uživatel: " + req.session.currentUser);
     res.render('lobby/voleny');
 }
 
@@ -34,7 +33,6 @@ exports.novyStulVoleny = (req, res) => {
 }
 
 exports.pridaniStoluLizany = (req, res) => {
-    console.log(req.body);
     res.render('lobby/index');
 }
 
