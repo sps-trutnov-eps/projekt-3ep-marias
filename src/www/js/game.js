@@ -602,3 +602,74 @@ function sendData(akce, data){
         
     }
 } 
+
+function showDynamicModal(nicknames, amounts) {
+    let content = '<ul class="list-group">';
+    for (let i = 0; i < workdata.nicknames.length; i++) {
+        content += `<li class="list-group-item d-flex justify-content-between align-items-center">
+                        ${nicknames[i]}
+                        <span class="badge bg-primary rounded-pill">${amounts[i]}</span>
+                    </li>`;
+    }
+    content += '</ul>';
+
+    const modalHtml = `
+    <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dynamicModalLabel">Výsledky hry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ${content}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="nextPageButton">Další stránka</button>
+                    <button type="button" class="btn btn-primary" id="continueButton">Pokračovat</button>
+                </div>
+            </div>
+        </div>
+    </div>`;
+
+    // Přidání modálního okna do placeholderu
+    document.getElementById('dynamicModalPlaceholder').innerHTML = modalHtml;
+
+    // Inicializace a zobrazení modálního okna
+    const dynamicModal = new bootstrap.Modal(document.getElementById('dynamicModal'));
+    dynamicModal.show();
+
+    // Nastavení akcí pro tlačítka
+    document.getElementById('nextPageButton').onclick = () => {
+        window.location.href = '/lobby';
+    };
+
+    document.getElementById('continueButton').onclick = () => {
+        socket.send(game + ";" + "continue" + ";" + user);
+    };
+}
+
+// socket.onmessage = function(event) {
+//     if (data.phase === 'paying') {
+//         // Získání nicknames a vytvoření statických částek pro ukázku
+//         let nicknames = workdata.nicknames; 
+//         let amounts = [100, 200, 300]; 
+
+//         // Zobrazení modálního okna s přijatými daty
+//         showDynamicModal(nicknames, amounts);
+//     }
+// };
+
+// const testModalButton = document.getElementById('testModalButton');
+// if (testModalButton) {
+//     testModalButton.addEventListener('click', () => {
+//         // Testovací data
+//         let nicknames = workdata.nickanems;
+//         let amounts = [100, 200, 300];
+        
+//         // Zobrazení modálního okna s testovacími daty
+//         showDynamicModal(nicknames, amounts);
+//     });
+// } else {
+//     console.error("Element with ID 'testModalButton' not found.");
+// }
