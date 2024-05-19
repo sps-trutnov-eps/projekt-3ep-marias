@@ -1334,44 +1334,44 @@ exports.checkEnd = (gameID) => {
 exports.continue = (gameID, player) => {
     let game = db.get(gameID);
 
-    indexofPlayer = game.players.findIndex(p => p == username);
-    game.continue[indexOfPlayer] = true;
+    let indexofPlayer = game.players.findIndex(p => p == player);
+    game.continue[indexofPlayer] = true;
 
     db.set(gameID, game);
 }
 
 exports.newRound = (gameID) => {
     let game = db.get(gameID);
-    //Při testování tabulky ve fázi "paying" je třeba odstranit toto                      ..........................
-    // if (game.continue[0] && game.continue[1] && game.continue[2] || game.players.length < 3 || game.phase == "paying"){
-    //     game.altForhont = undefined;
-    //     game.forhont = (game.forhont + 1) % 3;
-    //     game.turn = game.forhont;
-    //     game.playersMariages[0] = [];
-    //     game.playersMariages[1] = [];
-    //     game.playersMariages[2] = [];
-    //     game.tableOrder = [];
-    //     game.phase = "picking-trumf";
-    //     game.bet = 1;
-    //     game.bet7 = 1;
-    //     game.continueBet = [true, true];
-    //     game.trumf = '';
-    //     game.mode = '';
-    //     game.challange = '';
-    //     game.result = "Další kolo"
-    //     game.continue = [false,false,false];
-    //     game.playersPacks = [[],[],[]];
-    //     game.playersCollected  = [[],[],[]];
-    //     game.talon = [];
-    //     game.table = [];
+    //Při testování tabulky ve fázi "paying" je třeba odstranit toto                      
+    if (game.continue[0] && game.continue[1] && game.continue[2] || game.players.length < 3){
+        game.altForhont = undefined;
+        game.forhont = (game.forhont + 1) % 3;
+        game.turn = game.forhont;
+        game.playersMariages[0] = [];
+        game.playersMariages[1] = [];
+        game.playersMariages[2] = [];
+        game.tableOrder = [];
+        game.phase = "picking-trumf";
+        game.bet = 1;
+        game.bet7 = 1;
+        game.continueBet = [true, true];
+        game.trumf = '';
+        game.mode = '';
+        game.challange = '';
+        game.result = "Další kolo"
+        game.continue = [false,false,false];
+        game.playersPacks = [[],[],[]];
+        game.playersCollected  = [[],[],[]];
+        game.talon = [];
+        game.table = [];
 
-    //     game = turnXback(game);
-    //     db.set(gameID, game);
-    //     this.addCards(gameID);
-    //     this.mixCards(gameID);
-    //     if (game.type == "voleny") this.dealCardsVoleny(gameID);
-    //     game = db.get(gameID);
-    // }
+        game = turnXback(game);
+        db.set(gameID, game);
+        this.addCards(gameID);
+        this.mixCards(gameID);
+        if (game.type == "voleny") this.dealCardsVoleny(gameID);
+        game = db.get(gameID);
+    }
 
     db.set(gameID, game);
 }

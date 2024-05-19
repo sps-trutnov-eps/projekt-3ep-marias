@@ -72,8 +72,10 @@ function accept(data) {
     zobrazeniZahranychKaret(); 
     zobrazeniTrumfa(); 
     zobrazeniHlasek();  
-    logMessage(); 
-} 
+        if (workdata.phase != "paying"){
+            logMessage(); 
+        }
+    }
  
 function logMessage(){ 
     let logContent = document.querySelector('#log-messages .log-content'); 
@@ -470,6 +472,23 @@ function fazeVoleneHry(classRoleHrace) {
         document.getElementById('hra').style.display = 'none'; 
         document.getElementById('vypisHry').style.display = 'block'; 
         showDynamicModal(); 
+        for (let i = 0; i < workdata.continue.length; i++) { 
+            if (workdata.continue[i] == true){
+                switch (i) {
+                    case 0: 
+                        document.getElementById('inlineCheckBox1').checked = true; 
+                        break; 
+                    case 1: 
+                        document.getElementById('inlineCheckBox2').checked = true; 
+                        break; 
+                    case 2:
+                        document.getElementById('inlineCheckBox3').checked = true; 
+                        break;
+                    default: 
+                        break; 
+                }
+            }
+        }
     } 
 } 
  
@@ -526,6 +545,23 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     } else if (workdata.phase == "paying") { 
         document.getElementById('vypisHry').style.display = 'block'; 
         showDynamicModal(); 
+        for (let i = 0; i < workdata.continue.length; i++) { 
+            if (workdata.continue[i] == true){
+                switch (i) {
+                    case 0: 
+                        document.getElementById('inlineCheckbox1').checked = true; 
+                        break; 
+                    case 1: 
+                        document.getElementById('inlineCheckbox2').checked = true; 
+                        break; 
+                    case 2:
+                        document.getElementById('inlineCheckbox3').checked = true; 
+                        break;
+                    default: 
+                        break; 
+                }
+            }
+        }
     } 
 } 
  
@@ -625,6 +661,8 @@ function showDynamicModal() {
  
     // Zkontroluje, zda již modální okno existuje 
     if (document.getElementById('dynamicModal')) { 
+        const dynamicModal = new bootstrap.Modal(document.getElementById('dynamicModal')); 
+        dynamicModal.hide();
         return; // Pokud již existuje, nic nedělá 
     } 
     // Získání dat ze stringu 
@@ -707,13 +745,13 @@ function showDynamicModal() {
 
     //základ hry
     switch (workdata.betBase) {
-        case "0,1": 
+        case 0.1: 
             penezniZaklad = "desetníkový -> 0.1"; 
             break; 
-        case "0,2": 
+        case 0.2: 
             penezniZaklad = "dvacetníkový -> 0.2"; 
             break; 
-        case "100": 
+        case 2: 
             penezniZaklad = "dvoukorunový -> 2"; 
             break;
         default: 
@@ -727,14 +765,14 @@ function showDynamicModal() {
 
     // flekování
     if (Math.log2(workdata.bet) != 0){
-        data.fleky = flekovani[Math.log2(workdata.bet)-1] + data.fleky.split(":")[1];
+        data.fleky = flekovani[Math.log2(workdata.bet)-1] + " -> " + data.fleky.split(":")[1];
     } else {
         data.fleky = "neflekovalo se";
     }
 
     // flekování sedmy
     if (Math.log2(workdata.bet7) != 0){
-        data.flekySedmy = flekovani[Math.log2(workdata.bet7)-1] + data.flekySedmy.split(":")[1];
+        data.flekySedmy = flekovani[Math.log2(workdata.bet7)-1] + " -> " + data.flekySedmy.split(":")[1];
     } else {
         data.flekySedmy = "neflekovalo se";
     }
@@ -751,7 +789,7 @@ function showDynamicModal() {
             data.sto = "Tichá stovka -> " + data.sto.split(":")[1];
         }
     } else {
-        data.sto = "nebylo uhráno";
+        data.sto = "nebylo";
     }
 
     // sedma
@@ -848,7 +886,7 @@ function showDynamicModal() {
             <td>${data.flekySedmy}</td> 
         </tr> 
         <tr> 
-            <td><strong>Celková Cena</strong></td> 
+            <td><strong>Risk/zisk</strong></td> 
             <td>${data.celkovaCena}</td> 
         </tr> 
     </table> 
@@ -880,15 +918,15 @@ function showDynamicModal() {
 
                         <div class="col-6">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" disabled ${stav1}>
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" disabled>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" disabled ${stav2}>
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" disabled>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled ${stav3}>
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
                             </div> 
                         </div>
 
