@@ -656,11 +656,8 @@ function showDynamicModal() {
     let penezniZaklad = "korunový -> 1";
     let bylTrumfCervena = "nebyly trumfem";
  
-    // Zkontroluje, zda již modální okno existuje 
     if (document.getElementById('dynamicModal')) { 
-        const dynamicModal = new bootstrap.Modal(document.getElementById('dynamicModal')); 
-        dynamicModal.hide();
-        return; // Pokud již existuje, nic nedělá 
+        return; 
     } 
     // Získání dat ze stringu 
     const result = workdata.result.split(";"); 
@@ -882,11 +879,11 @@ function showDynamicModal() {
     content += '</table>'; 
  
     const modalHtml = ` 
-    <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true"> 
+    <div class="modal fade" id="dynamicModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true"> 
         <div class="modal-dialog"> 
             <div class="modal-content"> 
                 <div class="modal-header"> 
-                    <h5 class="modal-title" style="margin: 0 auto;" id="dynamicModalLabel">Výsledky hry</h5> 
+                    <h5 class="modal-title" style="margin: 0 auto;" id="dynamicModalLabel">Výsledek hry</h5> 
                 </div> 
                 <div class="modal-body"> 
                     ${content}
@@ -920,15 +917,12 @@ function showDynamicModal() {
             </div> 
         </div> 
     </div>`; 
- 
-    // Přidání modálního okna do placeholderu 
+  
     document.getElementById('vypisHry').innerHTML = modalHtml; 
  
-    // Inicializace a zobrazení modálního okna 
     const dynamicModal = new bootstrap.Modal(document.getElementById('dynamicModal')); 
     dynamicModal.show(); 
  
-    // Nastavení akcí pro tlačítka 
     document.getElementById('nextPageButton').onclick = () => { 
         window.location.href = '/lobby'; 
     }; 

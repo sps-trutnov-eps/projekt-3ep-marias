@@ -21,13 +21,13 @@ function getTablesVoleny() {
             const { name, password, id } = table;
 
             const tableButton = document.createElement('button');
-            tableButton.textContent = 'Připojit do hry';
+            tableButton.textContent = 'Připojit';
             tableButton.classList.add('btn', 'btn-success', 'mx-3');
             const listItem = document.createElement('li');
         
             const nameElement = document.createElement('span');
             nameElement.textContent = name;
-            nameElement.classList.add('px-5', 'fw-bold');
+            nameElement.classList.add('px-3', 'fw-bold');
         
             const passwordElement = document.createElement('span');
             passwordElement.textContent = `Heslo: `;
