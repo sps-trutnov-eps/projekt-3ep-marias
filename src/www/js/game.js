@@ -820,24 +820,6 @@ function showDynamicModal() {
             break; 
     }
 
-    for (let i = 0; i < workdata.continue.length; i++) { 
-        if (workdata.continue[i]){
-            switch (i) {
-                case 0: 
-                    stav1 = "checked";
-                    break; 
-                case 1: 
-                    stav2 = "checked";
-                    break; 
-                case 2:
-                    stav3 = "checked";
-                    break;
-                default: 
-                    break; 
-            }
-        }
-    }
-
     
     let content = ` 
     <table class="table table-striped table-bordered mb-3">
