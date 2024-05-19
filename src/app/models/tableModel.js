@@ -631,8 +631,8 @@ exports.playCard = (gameID, player, cardIndex) => {
                         } else {
                             let higher = false;
                             for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
-                                if (game.playersPacks[playerIndex].colour == playedCard.colour){
-                                    if (game.playersPacks[playerIndex].value > highestCard.value){
+                                if (game.playersPacks[playerIndex][i].colour == playedCard.colour){
+                                    if (game.playersPacks[playerIndex][i].value > highestCard.value){
                                         higher = true;
                                     } 
                                 }
@@ -657,8 +657,8 @@ exports.playCard = (gameID, player, cardIndex) => {
                     } else {
                         let higher = false;
                         for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
-                            if (game.playersPacks[playerIndex].colour == playedCard.colour){
-                                if (game.playersPacks[playerIndex].value > highestCard.value){
+                            if (game.playersPacks[playerIndex][i].colour == playedCard.colour){
+                                if (game.playersPacks[playerIndex][i].value > highestCard.value){
                                     higher = true;
                                 } 
                             }
@@ -707,8 +707,8 @@ exports.playCard = (gameID, player, cardIndex) => {
                         else {
                             let higher = false;
                             for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
-                                if (game.playersPacks[playerIndex].colour == playedCard.colour){
-                                    if (game.playersPacks[playerIndex].value > highestCard.value){
+                                if (game.playersPacks[playerIndex][i].colour == playedCard.colour){
+                                    if (game.playersPacks[playerIndex][i].value > highestCard.value){
                                         higher = true;
                                     } 
                                 }
@@ -773,8 +773,8 @@ exports.playCard = (gameID, player, cardIndex) => {
                 } else {
                     let higher = false;
                     for (let i = 0; i < game.playersPacks[playerIndex].length; i++){
-                        if (game.playersPacks[playerIndex].colour == playedCard.colour){
-                            if (game.playersPacks[playerIndex].value > highestCard.value){
+                        if (game.playersPacks[playerIndex][i].colour == playedCard.colour){
+                            if (game.playersPacks[playerIndex][i].value > highestCard.value){
                                 higher = true;
                             } 
                         }
