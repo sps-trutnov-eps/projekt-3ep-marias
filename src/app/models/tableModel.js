@@ -1342,7 +1342,7 @@ exports.continue = (gameID, player) => {
 
 exports.newRound = (gameID) => {
     let game = db.get(gameID);
-
+    // Při testování tabulky ve fázi "paying" je třeba odstranit toto                      ..........................
     if (game.continue[0] && game.continue[1] && game.continue[2] || game.players.length < 3 || game.phase == "paying"){
         game.altForhont = undefined;
         game.forhont = (game.forhont + 1) % 3;
