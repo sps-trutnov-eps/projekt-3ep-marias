@@ -408,8 +408,9 @@ exports.bad = (gameID) => {
 
     game.altForhont = game.turn;
     for(let i = 0; i < game.talon.length; i++){
-        game.playersPacks[game.turn].push(game.talon.shift());
+        game.playersPacks[game.turn].push(game.talon[0]);
     }
+    game.talon = [];
     game.phase = "choosing-talon";
     game.result = "Hráč " + game.players[game.turn] + " nesouhlasí s hrou";
 
