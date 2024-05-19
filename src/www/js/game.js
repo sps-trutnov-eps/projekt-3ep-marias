@@ -808,10 +808,6 @@ function showDynamicModal() {
             <td>${data.sto}</td> 
         </tr> 
         <tr> 
-            <td><strong>Celková Cena</strong></td> 
-            <td>${data.celkovaCena}</td> 
-        </tr> 
-        <tr> 
             <td><strong>Sedma</strong></td> 
             <td>${data.sedma}</td> 
         </tr> 
@@ -820,38 +816,61 @@ function showDynamicModal() {
             <td>${data.flekySedmy}</td> 
         </tr> 
         <tr> 
-            <td><strong>Celková Cena Sedmy</strong></td> 
-            <td>${data.celkovaCena7}</td> 
+            <td><strong>Celková Cena</strong></td> 
+            <td>${data.celkovaCena}</td> 
         </tr> 
-    </table> 
-    <table class="table table-striped table-bordered">
         <tr> 
             <td><strong>Kdo Kolik Získá</strong></td> 
             <td>${data.kdoKolikZiska}</td> 
         </tr> 
     </table> 
-    <ul class="list-group">`; 
+    <table class="table table-striped table-bordered">
+        <tr> 
+            <td colspan="2"><strong>Aktuální stav peněz</strong></td>
+        </tr>`; 
     for (let i = 0; i < workdata.nicknames.length; i++) { 
-        content += `<li class="list-group-item d-flex justify-content-between align-items-center"> 
-                        ${workdata.nicknames[i]} 
-                        <span class="badge bg-success rounded-pill">${workdata.playersPoints[i]}</span> 
-                    </li>`; 
+        content += `<tr> 
+                        <td>${workdata.nicknames[i]}</td>
+                        <td><span class="badge bg-success rounded-pill">${workdata.playersPoints[i]}</span></td>
+                    </tr>`; 
     } 
-    content += '</ul>'; 
+    content += '</table>'; 
  
     const modalHtml = ` 
     <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true"> 
         <div class="modal-dialog"> 
             <div class="modal-content"> 
                 <div class="modal-header"> 
-                    <h5 class="modal-title text-middle" id="dynamicModalLabel">Výsledky hry</h5> 
+                    <h5 class="modal-title" style="margin: 0 auto;" id="dynamicModalLabel">Výsledky hry</h5> 
                 </div> 
                 <div class="modal-body"> 
-                    ${content} 
+                    ${content}
                 </div> 
-                <div class="modal-footer"> 
-                    <button type="button" class="btn btn-secondary" id="nextPageButton">Menu</button> 
-                    <button type="button" class="btn btn-success" id="continueButton">Pokračovat</button> 
+                <div class="modal-footer" style="display: block;">
+
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" disabled>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" disabled>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+                            </div> 
+                        </div>
+
+                        <div class="col">
+                            <button type="button" class="btn btn-secondary" id="nextPageButton">Menu</button> 
+                            <button type="button" class="btn btn-success" id="continueButton">Pokračovat</button> 
+                        </div>
+
+                    </div>
+
                 </div> 
             </div> 
         </div> 

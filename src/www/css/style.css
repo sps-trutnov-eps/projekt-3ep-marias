@@ -133,6 +133,14 @@ div > .player-name2 {
 
 table.table td {
     width: 50%;
+    height: 4%;
+}
+
+#inlineCheckbox1, #inlineCheckbox2, #inlineCheckbox3 {
+    outline: 2px solid #1b573b;
+    height: 20px;
+    width: 20px;
+    
 }
 
 @media screen and (max-width: 1590px){
