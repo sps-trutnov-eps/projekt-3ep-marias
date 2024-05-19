@@ -486,7 +486,7 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
         document.getElementById('second-choose').style.display = 'block'; 
     } else if (workdata.phase == "choosing-game"){ 
         document.getElementById('hra').style.display = 'none'; 
-        if(workdata.mode == "b"){ 
+        if(workdata.mode == "b" && user == workdata.players[workdata.turn]){ 
             socket.send(game + ";" + "game;" + "d"); 
         } else { 
             document.getElementById('third-choose').style.display = 'block'; 
@@ -577,7 +577,7 @@ function sendData(akce, data){
                     socket.send(game + ";" + "game;" + data); 
                } else if (workdata.mode == "h" && data != 'h') { 
                     socket.send(game + ";" + "game;" + data); 
-               } else if ( workdata.mode == "b" && data == 'd') { 
+               } else if (workdata.mode == "b" && data == 'd') { 
                     socket.send(game + ";" + "game;" + data); 
                } 
             } else if (workdata.phase == "ack" && (data == 'dobra' || data == 'spatna')){ 
