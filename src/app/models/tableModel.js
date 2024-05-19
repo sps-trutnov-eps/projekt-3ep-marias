@@ -408,7 +408,7 @@ exports.bad = (gameID) => {
 
     game.altForhont = game.turn;
     for(let i = 0; i < game.talon.length; i++){
-        game.playersPacks[game.turn].push(game.talon[0]);
+        game.playersPacks[game.turn].push(game.talon[i]);
     }
     game.talon = [];
     game.phase = "choosing-talon";
@@ -1297,6 +1297,7 @@ exports.checkEnd = (gameID) => {
                 ";false:0;0:0;0;" + (2 * game.betBase * 5 * game.bet * (-1)) + ":" + 
                 (game.betBase * 5 * game.bet) + ":" + (game.betBase * 5 * game.bet);
             } else if (game.playersPacks[0] == 0) {
+                game.phase = "paying";
                 game.playersPoints[game.altForhont] += 2 * game.betBase * 5 * game.bet;
                 game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 5 * game.bet;
                 game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 5 * game.bet;
@@ -1316,6 +1317,7 @@ exports.checkEnd = (gameID) => {
                 ";false:0;0:0;0;" + (2 * game.betBase * 10 * game.bet * (-1)) + ":" + 
                 (game.betBase * 10 * game.bet) + ":" + (game.betBase * 10 * game.bet);
             } else if (game.playersPacks[0] == 0) {
+                game.phase = "paying";
                 game.playersPoints[game.altForhont] += 2 * game.betBase * 10 * game.bet;
                 game.playersPoints[(game.altForhont + 1) % 3] -= game.betBase * 10 * game.bet;
                 game.playersPoints[(game.altForhont + 2) % 3] -= game.betBase * 10 * game.bet;
