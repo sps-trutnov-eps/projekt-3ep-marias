@@ -297,14 +297,14 @@ exports.mode = (gameID, mode) => {
             game.phase = "ack";
         } else if (mode == "b"){
             game = turnX(game);
-            game.altForhont = game.forhont;
+            if (game.altForhont === undefined) game.altForhont = game.forhont;
             game.mode = mode;
             game.trumf = "";
             game.turn = (game.turn + 1) % 3;
             game.phase = "ack";
         } else if (mode == "d"){
             game = turnX(game);
-            game.altForhont = game.forhont;
+            if (game.altForhont === undefined) game.altForhont = game.forhont;
             game.mode = mode;
             game.trumf = "";
             game.turn = (game.turn + 1) % 3;
