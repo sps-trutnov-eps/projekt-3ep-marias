@@ -476,13 +476,13 @@ function fazeVoleneHry(classRoleHrace) {
             if (workdata.continue[i] == true){
                 switch (i) {
                     case 0: 
-                        document.getElementById('inlineCheckBox1').checked = true; 
+                        document.getElementById('inlineCheckbox1').checked = true; 
                         break; 
                     case 1: 
-                        document.getElementById('inlineCheckBox2').checked = true; 
+                        document.getElementById('inlineCheckbox2').checked = true; 
                         break; 
                     case 2:
-                        document.getElementById('inlineCheckBox3').checked = true; 
+                        document.getElementById('inlineCheckbox3').checked = true; 
                         break;
                     default: 
                         break; 
