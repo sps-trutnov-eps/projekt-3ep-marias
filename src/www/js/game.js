@@ -43,9 +43,6 @@ function connect() {
 function accept(data) { 
     workdata = JSON.parse(data); 
     console.log("Přijatá data: " + workdata); 
-    workdata.result = "true:true:false:false:false;60;30;0,1;false:0,1;true:0,2;true:0,8;0,8;false:0,2;true:0,4;0,4;4:2:2" 
-    workdata.mode = "h"; 
-    workdata.challange = "7"; 
     if(!workdata.altForhont) { 
         if(user == workdata.players[workdata.forhont]) { 
             if(workdata.type == "voleny") 
@@ -75,8 +72,10 @@ function accept(data) {
     zobrazeniZahranychKaret(); 
     zobrazeniTrumfa(); 
     zobrazeniHlasek();  
-    logMessage(); 
-} 
+        if (workdata.phase != "paying"){
+            logMessage(); 
+        }
+    }
  
 function logMessage(){ 
     let logContent = document.querySelector('#log-messages .log-content'); 
@@ -402,11 +401,8 @@ function fazeVoleneHry(classRoleHrace) {
  
     //fáze hry 
     if (workdata.phase == "waiting") { 
-        // dif.innerHTML = "Čekáme na hráče"; 
-        // workdata.trumf = ''; 
-        document.getElementById('hra').style.display = 'none'; 
-        document.getElementById('vypisHry').style.display = 'block'; 
-        showDynamicModal(); 
+        dif.innerHTML = "Čekáme na hráče"; 
+        workdata.trumf = '';
     } else if (workdata.phase == "picking-trumf") { 
         dif.innerHTML = ""; 
         document.getElementById('first-choose').style.display = 'block'; 
@@ -473,8 +469,26 @@ function fazeVoleneHry(classRoleHrace) {
             }, 3600); 
         } 
     } else if (workdata.phase == "paying") { 
-        document.getElementById('flekChallange').style.display = 'none'; 
+        document.getElementById('hra').style.display = 'none'; 
         document.getElementById('vypisHry').style.display = 'block'; 
+        showDynamicModal(); 
+        for (let i = 0; i < workdata.continue.length; i++) { 
+            if (workdata.continue[i] == true){
+                switch (i) {
+                    case 0: 
+                        document.getElementById('inlineCheckbox1').checked = true; 
+                        break; 
+                    case 1: 
+                        document.getElementById('inlineCheckbox2').checked = true; 
+                        break; 
+                    case 2:
+                        document.getElementById('inlineCheckbox3').checked = true; 
+                        break;
+                    default: 
+                        break; 
+                }
+            }
+        }
     } 
 } 
  
@@ -483,13 +497,15 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     for (let el of document.querySelectorAll(".step")) el.style.display = "none"; 
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";} 
     else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "block";} 
- 
+    //schování výpisu Hry 
+    document.getElementById('vypisHry').style.display = 'none'; 
+
     //fáze hry 
     if (workdata.phase == "choosing-talon") { 
         document.getElementById('second-choose').style.display = 'block'; 
     } else if (workdata.phase == "choosing-game"){ 
         document.getElementById('hra').style.display = 'none'; 
-        if(workdata.mode == "b"){ 
+        if(workdata.mode == "b" && user == workdata.players[workdata.turn]){ 
             socket.send(game + ";" + "game;" + "d"); 
         } else { 
             document.getElementById('third-choose').style.display = 'block'; 
@@ -527,8 +543,25 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
               }, 3600); 
         } 
     } else if (workdata.phase == "paying") { 
-        document.getElementById('flekChallange').style.display = 'none'; 
         document.getElementById('vypisHry').style.display = 'block'; 
+        showDynamicModal(); 
+        for (let i = 0; i < workdata.continue.length; i++) { 
+            if (workdata.continue[i] == true){
+                switch (i) {
+                    case 0: 
+                        document.getElementById('inlineCheckbox1').checked = true; 
+                        break; 
+                    case 1: 
+                        document.getElementById('inlineCheckbox2').checked = true; 
+                        break; 
+                    case 2:
+                        document.getElementById('inlineCheckbox3').checked = true; 
+                        break;
+                    default: 
+                        break; 
+                }
+            }
+        }
     } 
 } 
  
@@ -580,7 +613,7 @@ function sendData(akce, data){
                     socket.send(game + ";" + "game;" + data); 
                } else if (workdata.mode == "h" && data != 'h') { 
                     socket.send(game + ";" + "game;" + data); 
-               } else if ( workdata.mode == "b" && data == 'd') { 
+               } else if (workdata.mode == "b" && data == 'd') { 
                     socket.send(game + ";" + "game;" + data); 
                } 
             } else if (workdata.phase == "ack" && (data == 'dobra' || data == 'spatna')){ 
@@ -635,15 +668,13 @@ function showDynamicModal() {
         trumfCervena: result[4], 
         fleky: result[5], 
         sto: result[6], 
-        celkovaCena: result[7], 
         sedma: result[8], 
         flekySedmy: result[9], 
-        celkovaCena7: result[10], 
-        kdoKolikZiska: result[11] 
+        celkovaCena: result[11]  
     }; 
 
     // Logika změny zobrazování 
-    
+
     //zde je přepisování, co kdo vyhrál a prohrál
     if (data.coForhontVyhral.includes("true")) { 
         vyherce = "Forhont Vyhrál"; 
@@ -708,13 +739,13 @@ function showDynamicModal() {
 
     //základ hry
     switch (workdata.betBase) {
-        case "0,1": 
+        case 0.1: 
             penezniZaklad = "desetníkový -> 0.1"; 
             break; 
-        case "0,2": 
+        case 0.2: 
             penezniZaklad = "dvacetníkový -> 0.2"; 
             break; 
-        case "100": 
+        case 2: 
             penezniZaklad = "dvoukorunový -> 2"; 
             break;
         default: 
@@ -728,14 +759,14 @@ function showDynamicModal() {
 
     // flekování
     if (Math.log2(workdata.bet) != 0){
-        data.fleky = flekovani[Math.log2(workdata.bet)-1] + data.fleky.split(":")[1];
+        data.fleky = flekovani[Math.log2(workdata.bet)-1] + " -> " + data.fleky.split(":")[1];
     } else {
         data.fleky = "neflekovalo se";
     }
 
     // flekování sedmy
     if (Math.log2(workdata.bet7) != 0){
-        data.flekySedmy = flekovani[Math.log2(workdata.bet7)-1] + data.flekySedmy.split(":")[1];
+        data.flekySedmy = flekovani[Math.log2(workdata.bet7)-1] + " -> " + data.flekySedmy.split(":")[1];
     } else {
         data.flekySedmy = "neflekovalo se";
     }
@@ -752,7 +783,7 @@ function showDynamicModal() {
             data.sto = "Tichá stovka -> " + data.sto.split(":")[1];
         }
     } else {
-        data.sto = "nebylo uhráno";
+        data.sto = "nebylo";
     }
 
     // sedma
@@ -767,6 +798,22 @@ function showDynamicModal() {
     } else {
         data.sedma = "nebyla uhrána";
     }
+
+    //celkova cena
+    switch (user) {
+        case workdata.players[workdata.forhont]: 
+            data.celkovaCena = data.celkovaCena.split(":")[0]; 
+            break; 
+        case workdata.players[(workdata.forhont+1)%3]: 
+            data.celkovaCena = data.celkovaCena.split(":")[1]; 
+            break; 
+        case workdata.players[(workdata.forhont+2)%3]: 
+            data.celkovaCena = data.celkovaCena.split(":")[2]; 
+            break;
+        default: 
+            break; 
+    }
+
     
     let content = ` 
     <table class="table table-striped table-bordered mb-3">
@@ -815,12 +862,8 @@ function showDynamicModal() {
             <td>${data.flekySedmy}</td> 
         </tr> 
         <tr> 
-            <td><strong>Celková Cena</strong></td> 
+            <td><strong>Risk/zisk</strong></td> 
             <td>${data.celkovaCena}</td> 
-        </tr> 
-        <tr> 
-            <td><strong>Kdo Kolik Získá</strong></td> 
-            <td>${data.kdoKolikZiska}</td> 
         </tr> 
     </table> 
     <table class="table table-striped table-bordered">
