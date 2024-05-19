@@ -19,7 +19,7 @@ router.ws('/test', (ws, req) => {
     });
 
     ws.on("message", (event) => {
-        console.log("ZPRAVA");
+        console.log("ZPRAVA: " + event);
         gameController.resolve(ws, event);
     });
 });

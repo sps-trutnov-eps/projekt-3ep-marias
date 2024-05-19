@@ -51,9 +51,12 @@ exports.resolve = (client, event) => {
         tableModel.playCard(game, event.split(";")[2], event.split(";")[3]);
     } else if (command == "end"){
         tableModel.checkStych(game);
-        /*!tableModel.checkEnd(game);! - nehotovo*/
+        tableModel.checkEnd(game);
+    } else if (command == "continue"){
+        tableModel.continue(game, event.split(";")[2])
     }
-        
+     
+    tableModel.checkNewRound(game);
     //this.sortCards(game, true);
     update(game);
 }
