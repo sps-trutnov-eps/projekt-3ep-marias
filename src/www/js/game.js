@@ -1,3 +1,5 @@
+const { words } = require("lodash");
+
 let socket;
 let user = "";
 let workdata;
@@ -43,6 +45,9 @@ function connect() {
 function accept(data) {
     workdata = JSON.parse(data);
     console.log("Přijatá data: " + workdata);
+    workdata.result = "true:true:false:false:false;60;30;0,1;false:0,1;true:0,2;2:0,8;false:0,8;0,8;false:0,2;true:0,4;0:0,4;0,4;2,4:-1,2:-1,2"
+    workdata.mode = "h";
+    workdata.challange = "7";
     if(!workdata.altForhont) {
         if(user == workdata.players[workdata.forhont]) {
             if(workdata.type == "voleny")
@@ -394,11 +399,16 @@ function fazeVoleneHry(classRoleHrace) {
     for (let el of document.querySelectorAll(".step")) el.style.display = "none";
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";}
     else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "block";}
+    //schování výpisu Hry
+    document.getElementById('vypisHry').style.display = 'none';
 
     //fáze hry
     if (workdata.phase == "waiting") {
-        dif.innerHTML = "Čekáme na hráče";
-        workdata.trumf = '';
+        // dif.innerHTML = "Čekáme na hráče";
+        // workdata.trumf = '';
+        document.getElementById('hra').style.display = 'none';
+        document.getElementById('vypisHry').style.display = 'block';
+        showDynamicModal();
     } else if (workdata.phase == "picking-trumf") {
         dif.innerHTML = "";
         document.getElementById('first-choose').style.display = 'block';
@@ -464,6 +474,9 @@ function fazeVoleneHry(classRoleHrace) {
                 socket.send(game + ";" + "end");
             }, 3600);
         }
+    } else if (workdata.phase == "paying") {
+        document.getElementById('flekChallange').style.display = 'none';
+        document.getElementById('vypisHry').style.display = 'block';
     }
 }
 
@@ -515,6 +528,9 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
                 socket.send(game + ";" + "end");
               }, 3600);
         }
+    } else if (workdata.phase == "paying") {
+        document.getElementById('flekChallange').style.display = 'none';
+        document.getElementById('vypisHry').style.display = 'block';
     }
 }
 
@@ -603,12 +619,153 @@ function sendData(akce, data){
     }
 } 
 
-function showDynamicModal(nicknames, amounts) {
-    let content = '<ul class="list-group">';
+function showDynamicModal() {
+    //základní deklarace pro funkčnost
+    let vyherce = "Forhont prohrál";
+
+    // Zkontroluje, zda již modální okno existuje
+    if (document.getElementById('dynamicModal')) {
+        return; // Pokud již existuje, nic nedělá
+    }
+    // Získání dat ze stringu
+    const result = workdata.result.split(";");
+    let data = {
+        coForhontVyhral: result[0],
+        bodyForhonta: result[1],
+        bodyObrany: result[2],
+        zakladHry: result[3],
+        trumfCervena: result[4],
+        fleky: result[5],
+        sto: result[6],
+        celkovaCena: result[7],
+        sedma: result[8],
+        flekySedmy: result[9],
+        celkovaCena7: result[10],
+        kdoKolikZiska: result[11]
+    };
+
+    // Logika změny zobrazování
+    if (data.coForhontVyhral.includes("true")) {
+        vyherce = "Forhont Vyhrál";
+        let trueIndexes = [];
+        data.coForhontVyhral.split(":").forEach((value, index) => {
+            if (value === "true") {
+                trueIndexes.push(index);
+            }
+        });
+    
+        data.coForhontVyhral = "";
+        for (let i = 0; i < trueIndexes.length; i++) {
+            switch (trueIndexes[i]) {
+                case 0:
+                    data.coForhontVyhral += "Hru";
+                    break;
+                case 1:
+                    data.coForhontVyhral += (data.coForhontVyhral !== "") ? "i sedmu" : "Sedmu";
+                    break;
+                case 2:
+                    data.coForhontVyhral += "Stovku";
+                    break;
+                case 3:
+                    data.coForhontVyhral += "Betl";
+                    break;
+                case 4:
+                    data.coForhontVyhral += "Durch";
+                    break;
+                default:
+                    break;
+            }
+        }
+    } else {
+        data.coForhontVyhral = "";
+        switch (workdata.mode) {
+            case "h":
+                data.coForhontVyhral += "hra";
+                switch (workdata.challange) {
+                    case "7":
+                        data.coForhontVyhral += " a sedmu";
+                        break;
+                    case "107":
+                        data.coForhontVyhral += ", sedmu i stovku";
+                        break;
+                    case "100":
+                        data.coForhontVyhral += " a stovku";
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "b":
+                data.coForhontVyhral += "battle";
+                break;
+            case "d":
+                data.coForhontVyhral += "durch";
+                break;
+            default:
+                break;
+        }
+    }
+    
+    
+
+    let content = `
+    <table class="table table-striped table-bordered">
+    <tbody>
+        <tr>
+            <td><strong>${vyherce}</strong></td>
+            <td>${data.coForhontVyhral}</td>
+        </tr>
+        <tr>
+            <td><strong>Body Forhonta</strong></td>
+            <td>${data.bodyForhonta}</td>
+        </tr>
+        <tr>
+            <td><strong>Body Obrany</strong></td>
+            <td>${data.bodyObrany}</td>
+        </tr>
+        <tr>
+            <td><strong>Základ Hry</strong></td>
+            <td>${data.zakladHry}</td>
+        </tr>
+        <tr>
+            <td><strong>Trumf Červená</strong></td>
+            <td>${data.trumfCervena.replace(/:/g, ', ')}</td>
+        </tr>
+        <tr>
+            <td><strong>Fleky</strong></td>
+            <td>${data.fleky.replace(/:/g, ', ')}</td>
+        </tr>
+        <tr>
+            <td><strong>Sto</strong></td>
+            <td>${data.sto.replace(/:/g, ', ')}</td>
+        </tr>
+        <tr>
+            <td><strong>Celková Cena</strong></td>
+            <td>${data.celkovaCena}</td>
+        </tr>
+        <tr>
+            <td><strong>Sedma</strong></td>
+            <td>${data.sedma.replace(/:/g, ', ')}</td>
+        </tr>
+        <tr>
+            <td><strong>Fleky Sedmy</strong></td>
+            <td>${data.flekySedmy.replace(/:/g, ', ')}</td>
+        </tr>
+        <tr>
+            <td><strong>Celková Cena Sedmy</strong></td>
+            <td>${data.celkovaCena7}</td>
+        </tr>
+        <tr>
+            <td><strong>Kdo Kolik Získá</strong></td>
+            <td>${data.kdoKolikZiska.replace(/:/g, ', ')}</td>
+        </tr>
+        </tbody>
+    </table>
+    <ul class="list-group">`;
     for (let i = 0; i < workdata.nicknames.length; i++) {
         content += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                        ${nicknames[i]}
-                        <span class="badge bg-primary rounded-pill">${amounts[i]}</span>
+                        ${workdata.nicknames[i]}
+                        <span class="badge bg-primary rounded-pill">${workdata.playersPoints[i]}</span>
                     </li>`;
     }
     content += '</ul>';
@@ -633,7 +790,7 @@ function showDynamicModal(nicknames, amounts) {
     </div>`;
 
     // Přidání modálního okna do placeholderu
-    document.getElementById('dynamicModalPlaceholder').innerHTML = modalHtml;
+    document.getElementById('vypisHry').innerHTML = modalHtml;
 
     // Inicializace a zobrazení modálního okna
     const dynamicModal = new bootstrap.Modal(document.getElementById('dynamicModal'));
@@ -648,28 +805,3 @@ function showDynamicModal(nicknames, amounts) {
         socket.send(game + ";" + "continue" + ";" + user);
     };
 }
-
-// socket.onmessage = function(event) {
-//     if (data.phase === 'paying') {
-//         // Získání nicknames a vytvoření statických částek pro ukázku
-//         let nicknames = workdata.nicknames; 
-//         let amounts = [100, 200, 300]; 
-
-//         // Zobrazení modálního okna s přijatými daty
-//         showDynamicModal(nicknames, amounts);
-//     }
-// };
-
-// const testModalButton = document.getElementById('testModalButton');
-// if (testModalButton) {
-//     testModalButton.addEventListener('click', () => {
-//         // Testovací data
-//         let nicknames = workdata.nickanems;
-//         let amounts = [100, 200, 300];
-        
-//         // Zobrazení modálního okna s testovacími daty
-//         showDynamicModal(nicknames, amounts);
-//     });
-// } else {
-//     console.error("Element with ID 'testModalButton' not found.");
-// }
