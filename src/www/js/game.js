@@ -655,9 +655,6 @@ function showDynamicModal() {
     let vyherce = "Forhont prohrál";
     let penezniZaklad = "korunový -> 1";
     let bylTrumfCervena = "nebyly trumfem";
-    let stav1 = "";
-    let stav2 = "";
-    let stav3 = "";
  
     // Zkontroluje, zda již modální okno existuje 
     if (document.getElementById('dynamicModal')) { 
