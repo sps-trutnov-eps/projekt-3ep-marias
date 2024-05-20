@@ -904,7 +904,7 @@ exports.checkEnd = (gameID) => {
         game.result = "true:" + sevenWin + ":false:false:false;0;0;" + game.betBase + ";" +
         red + ":" + redPrice + ";0:" + redPrice + ";false:" + redPrice + ";" +
         price + ";" + sevenWin + ":" + price7 + ";0:" + price7 + ";" + price7 + ";" + (2 * (price + price7)) + ":" +
-        (price - price7) + ":" + (price - price7);
+        (price - price7) * (-1) + ":" + (price - price7) * (-1);
     } 
     else {
         if (game.mode == "h" && game.playersPacks[0] == 0){
@@ -1009,7 +1009,7 @@ exports.checkEnd = (gameID) => {
                 game.result = forWin + ":false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
                 red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + Math.abs(price) + ";" +
                 price + ";" + sSeven + ":" + Math.abs(price7) + ";0:" + Math.abs(price7) + ";" + price7 + ";" + (2 * (price + price7)) + ":" +
-                (price - price7) + ":" + (price - price7);
+                (price - price7) * (-1) + ":" + (price - price7) * (-1);
                 
             } else if (game.challange == "7"){
                 for(let i = 0; i < game.playersMariages.length; i++){
@@ -1077,7 +1077,7 @@ exports.checkEnd = (gameID) => {
                 game.result = forWin + ":" + seven +"false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
                 red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + Math.abs(price) + ";" +
                 price + ";true:" + redPrice * 2 + ";" + Math.log2(game.bet7) + ":" + Math.abs(price7) + ";" + price7 + ";" +
-                (2 * (price + price7)) + ":" + (price - price7) + ":" + (price - price7);
+                (2 * (price + price7)) + ":" + (price - price7) * (-1) + ":" + (price - price7) * (-1);
             } else if (game.challange == "100"){
                 let price = game.betBase * 4 * game.bet;
                 let flekPrice = price;
@@ -1199,7 +1199,7 @@ exports.checkEnd = (gameID) => {
                 game.result = "false:false:" + forWin + ":false:false;" + forPoints + ";" + defPoints + ";" + game.betBase * 4 + ";" +
                 red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";true:" + Math.abs(price) + ";" +
                 price + ";" + sSeven + ":" + Math.abs(price7) + ";0:" + Math.abs(price7) + ";" + price7 + ";" + (2 * (price + price7)) + ":" +
-                (price - price7) + ":" + (price - price7);
+                (price - price7) * (-1) + ":" + (price - price7) * (-1);
             } else if (game.challange == "107"){
                 let price = game.betBase * 4 * game.bet;
                 let flekPrice = price;
@@ -1302,7 +1302,7 @@ exports.checkEnd = (gameID) => {
                 game.result = "false:" + seven + ":" + forWin + ":false:false;" + forPoints + ";" + defPoints + ";" + game.betBase * 4 + ";" +
                 red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";true:" + Math.abs(price) + ";" +
                 price + ";" + ";true:" + redPrice * 2 + ";" + Math.log2(game.bet7) + ":" + Math.abs(price7) + ";" + price7 + ";" +
-                (2 * (price + price7)) + ":" + (price - price7) + ":" + (price - price7);
+                (2 * (price + price7)) + ":" + (price - price7) * (-1) + ":" + (price - price7) * (-1);
             }
         } else if (game.mode == "b") {
             if (game.phase == "betl-lost"){
