@@ -393,23 +393,23 @@ function fazeVoleneHry(classRoleHrace) {
     for (let el of document.querySelectorAll(".step")) el.style.display = "none"; 
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";} 
     else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "block";} 
- 
+    // pro ošetření paying
+    if(workdata.phase != "paying"){
+        document.getElementById('vypisHry').innerHTML = ""; 
+        if (document.querySelector('.modal-backdrop')) {
+            document.querySelector('.modal-backdrop').remove();
+        }
+    }
+
+
     //fáze hry 
     if (workdata.phase == "waiting") { 
         dif.innerHTML = "Čekáme na hráče"; 
         workdata.trumf = '';
-        document.getElementById('vypisHry').innerHTML = ""; 
-        if (document.querySelector('.modal-backdrop')) {
-            document.querySelector('.modal-backdrop').remove();
-        }
     } else if (workdata.phase == "picking-trumf") { 
         dif.innerHTML = ""; 
         document.getElementById('first-choose').style.display = 'block'; 
         workdata.trumf = ''; 
-        document.getElementById('vypisHry').innerHTML = ""; 
-        if (document.querySelector('.modal-backdrop')) {
-            document.querySelector('.modal-backdrop').remove();
-        }
     } else if (workdata.phase == "choosing-talon") { 
         document.getElementById('second-choose').style.display = 'block'; 
         workdata.trumf = ''; 
@@ -500,8 +500,13 @@ function fazeVoleneHryaltForhonta(classRoleHrace) {
     for (let el of document.querySelectorAll(".step")) el.style.display = "none"; 
     if (classRoleHrace == ".defense-info") { for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".defense-info")) el.style.display = "block";} 
     else {for (let el of document.querySelectorAll(".defense-info")) el.style.display = "none"; for (let el of document.querySelectorAll(".forhont-info")) el.style.display = "block";} 
-    //schování výpisu Hry 
-    document.getElementById('vypisHry').style.display = 'none'; 
+    // pro ošetření paying
+    if(workdata.phase != "paying"){
+        document.getElementById('vypisHry').innerHTML = ""; 
+        if (document.querySelector('.modal-backdrop')) {
+            document.querySelector('.modal-backdrop').remove();
+        }
+    }
 
     //fáze hry 
     if (workdata.phase == "choosing-talon") { 
