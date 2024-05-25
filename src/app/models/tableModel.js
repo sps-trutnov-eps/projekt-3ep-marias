@@ -1071,9 +1071,9 @@ exports.checkEnd = (gameID) => {
                     price *= -1;
                 }
 
-                game.playersPoints[game.forhont] += 2 * (price + price7);
-                game.playersPoints[(game.forhont + 1) % 3] -= price - price7;
-                game.playersPoints[(game.forhont + 2) % 3] -= price - price7;
+                game.playersPoints[game.forhont] += 2 * price;
+                game.playersPoints[(game.forhont + 1) % 3] -= price;
+                game.playersPoints[(game.forhont + 2) % 3] -= price;
                 game.result = forWin + ":" + seven +"false:false:false:false;" + forPoints + ";" + defPoints + ";" + game.betBase + ";" +
                 red + ":" + redPrice + ";" + Math.log2(game.bet) + ":" + flekPrice + ";" + sHundred + ":" + Math.abs(price) + ";" +
                 price + ";true:" + redPrice * 2 + ";" + Math.log2(game.bet7) + ":" + Math.abs(price7) + ";" + price7 + ";" +
