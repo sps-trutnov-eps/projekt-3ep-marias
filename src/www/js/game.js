@@ -783,7 +783,7 @@ function showDynamicModal() {
     }
 
     // stovka
-    if (data.sto.includes("true") && workdata.game == "h"){
+    if (data.sto.includes("true") && workdata.mode == "h"){
         if (workdata.challange == "100" || workdata.challange == "107"){
             if(data.coForhontVyhral.split(":")[2]) {
                 data.sto = "Bylo -> " + data.sto.split(":")[1];
@@ -798,7 +798,7 @@ function showDynamicModal() {
     }
 
     // sedma
-    if (data.sedma.includes("true") && workdata.game == "h"){
+    if (data.sedma.includes("true") && workdata.mode == "h"){
         if (workdata.challange == "7"){
             if(data.coForhontVyhral.split(":")[1]) {
                 data.sedma = "Byla -> " + data.sedma.split(":")[1];
