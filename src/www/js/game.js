@@ -765,7 +765,7 @@ function showDynamicModal() {
 
     // trumf červená
     if (workdata.trumf == "č"){
-        bylTrumfCervena = "jsou dražší -> " + data.trumfCervena;
+        bylTrumfCervena = "jsou dražší -> " + data.trumfCervena.split(":")[1];
     }
 
     // flekování
