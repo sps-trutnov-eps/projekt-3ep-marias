@@ -979,7 +979,7 @@ exports.checkEnd = (gameID) => {
                             let higher = false;
                             let higherIndex = 0;
                             for (let v = 0; v < lastCards.length; v++){
-                                if (lastcards[v].colour == game.trumf && v != sevenIndex) higher = true;
+                                if (lastCards[v].colour == game.trumf && v != sevenIndex) higher = true;
                             }
                             if (higher){
                                 sSeven = true;
@@ -1156,7 +1156,7 @@ exports.checkEnd = (gameID) => {
                             let higher = false;
                             let higherIndex = 0;
                             for (let v = 0; v < lastCards.length; v++){
-                                if (lastcards[v].colour == game.trumf && v != sevenIndex) higher = true;
+                                if (lastCards[v].colour == game.trumf && v != sevenIndex) higher = true;
                             }
                             if (higher){
                                 sSeven = true;
