@@ -877,7 +877,7 @@ příklad, forhont vyhrál sedmu v červené - "true:true:false:false:false;60;3
 exports.checkEnd = (gameID) => {
     let game = db.get(gameID);
 
-    if (game.gamePhase == "no-flek"){
+    if (game.phase == "no-flek"){
         game.phase = "paying";
 
         let price = game.betBase;
